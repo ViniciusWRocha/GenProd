@@ -1,0 +1,122 @@
+@model GerenciamentoProducao.Models.FamiliaCaixilho
+
+@{
+    ViewData["Title"] = "Nova Família de Caixilho";
+    var obraId = ViewBag.ObraId as int?;
+    var obraNome = ViewBag.ObraNome as string;
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a asp-controller="Obra" asp-action="Index" style="color:var(--gp-muted-color);">Obras</a>
+                    </li>
+                    @if (obraId.HasValue && !string.IsNullOrEmpty(obraNome))
+                    {
+                        <li class="breadcrumb-item">
+                            <a asp-controller="Obra" asp-action="Details" asp-route-id="@obraId" style="color:var(--gp-muted-color);">@obraNome</a>
+                        </li>
+                    }
+                    <li class="breadcrumb-item active" style="color:var(--gp-body-color);">Nova Família</li>
+                </ol>
+            </nav>
+            <h1 class="h3 mb-0" style="color:var(--gp-heading-color);">
+                <i class="fas fa-layer-group me-2"></i>Nova Família de Caixilho
+            </h1>
+            @if (!string.IsNullOrEmpty(obraNome))
+            {
+                <small style="color:var(--gp-muted-color);">Obra: <strong>@obraNome</strong></small>
+            }
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-7">
+            <div class="card shadow border-0">
+                <div class="card-header py-3">
+                    <h6 class="m-0 fw-bold" style="color:var(--gp-heading-color);">
+                        <i class="fas fa-layer-group me-2"></i>Informações da Família
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        @if (obraId.HasValue)
+                        {
+                            <input type="hidden" asp-for="IdObra" value="@obraId" />
+                        }
+                        else
+                        {
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Obra <span class="text-danger">*</span></label>
+                                <select asp-for="IdObra" class="form-select" asp-items="ViewBag.Obras">
+                                    <option value="">-- Selecione a Obra --</option>
+                                </select>
+                                <span asp-validation-for="IdObra" class="text-danger"></span>
+                            </div>
+                        }
+
+                        <div class="mb-3">
+                            <label asp-for="DescricaoFamilia" class="form-label fw-semibold">
+                                Descrição da Família <span class="text-danger">*</span>
+                            </label>
+                            <input asp-for="DescricaoFamilia" class="form-control" placeholder="Ex: Janelas Corrediças Andar 1" />
+                            <span asp-validation-for="DescricaoFamilia" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Peso Total</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" value="0 kg" readonly />
+                                <span class="input-group-text"><i class="fas fa-calculator"></i></span>
+                            </div>
+                            <small class="text-muted">Calculado automaticamente com base nos caixilhos adicionados.</small>
+                        </div>
+
+                        <div class="d-flex gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i> Criar Família
+                            </button>
+                            @if (obraId.HasValue)
+                            {
+                                <a asp-controller="Obra" asp-action="Details" asp-route-id="@obraId" class="btn btn-secondary">
+                                    <i class="fas fa-arrow-left me-1"></i> Cancelar
+                                </a>
+                            }
+                            else
+                            {
+                                <a asp-action="Index" class="btn btn-secondary">
+                                    <i class="fas fa-arrow-left me-1"></i> Cancelar
+                                </a>
+                            }
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h6 class="fw-bold mb-3" style="color:var(--gp-heading-color);">
+                        <i class="fas fa-info-circle me-1 text-info"></i> O que é uma Família?
+                    </h6>
+                    <p style="color:var(--gp-muted-color);" class="small">
+                        Uma <strong>família</strong> agrupa caixilhos de alumínio que pertencem ao mesmo conjunto ou área da obra.
+                        Por exemplo: "Janelas do Bloco A", "Portas do Térreo", etc.
+                    </p>
+                    <p style="color:var(--gp-muted-color);" class="small mb-0">
+                        Após criar a família, você poderá adicionar os caixilhos individuais a ela.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

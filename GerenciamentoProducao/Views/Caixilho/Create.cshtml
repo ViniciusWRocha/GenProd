@@ -1,0 +1,212 @@
+@model GerenciamentoProducaoo.ViewModel.CaixilhoViewModel
+
+@{
+    ViewData["Title"] = "Novo Caixilho";
+    var familiaId = ViewBag.FamiliaId as int?;
+    var obraId = ViewBag.ObraId as int?;
+    var familiaNome = ViewBag.FamiliaNome as string;
+    bool veioDeFamilia = familiaId.HasValue && familiaId.Value > 0;
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item">
+                        <a asp-controller="Obra" asp-action="Index" style="color:var(--gp-muted-color);">Obras</a>
+                    </li>
+                    @if (obraId.HasValue)
+                    {
+                        <li class="breadcrumb-item">
+                            <a asp-controller="Obra" asp-action="Details" asp-route-id="@obraId" style="color:var(--gp-muted-color);">Obra</a>
+                        </li>
+                    }
+                    @if (veioDeFamilia && !string.IsNullOrEmpty(familiaNome))
+                    {
+                        <li class="breadcrumb-item">
+                            <a asp-controller="FamiliaCaixilho" asp-action="Details" asp-route-id="@familiaId" style="color:var(--gp-muted-color);">@familiaNome</a>
+                        </li>
+                    }
+                    <li class="breadcrumb-item active" style="color:var(--gp-body-color);">Novo Caixilho</li>
+                </ol>
+            </nav>
+            <h1 class="h3 mb-0" style="color:var(--gp-heading-color);">
+                <i class="fas fa-window-restore me-2"></i>Novo Caixilho
+            </h1>
+            @if (!string.IsNullOrEmpty(familiaNome))
+            {
+                <small style="color:var(--gp-muted-color);">Família: <strong>@familiaNome</strong></small>
+            }
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow border-0">
+                <div class="card-header py-3">
+                    <h6 class="m-0 fw-bold" style="color:var(--gp-heading-color);">
+                        <i class="fas fa-window-restore me-2"></i>Dados do Caixilho
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        @if (veioDeFamilia)
+                        {
+                            @* Contexto travado: obra e família já definidas *@
+                            <input type="hidden" asp-for="ObraId" />
+                            <input type="hidden" asp-for="FamiliaCaixilhoId" />
+                            <input type="hidden" asp-for="IdFamiliaCaixilho" />
+
+                            <div class="alert alert-info d-flex align-items-center gap-2 mb-4 py-2">
+                                <i class="fas fa-layer-group"></i>
+                                <div class="small">
+                                    Caixilho será criado na família <strong>@familiaNome</strong>.
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label asp-for="ObraId" class="form-label fw-semibold">Obra <span class="text-danger">*</span></label>
+                                    <select asp-for="ObraId" class="form-select" asp-items="Model.Obra">
+                                        <option value="">-- Selecione a Obra --</option>
+                                    </select>
+                                    <span asp-validation-for="ObraId" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="FamiliaCaixilhoId" class="form-label fw-semibold">Família <span class="text-danger">*</span></label>
+                                    <select asp-for="FamiliaCaixilhoId" class="form-select" asp-items="Model.FamiliaCaixilho">
+                                        <option value="">-- Selecione a Família --</option>
+                                    </select>
+                                    <span asp-validation-for="FamiliaCaixilhoId" class="text-danger"></span>
+                                </div>
+                            </div>
+                        }
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="NomeCaixilho" class="form-label fw-semibold">Nome <span class="text-danger">*</span></label>
+                                <input asp-for="NomeCaixilho" class="form-control" placeholder="Ex: Janela Sala Principal" />
+                                <span asp-validation-for="NomeCaixilho" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="DescricaoCaixilho" class="form-label fw-semibold">Tipo</label>
+                                <input asp-for="DescricaoCaixilho" class="form-control" placeholder="Ex: Correr, Maxim-Ar, Pivotante..." />
+                                <span asp-validation-for="DescricaoCaixilho" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label asp-for="Largura" class="form-label fw-semibold">Largura (cm) <span class="text-danger">*</span></label>
+                                <input asp-for="Largura" class="form-control" type="number" min="1" id="inputLargura" />
+                                <span asp-validation-for="Largura" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="Altura" class="form-label fw-semibold">Altura (cm) <span class="text-danger">*</span></label>
+                                <input asp-for="Altura" class="form-control" type="number" min="1" id="inputAltura" />
+                                <span asp-validation-for="Altura" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="Quantidade" class="form-label fw-semibold">Quantidade <span class="text-danger">*</span></label>
+                                <input asp-for="Quantidade" class="form-control" type="number" min="1" id="inputQuantidade" />
+                                <span asp-validation-for="Quantidade" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="PesoUnitario" class="form-label fw-semibold">Peso Unitário (kg) <span class="text-danger">*</span></label>
+                                <input asp-for="PesoUnitario" class="form-control" type="number" step="0.01" min="0" id="inputPesoUnitario" />
+                                <span asp-validation-for="PesoUnitario" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Peso Total Estimado</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="pesoTotalEstimado" value="0.00 kg" readonly />
+                                    <span class="input-group-text"><i class="fas fa-weight"></i></span>
+                                </div>
+                                <small class="text-muted">Quantidade × Peso Unitário</small>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="StatusProducao" class="form-label fw-semibold">Status de Medição</label>
+                                <select asp-for="StatusProducao" class="form-select">
+                                    <option value="Pendente">Pendente</option>
+                                    <option value="Medido">Medido</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Observacoes" class="form-label fw-semibold">Observações</label>
+                            <textarea asp-for="Observacoes" class="form-control" rows="2" placeholder="Observações adicionais..."></textarea>
+                        </div>
+
+                        <div class="d-flex gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i> Salvar Caixilho
+                            </button>
+                            @if (veioDeFamilia)
+                            {
+                                <a asp-controller="FamiliaCaixilho" asp-action="Details" asp-route-id="@familiaId" class="btn btn-secondary">
+                                    <i class="fas fa-arrow-left me-1"></i> Cancelar
+                                </a>
+                            }
+                            else
+                            {
+                                <a asp-action="Index" class="btn btn-secondary">
+                                    <i class="fas fa-arrow-left me-1"></i> Cancelar
+                                </a>
+                            }
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h6 class="fw-bold mb-3" style="color:var(--gp-heading-color);">
+                        <i class="fas fa-info-circle me-1 text-info"></i> Sobre Caixilhos
+                    </h6>
+                    <ul class="list-unstyled small" style="color:var(--gp-muted-color);">
+                        <li class="mb-2"><i class="fas fa-ruler-combined me-2 text-primary"></i>Largura e Altura em centímetros</li>
+                        <li class="mb-2"><i class="fas fa-weight me-2 text-success"></i>Peso total calculado automaticamente</li>
+                        <li class="mb-2"><i class="fas fa-unlock me-2 text-warning"></i>Liberação necessária para produção</li>
+                        <li class="mb-2"><i class="fas fa-layer-group me-2 text-info"></i>Cada caixilho pertence a uma família</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        (function () {
+            const qtd = document.getElementById('inputQuantidade');
+            const peso = document.getElementById('inputPesoUnitario');
+            const total = document.getElementById('pesoTotalEstimado');
+
+            function atualizarPeso() {
+                const q = parseFloat(qtd?.value) || 0;
+                const p = parseFloat(peso?.value) || 0;
+                if (total) total.value = (q * p).toFixed(2) + ' kg';
+            }
+
+            qtd?.addEventListener('input', atualizarPeso);
+            peso?.addEventListener('input', atualizarPeso);
+            atualizarPeso();
+        })();
+    </script>
+}

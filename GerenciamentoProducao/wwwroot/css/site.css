@@ -1,0 +1,494 @@
+html {
+  font-size: 14px;
+}
+* {
+    margin: 0;
+    font-family: "Fira Code", monospace;
+}
+
+:root {
+    color-scheme: dark;
+    --gp-body-bg: #222222;
+    --gp-body-color: #f8f9fa;
+    --gp-heading-color: #f8f9fa;
+    --gp-muted-color: #adb5bd;
+    --gp-card-bg: #1f1f1f;
+    --gp-card-border: rgba(255, 255, 255, 0.1);
+    --gp-card-accent: rgba(255, 255, 255, 0.05);
+    --gp-form-bg: #2b2b2b;
+    --gp-form-border: rgba(255, 255, 255, 0.2);
+    --gp-sidebar-bg: #1d1d1d;
+    --gp-sidebar-text: #f8f9fa;
+    --gp-sidebar-hover-bg: rgba(255, 255, 255, 0.1);
+    --gp-navtop-bg: #000000;
+    --gp-navtop-link: #f8f9fa;
+    --gp-navtop-link-hover: #ffffff;
+    --gp-border-color: rgba(255, 255, 255, 0.08);
+    --gp-toggle-bg: #1f1f1f;
+    --gp-toggle-border: rgba(255, 255, 255, 0.2);
+    --gp-toggle-color: #f8f9fa;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.text-muted{
+    color: var(--gp-muted-color) !important;
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem rgba(13, 110, 253, 0.25), 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+}
+h1,h2,h3,h4,p{
+    color: var(--gp-heading-color);
+}
+a.nav-link {
+    font-size: .875rem;
+}
+dl, dl.row{
+    color: var(--gp-body-color);
+}
+dl.row span{
+    color: inherit;
+}
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+html {
+    background: var(--gp-body-bg);
+}
+body {
+    background: var(--gp-body-bg);
+    color: var(--gp-body-color);
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+  text-align: start;
+}
+.main{
+    height:100%;
+ 
+
+}
+.container-center {
+    width: 100%;
+    position: fixed;
+    left: 0;
+    top: 0; 
+    height: 100%;
+    background: #101011;
+    display: flex;
+    background: linear-gradient(90deg, rgba(16, 16, 17, 1) 0%, rgba(23, 44, 84, 1) 100%);
+}
+.left {
+
+    font-family: "Google Sans Code", monospace;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+dl.row{
+    color: black;
+    & span{
+              color: black;
+        }
+}
+
+.login-box h1 {
+    margin: 0 0 30px;
+    padding: 0;
+    color: white;
+    text-align: center;
+}
+
+    .login-box .user-box {
+        position: relative;
+    }
+
+        .login-box .user-box input {
+            width: 30rem;
+            padding: 10px 0;
+            font-size: 16px;
+            color: white;
+            margin-bottom: 30px;
+            border: none;
+            border-bottom: 1px solid white;
+
+            outline: none;
+            background: transparent;
+        }
+
+        .login-box .user-box label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 10px 0;
+            font-size: 1.2rem;
+            color: #fff;
+            pointer-events: none;
+            transition: .5s;
+        }
+
+        .login-box .user-box input:focus ~ label,
+        .login-box .user-box input:not(:placeholder-shown) ~ label {
+            top: -20px;
+            left: 0;
+/*            color: white;*/
+            font-size: 12px;
+        }
+
+    .login-box form a {
+        position: relative;
+        display: inline-block;
+        padding: 10px 20px;
+/*        color: #03e9f4;*/
+        font-size: 16px;
+        text-decoration: none;
+        text-transform: uppercase;
+        overflow: hidden;
+        transition: .2s;
+        margin-top: 40px;
+        letter-spacing: 4px;
+    }
+    .enter {
+    width: 100%;
+    background: blue;
+    outline: none;
+    color: white;
+    border: none;
+    height: 3rem;
+    border-radius:15px;
+    }
+.right {
+/*    position: relative;*/
+    height: 100%;
+    width: 50%;
+    background: red;
+    z-index:0;
+    img{
+           width: 100%;
+           height:100%;
+       }
+   
+}
+@media (max-width: 768px) {
+    .right {
+        /*    position: relative;*/
+
+        background: red;
+        z-index: 0;
+        display:none;
+            
+}
+}
+.main {
+    background: var(--gp-body-bg);
+    margin-left: 250px;
+    transition: margin-left 0.3s ease;
+/*    min-height: 100vh;*/
+    padding: 20px;
+}
+
+.card {
+    background-color: var(--gp-card-bg);
+    color: var(--gp-body-color);
+    border-color: var(--gp-card-border);
+}
+
+.card .card-header,
+.card .card-footer {
+    background-color: var(--gp-card-accent);
+    color: var(--gp-body-color);
+    border-color: var(--gp-card-border);
+}
+
+.table {
+    color: var(--gp-body-color);
+    background-color: var(--gp-card-bg);
+}
+
+.table thead th,
+.table tbody td {
+    border-color: var(--gp-card-border);
+}
+
+.form-control,
+.form-select,
+.form-control:focus,
+.form-select:focus {
+    background-color: var(--gp-form-bg);
+    color: var(--gp-body-color);
+    border-color: var(--gp-form-border);
+}
+
+@media (max-width: 1024px) {
+    .main {
+        margin-left: 0%;
+/*        margin-top: 5%;*/
+        padding: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .main {
+        margin-top: 15%;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .main {
+        margin-top: 10%;
+        padding: 15px;
+    }
+}
+    
+    
+    @media (max-width: 500px) {
+    .login-box .user-box input {
+        width: 110%;
+    }
+
+    .enter {
+        width: 110%;
+    }
+}
+#sidebar {
+    overflow-y:hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 200px;
+    background-color: var(--gp-sidebar-bg);
+    color: var(--gp-sidebar-text);
+    padding: 1rem;
+    transition: all 0.3s ease;
+    /*    z-index: 1000;*/
+    overflow-y: auto;
+    border-right: 1px solid var(--gp-border-color);
+}
+
+        /* Quando estiver fechada */
+        #sidebar.collapsed {
+            width: 60px;
+        }
+
+        /* Links da nav */
+        #sidebar .nav-link {
+            color: var(--gp-sidebar-text);
+            padding: 10px;
+            border-radius: 5px;
+            transition: background 0.2s;
+        }
+
+            #sidebar .nav-link:hover {
+                background-color: var(--gp-sidebar-hover-bg);
+            }
+
+    /* �cone para abrir/fechar */
+    #toggle-sidebar {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: transparent;
+        color: var(--gp-sidebar-text);
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s;
+        z-index: 1000;
+    }
+
+        #toggle-sidebar:hover {
+            background: var(--gp-sidebar-hover-bg);
+            color: var(--gp-sidebar-text);
+        }
+        
+        #toggle-sidebar:active {
+            background: var(--gp-sidebar-hover-bg);
+        }
+
+    /* �cone gira quando fecha */
+    #sidebar.collapsed #toggle-sidebar i {
+        transform: rotate(180deg);
+        transition: transform 0.3s ease;
+    }
+
+    /* Ajuste no conte�do principal */
+
+
+/*    #sidebar.collapsed ~ .main {
+        margin-left: 60px;
+    }*/
+    
+    /* Garantir que o main seja ajustado quando sidebar estiver minimizada */
+/*    #sidebar.collapsed + * .main {
+        margin-left: 60px !important;
+    }*/
+
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24
+    }
+
+    #navTop {
+        z-index: 999;
+        display: none;
+        background: var(--gp-navtop-bg) !important;
+        border-bottom: 1px solid var(--gp-border-color);
+    }
+
+    @media (max-width: 1024px) {
+        #sidebar {
+            display: none;
+        }
+
+        #navTop {
+            z-index: 999;
+            display: initial;
+        }
+        
+        .main {
+            margin-left: 0 !important;
+        }
+    }
+
+    .row {
+        width: 100%;
+        margin: 0 auto;
+    }
+    
+    @media (max-width: 768px) {
+        .row {
+            width: 100%;
+            margin: 0;
+            padding: 0 10px;
+        }
+        
+        .container-fluid {
+            z-index: -1;
+            padding: 0 15px;
+        }
+        
+        .card {
+            margin-bottom: 1rem;
+        }
+        
+        .table-responsive {
+            font-size: 0.85rem;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .container-fluid {
+            padding: 0 10px;
+        }
+        
+        .card-body {
+            padding: 1rem 0.75rem;
+        }
+        
+        .table-responsive {
+            font-size: 0.75rem;
+        }
+        
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+        }
+    }
+}
+
+html.theme-dark,
+body.theme-dark {
+    color-scheme: dark;
+}
+
+html.theme-light,
+body.theme-light {
+    color-scheme: light;
+}
+
+html.theme-light {
+    --gp-body-bg: #f8f9fa;
+    --gp-body-color: #212529;
+    --gp-heading-color: #212529;
+    --gp-muted-color: #6c757d;
+    --gp-card-bg: #ffffff;
+    --gp-card-border: rgba(0, 0, 0, 0.08);
+    --gp-card-accent: #f1f3f5;
+    --gp-form-bg: #ffffff;
+    --gp-form-border: #ced4da;
+    --gp-sidebar-bg: #ffffff;
+    --gp-sidebar-text: #212529;
+    --gp-sidebar-hover-bg: rgba(0, 0, 0, 0.05);
+    --gp-navtop-bg: #ffffff;
+    --gp-navtop-link: #212529;
+    --gp-navtop-link-hover: #0d6efd;
+    --gp-border-color: rgba(0, 0, 0, 0.08);
+    --gp-toggle-bg: #ffffff;
+    --gp-toggle-border: #ced4da;
+    --gp-toggle-color: #212529;
+}
+
+#navTop .navbar-brand,
+#navTop .nav-link {
+    color: var(--gp-navtop-link) !important;
+}
+
+#navTop .nav-link:hover {
+    color: var(--gp-navtop-link-hover) !important;
+}
+
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    transition: all 0.3s ease;
+    background-color: var(--gp-toggle-bg);
+    border-color: var(--gp-toggle-border);
+    color: var(--gp-toggle-color);
+}
+
+.theme-toggle:hover {
+    filter: brightness(1.05);
+}
+
+/* Estilo para o botão de tema no menu hambúrguer (mobile) */
+#menu .theme-toggle {
+    width: 100%;
+    text-align: left;
+    margin: 0.5rem 0;
+    padding: 0.5rem 1rem;
+}
+
+#menu li.d-lg-none {
+    padding: 0;
+}
+
+#menu li.d-lg-none .theme-toggle {
+    border: none;
+    background: transparent;
+    color: inherit;
+}
+
+#menu li.d-lg-none .theme-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}

@@ -1,0 +1,104 @@
+﻿@model IEnumerable<GerenciamentoProducao.Models.FamiliaCaixilho>
+
+@{
+    ViewData["Title"] = "Família de Caixilho";
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="h3 mb-0">Família de Caixilho</h1>
+            <p>Gerenciamento de famílias de caixilhos</p>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle"></i> @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle"></i> @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-primary">Lista de Famílias de Caixilho</h6>
+                    <div class="btn-group " role="group" >
+                        <a asp-action="Create" class="btn btn-primary btn-sm" style="margin-right:20px">
+                            <i class="fas fa-plus"></i> Nova Família
+                        </a>
+                        <form asp-action="RecalcularPesos" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-warning btn-sm " onclick="return confirm('Deseja recalcular todos os pesos das famílias?')">
+                                <i class="fas fa-calculator"></i> Recalcular Pesos
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" width="100%" cellspacing="0">
+                            @{
+                                var obras = ViewBag.Obras as Dictionary<int, string> ?? new Dictionary<int, string>();
+                            }
+                            <thead>
+                                <tr>
+                                    <th>Descrição</th>
+                                    <th>Obra</th>
+                                    <th>Peso Total</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <strong>@item.DescricaoFamilia</strong>
+                                        </td>
+                                        <td>
+                                            @if (obras.ContainsKey(item.IdObra))
+                                            {
+                                                <a asp-controller="Obra" asp-action="Details" asp-route-id="@item.IdObra" class="text-decoration-none">
+                                                    @obras[item.IdObra]
+                                                </a>
+                                            }
+                                        </td>
+                                        <td>
+                                            <span>
+                                                @item.PesoTotalFormatado
+                                            </span>
+                                            <small class="text-muted d-block">Calculado automaticamente</small>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group" role="group">
+                                                <a asp-action="Edit" asp-route-id="@item.IdFamiliaCaixilho" class="btn btn-sm btn-warning">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <a asp-action="Details" asp-route-id="@item.IdFamiliaCaixilho" class="btn btn-sm btn-info">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                <a asp-action="Delete" asp-route-id="@item.IdFamiliaCaixilho" class="btn btn-sm btn-danger">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

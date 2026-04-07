@@ -1,0 +1,126 @@
+@model GerenciamentoProducao.Models.Caixilho
+
+@{
+    ViewData["Title"] = "Detalhes do Caixilho";
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="h3 mb-0 text-white">Detalhes do Caixilho</h1>
+            <p class="text-white">Informações completas do caixilho</p>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-primary">Informações do Caixilho</h6>
+                    <div>
+                        <a asp-action="Edit" asp-route-id="@Model.IdCaixilho" class="btn btn-warning btn-sm">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+                        <a asp-action="Index" class="btn btn-secondary btn-sm">
+                            <i class="fas fa-arrow-left"></i> Voltar
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="text-primary mb-3">Informações Básicas</h6>
+                            <dl class="row">
+                                <dt class="col-sm-4">ID:</dt>
+                                <dd class="col-sm-8">
+                                    <span class="badge badge-info">@Model.IdCaixilho</span>
+                                </dd>
+
+                                <dt class="col-sm-4">Nome:</dt>
+                                <dd class="col-sm-8">
+                                    <strong>@Model.NomeCaixilho</strong>
+                                </dd>
+
+                                <dt class="col-sm-4">Largura:</dt>
+                                <dd class="col-sm-8">
+                                    <span class="badge badge-secondary">@Model.Largura cm</span>
+                                </dd>
+
+                                <dt class="col-sm-4">Altura:</dt>
+                                <dd class="col-sm-8">
+                                    <span class="badge badge-secondary">@Model.Altura cm</span>
+                                </dd>
+
+                                <dt class="col-sm-4">Quantidade:</dt>
+                                <dd class="col-sm-8">
+                                    <span class="badge badge-primary">@Model.Quantidade unidades</span>
+                                </dd>
+
+                                <dt class="col-sm-4">Peso Unitário:</dt>
+                                <dd class="col-sm-8">
+                                    <span class="badge badge-success">@Model.PesoUnitario.ToString("F2") kg</span>
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-primary mb-3">Status e Relacionamentos</h6>
+                            <dl class="row">
+                                <dt class="col-sm-4">Status:</dt>
+                                <dd class="col-sm-8">
+                                    <span class="badge badge-@(Model.StatusProducao == "Concluído" ? "success" : Model.StatusProducao == "Em Produção" ? "warning" : "secondary")">
+                                        @Model.StatusProducao
+                                    </span>
+                                </dd>
+
+                                <dt class="col-sm-4">Liberado:</dt>
+                                <dd class="col-sm-8">
+                                    <span class="badge badge-@(Model.Liberado ? "success" : "danger")">
+                                        @(Model.Liberado ? "Sim" : "Não")
+                                    </span>
+                                </dd>
+
+                                @if (Model.DataLiberacao.HasValue)
+                                {
+                                    <dt class="col-sm-4">Data Liberação:</dt>
+                                    <dd class="col-sm-8">@Model.DataLiberacao.Value.ToString("dd/MM/yyyy")</dd>
+                                }
+
+                                <dt class="col-sm-4">Obra:</dt>
+                                <dd class="col-sm-8">
+                                    <span class="badge badge-info">
+                                        @Model.Obra?.Nome
+                                    </span>
+                                </dd>
+
+                                <dt class="col-sm-4">Família:</dt>
+                                <dd class="col-sm-8">
+                                    <span class="badge badge-secondary">
+                                        @Model.FamiliaCaixilho?.DescricaoFamilia
+                                    </span>
+                                </dd>
+
+                                <dt class="col-sm-4">Tipo:</dt>
+                                <dd class="col-sm-8">
+                                    <span class="badge badge-primary">
+                                        @Model.DescricaoCaixilho
+                                    </span>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.Observacoes))
+                    {
+                        <hr>
+                        <div class="row">
+                            <div class="col-12">
+                                <h6 class="text-primary mb-3">Observações</h6>
+                                <p class="text-muted">@Model.Observacoes</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

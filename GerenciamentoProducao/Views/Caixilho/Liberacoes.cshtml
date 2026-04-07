@@ -1,0 +1,161 @@
+@model List<GerenciamentoProducao.Models.FamiliaCaixilho>
+
+@{
+    ViewData["Title"] = "Liberacoes para Producao";
+    var obras = ViewBag.Obras as Dictionary<int, string> ?? new Dictionary<int, string>();
+    var filtro = ViewBag.Filtro as string ?? "pendentes";
+}
+
+<div class="container-fluid">
+
+    <div class="row mb-3">
+        <div class="col-12 d-flex justify-content-between align-items-center">
+            <div>
+                <h1 class="h3 mb-0" style="color:var(--gp-heading-color);">
+                    <i class="fas fa-industry me-2"></i>Liberacoes para Producao
+                </h1>
+                <small style="color:var(--gp-muted-color);">Gerenciamento de liberacoes de familias</small>
+            </div>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-secondary btn-sm">
+                <i class="fas fa-arrow-left"></i> Voltar
+            </a>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>@TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @* Abas de filtro *@
+    <ul class="nav nav-tabs mb-4" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link @(filtro == "pendentes" ? "active" : "")" asp-action="Liberacoes" asp-route-filtro="pendentes">
+                <i class="fas fa-clock me-1"></i> Prontas para Liberar
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @(filtro == "liberadas" ? "active" : "")" asp-action="Liberacoes" asp-route-filtro="liberadas">
+                <i class="fas fa-check-circle me-1"></i> Ja Liberadas
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @(filtro == "todas" ? "active" : "")" asp-action="Liberacoes" asp-route-filtro="todas">
+                <i class="fas fa-list me-1"></i> Todas
+            </a>
+        </li>
+    </ul>
+
+    @if (!Model.Any())
+    {
+        <div class="card border-0 shadow-sm">
+            <div class="card-body text-center py-5">
+                <i class="fas fa-clipboard-check fa-3x mb-3" style="color:var(--gp-muted-color);opacity:.4;"></i>
+                @if (filtro == "pendentes")
+                {
+                    <h5 style="color:var(--gp-muted-color);">Nenhuma familia pronta para liberacao</h5>
+                    <p class="small" style="color:var(--gp-muted-color);">
+                        Para liberar uma familia, todos os seus caixilhos devem estar com status <strong>Medido</strong>.
+                    </p>
+                }
+                else if (filtro == "liberadas")
+                {
+                    <h5 style="color:var(--gp-muted-color);">Nenhuma familia liberada ainda</h5>
+                }
+                else
+                {
+                    <h5 style="color:var(--gp-muted-color);">Nenhuma familia encontrada</h5>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row g-3">
+            @foreach (var familia in Model)
+            {
+                var obraNome = obras.ContainsKey(familia.IdObra) ? obras[familia.IdObra] : "—";
+                var jaLiberada = familia.StatusFamilia == "EmProducao" || familia.StatusFamilia == "Produzida";
+
+                <div class="col-lg-6 col-xl-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                            <h6 class="m-0 fw-bold" style="color:var(--gp-heading-color);">
+                                <i class="fas fa-layer-group me-2 text-info"></i>@familia.DescricaoFamilia
+                            </h6>
+                            @if (jaLiberada)
+                            {
+                                <span class="badge text-bg-success">Liberada</span>
+                            }
+                            else
+                            {
+                                <span class="badge text-bg-info">Pronta</span>
+                            }
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled mb-3">
+                                <li class="mb-2">
+                                    <i class="fas fa-building me-2 text-primary"></i>
+                                    <strong>Obra:</strong>
+                                    <a asp-controller="Obra" asp-action="Details" asp-route-id="@familia.IdObra" style="color:var(--gp-body-color);">@obraNome</a>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-weight me-2 text-success"></i>
+                                    <strong>Peso Total:</strong> @familia.PesoTotal kg
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-flag me-2 text-secondary"></i>
+                                    <strong>Status:</strong>
+                                    <span class="badge text-bg-@(familia.StatusFamilia == "Produzida" ? "success" : familia.StatusFamilia == "EmProducao" ? "primary" : familia.StatusFamilia == "Medida" ? "info" : "secondary")">
+                                        @familia.StatusFamilia
+                                    </span>
+                                </li>
+                            </ul>
+
+                            @if (jaLiberada)
+                            {
+                                <div class="alert alert-success py-2 mb-3 small">
+                                    <i class="fas fa-check-circle me-1"></i>
+                                    Familia ja liberada para producao.
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-info py-2 mb-3 small">
+                                    <i class="fas fa-check-circle me-1"></i>
+                                    Todos os caixilhos estao medidos. Familia pronta para producao.
+                                </div>
+                            }
+
+                            <div class="d-flex gap-2">
+                                @if (!jaLiberada)
+                                {
+                                    <form asp-action="LiberarProducao" asp-controller="FamiliaCaixilho" method="post" class="d-inline">
+                                        <input type="hidden" name="id" value="@familia.IdFamiliaCaixilho" />
+                                        <button type="submit" class="btn btn-success" onclick="return confirm('Deseja liberar a familia \'@familia.DescricaoFamilia\' para producao?')">
+                                            <i class="fas fa-industry me-1"></i> Liberar para Producao
+                                        </button>
+                                    </form>
+                                }
+                                <a asp-controller="FamiliaCaixilho" asp-action="Details" asp-route-id="@familia.IdFamiliaCaixilho" class="btn btn-outline-info">
+                                    <i class="fas fa-eye me-1"></i> Ver Detalhes
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+</div>

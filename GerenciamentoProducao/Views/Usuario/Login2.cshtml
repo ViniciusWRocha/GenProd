@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewData["Title"] = "Login2";
+}
+
+<h2 class="mb-4">Login</h2>
+
+<form asp-controller="Usuario" asp-action="Login" method="post">
+    <div class="mb-3">
+        <label for="email">Email</label>
+        <input type="email" name="email" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label for="senha">Senha</label>
+        <input type="password" name="senha" class="form-control" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Entrar</button>
+</form>
+
+@if (!ViewData.ModelState.IsValid)
+{
+	<div class="alert alert-danger mt-3">
+		@Html.ValidationSummary()
+	</div>
+}
+
+

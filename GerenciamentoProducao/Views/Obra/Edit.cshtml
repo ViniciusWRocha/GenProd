@@ -1,0 +1,211 @@
+﻿@model GerenciamentoProducaoo.ViewModel.ObraViewModel
+
+@{
+    ViewData["Title"] = "Editar Obra";
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="h3 mb-0 text-white">Editar Obra</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Dados da Obra</h6>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit" asp-route-id="@Model.IdObra" method="post" enctype="multipart/form-data">
+                        <input type="hidden" asp-for="IdObra" />
+                        <input type="hidden" asp-for="ImagemObraPath" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Nome" class="control-label">Nome da Obra</label>
+                                    <input asp-for="Nome" class="form-control" />
+                                    <span asp-validation-for="Nome" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Construtora" class="control-label">Construtora</label>
+                                    <input asp-for="Construtora" class="form-control" />
+                                    <span asp-validation-for="Construtora" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="DataInicio" class="control-label">Data de Início</label>
+                                    <input asp-for="DataInicio" class="form-control" type="date" />
+                                    <span asp-validation-for="DataInicio" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="DataTermino" class="control-label">Data de Término</label>
+                                    <input asp-for="DataTermino" class="form-control" type="date" />
+                                    <span asp-validation-for="DataTermino" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="StatusObra" class="control-label">Status da Obra</label>
+                                    <select asp-for="StatusObra" class="form-control">
+                                        <option value="Cadastrada">Cadastrada</option>
+                                        <option value="Verificada">Verificada</option>
+                                        <option value="EmMedicao">Em Medição</option>
+                                        <option value="EmProducao">Em Produção</option>
+                                        <option value="Concluida">Concluída</option>
+                                    </select>
+                                    <span asp-validation-for="StatusObra" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Nro" class="control-label">Número</label>
+                                    <input asp-for="Nro" class="form-control" />
+                                    <span asp-validation-for="Nro" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Logradouro" class="control-label">Logradouro</label>
+                                    <input asp-for="Logradouro" class="form-control" />
+                                    <span asp-validation-for="Logradouro" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Bairro" class="control-label">Bairro</label>
+                                    <input asp-for="Bairro" class="form-control" />
+                                    <span asp-validation-for="Bairro" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Cep" class="control-label">CEP</label>
+                                    <input asp-for="Cep" class="form-control" />
+                                    <span asp-validation-for="Cep" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Uf" class="control-label">UF</label>
+                                    <input asp-for="Uf" class="form-control" />
+                                    <span asp-validation-for="Uf" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Cnpj" class="control-label">CNPJ</label>
+                                    <input asp-for="Cnpj" class="form-control" />
+                                    <span asp-validation-for="Cnpj" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="IdUsuario" class="control-label">Usuário Responsável</label>
+                            <select asp-for="IdUsuario" class="form-control" asp-items="Model.Usuario"></select>
+                            <span asp-validation-for="IdUsuario" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Observacoes" class="control-label">Observações</label>
+                            <textarea asp-for="Observacoes" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Observacoes" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label d-block">Imagem cadastrada</label>
+                            @if (!string.IsNullOrEmpty(Model.ImagemObraPath))
+                            {
+                                <img src="@Url.Content("~/" + Model.ImagemObraPath)" alt="Imagem da obra" class="img-fluid img-thumbnail mb-2" style="max-height: 200px;" />
+                            }
+                            else
+                            {
+                                <p class="text-muted">Nenhuma imagem cadastrada.</p>
+                            }
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="ImagemUpload" class="control-label">Nova imagem (opcional)</label>
+                            <input asp-for="ImagemUpload" class="form-control" type="file" accept="image/*" />
+                            <small class="form-text text-muted">Selecione uma imagem para atualizar a visualização da obra.</small>
+                            <span asp-validation-for="ImagemUpload" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Salvar
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Voltar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card shadow">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Status Atual</h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <strong>Status:</strong>
+                        <span class="badge badge-@(Model.StatusObra == "Concluida" ? "success" : Model.StatusObra == "EmProducao" ? "primary" : "secondary")">
+                            @Model.StatusObra
+                        </span>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Progresso:</strong> @Model.PercentualConclusao.ToString("F1")%
+                        <div class="progress" style="height: 20px;">
+                            <div class="progress-bar @(Model.PercentualConclusao >= 80 ? "bg-success" : Model.PercentualConclusao >= 50 ? "bg-warning" : "bg-danger")" 
+                                 role="progressbar" 
+                                 style="width: @Model.PercentualConclusao%" 
+                                 aria-valuenow="@Model.PercentualConclusao" 
+                                 aria-valuemin="0" 
+                                 aria-valuemax="100">
+                                @Model.PercentualConclusao.ToString("F1")%
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Peso Produzido:</strong> @Model.PesoProduzido.ToString("F0") kg
+                    </div>
+                    <div class="mb-3">
+                        <strong>Peso Restante:</strong> @((Model.PesoFinal - Model.PesoProduzido).ToString("F0")) kg
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,371 @@
+@model GerenciamentoProducao.ViewModel.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+    var pesoTotal = Model.PesoLiberadoKg + Model.PesoPendenteKg;
+    var totalAndamento = Model.ObrasEmDia + Model.ObrasEmAlerta + Model.ObrasAtrasadas;
+
+    var obrasEmDia = Model.Obras.Where(o => o.SituacaoPrazo == "EmDia").ToList();
+    var obrasAlerta = Model.Obras.Where(o => o.SituacaoPrazo == "Alerta").ToList();
+    var obrasAtrasadas = Model.Obras.Where(o => o.SituacaoPrazo == "Atrasada").ToList();
+}
+
+<div class="container-fluid">
+
+    <div class="row mb-3">
+        <div class="col-12">
+            <h1 class="h3 mb-0" style="color:var(--gp-heading-color);">
+                <i class="fas fa-chart-line me-2"></i>Dashboard
+            </h1>
+            <small style="color:var(--gp-muted-color);">Visao geral da producao de esquadrias</small>
+        </div>
+    </div>
+
+    @* ===== CARDS SUPERIORES ===== *@
+    <div class="row mb-4 g-3">
+
+        @* Total de obras *@
+        <div class="col-xl-3 col-md-6">
+            <a asp-controller="Obra" asp-action="Index" asp-route-filtro="todas" class="text-decoration-none">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="small fw-semibold text-uppercase" style="color:var(--gp-muted-color);">Total de Obras</div>
+                                <div class="h2 fw-bold mb-0" style="color:var(--gp-body-color);">@Model.TotalObras</div>
+                            </div>
+                            <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center" style="width:52px;height:52px;">
+                                <i class="fas fa-hard-hat text-white fa-lg"></i>
+                            </div>
+                        </div>
+                        <div class="mt-2 small">
+                            <span style="color:var(--gp-muted-color);">@totalAndamento em andamento</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        @* Obras concluidas *@
+        <div class="col-xl-3 col-md-6">
+            <a asp-controller="Obra" asp-action="Index" asp-route-filtro="concluidas" class="text-decoration-none">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="small fw-semibold text-uppercase" style="color:var(--gp-muted-color);">Concluidas</div>
+                                <div class="h2 fw-bold mb-0" style="color:var(--gp-body-color);">@Model.ObrasConcluidas</div>
+                            </div>
+                            <div class="rounded-circle bg-success d-flex align-items-center justify-content-center" style="width:52px;height:52px;">
+                                <i class="fas fa-flag-checkered text-white fa-lg"></i>
+                            </div>
+                        </div>
+                        <div class="mt-2 small">
+                            <span style="color:var(--gp-muted-color);">obra(s) finalizadas</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        @* Liberadas para producao *@
+        <div class="col-xl-3 col-md-6">
+            <a asp-controller="Caixilho" asp-action="Liberacoes" asp-route-filtro="liberadas" class="text-decoration-none">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="small fw-semibold text-uppercase" style="color:var(--gp-muted-color);">Liberadas p/ Producao</div>
+                                <div class="h2 fw-bold mb-0" style="color:var(--gp-body-color);">@Model.FamiliasLiberadas<span class="h5 fw-normal" style="color:var(--gp-muted-color);">/@Model.TotalFamilias</span></div>
+                            </div>
+                            <div class="rounded-circle bg-info d-flex align-items-center justify-content-center" style="width:52px;height:52px;">
+                                <i class="fas fa-industry text-white fa-lg"></i>
+                            </div>
+                        </div>
+                        @if (Model.TotalFamilias > 0)
+                        {
+                            <div class="progress mt-2" style="height:6px;">
+                                <div class="progress-bar bg-info" style="width:@((float)Model.FamiliasLiberadas / Model.TotalFamilias * 100)%"></div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        @* Peso liberado vs pendente *@
+        <div class="col-xl-3 col-md-6">
+            <a asp-controller="Caixilho" asp-action="Liberacoes" class="text-decoration-none">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="small fw-semibold text-uppercase" style="color:var(--gp-muted-color);">Peso (kg)</div>
+                                <div class="h2 fw-bold mb-0 text-success">@Model.PesoLiberadoKg.ToString("F0")<span class="h5 fw-normal" style="color:var(--gp-muted-color);"> / @(pesoTotal.ToString("F0"))</span></div>
+                            </div>
+                            <div class="rounded-circle bg-warning d-flex align-items-center justify-content-center" style="width:52px;height:52px;">
+                                <i class="fas fa-weight text-white fa-lg"></i>
+                            </div>
+                        </div>
+                        <div class="mt-2 d-flex justify-content-between small">
+                            <span class="text-success fw-semibold">@Model.PesoLiberadoKg.ToString("F0") liberado</span>
+                            <span class="text-warning fw-semibold">@Model.PesoPendenteKg.ToString("F0") pendente</span>
+                        </div>
+                        @if (pesoTotal > 0)
+                        {
+                            <div class="progress mt-1" style="height:6px;">
+                                <div class="progress-bar bg-success" style="width:@(Model.PesoLiberadoKg / pesoTotal * 100)%"></div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    @* ===== SITUACAO DE PRAZO ===== *@
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 fw-bold" style="color:var(--gp-heading-color);">
+                        <i class="fas fa-clock me-2"></i>Situacao de Prazo
+                    </h6>
+                    <a asp-controller="Obra" asp-action="Index" asp-route-filtro="andamento" class="btn btn-outline-primary btn-sm">
+                        Ver Todas
+                    </a>
+                </div>
+                <div class="card-body">
+
+                    @* Indicadores visuais *@
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <div class="d-flex align-items-center gap-3 p-3 rounded-3" style="background:rgba(25,135,84,.08);">
+                                <div class="d-flex align-items-center justify-content-center rounded-circle bg-success" style="width:48px;height:48px;min-width:48px;">
+                                    <i class="fas fa-check text-white fa-lg"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="fw-bold fs-4 text-success">@Model.ObrasEmDia</div>
+                                    <div class="small fw-semibold" style="color:var(--gp-muted-color);">Em dia</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="d-flex align-items-center gap-3 p-3 rounded-3" style="background:rgba(255,193,7,.08);">
+                                <div class="d-flex align-items-center justify-content-center rounded-circle bg-warning" style="width:48px;height:48px;min-width:48px;">
+                                    <i class="fas fa-exclamation text-white fa-lg"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="fw-bold fs-4 text-warning">@Model.ObrasEmAlerta</div>
+                                    <div class="small fw-semibold" style="color:var(--gp-muted-color);">Em alerta</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="d-flex align-items-center gap-3 p-3 rounded-3" style="background:rgba(220,53,69,.08);">
+                                <div class="d-flex align-items-center justify-content-center rounded-circle bg-danger" style="width:48px;height:48px;min-width:48px;">
+                                    <i class="fas fa-times text-white fa-lg"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="fw-bold fs-4 text-danger">@Model.ObrasAtrasadas</div>
+                                    <div class="small fw-semibold" style="color:var(--gp-muted-color);">Atrasadas</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (!Model.Obras.Any())
+                    {
+                        <div class="text-center py-4">
+                            <p style="color:var(--gp-muted-color);">Nenhuma obra em andamento.</p>
+                        </div>
+                    }
+                    else
+                    {
+                        @* Listas lado a lado *@
+                        <div class="row g-3">
+
+                            @* Em dia *@
+                            <div class="col-lg-4">
+                                <h6 class="fw-semibold mb-3 text-success"><i class="fas fa-check-circle me-1"></i> Em Dia</h6>
+                                @if (!obrasEmDia.Any())
+                                {
+                                    <p class="small" style="color:var(--gp-muted-color);">Nenhuma</p>
+                                }
+                                else
+                                {
+                                    @foreach (var obra in obrasEmDia)
+                                    {
+                                        <a asp-controller="Obra" asp-action="Details" asp-route-id="@obra.Id" class="text-decoration-none">
+                                            <div class="d-flex align-items-center gap-2 p-2 mb-2 rounded border-start border-3 border-success" style="background:var(--gp-card-bg, #fff);">
+                                                <div class="flex-grow-1">
+                                                    <div class="fw-semibold small" style="color:var(--gp-body-color);">@obra.Nome</div>
+                                                    <div class="small" style="color:var(--gp-muted-color);">@obra.Construtora</div>
+                                                </div>
+                                                <div class="text-end">
+                                                    <div class="small fw-semibold" style="color:var(--gp-body-color);">@obra.DiasRestantes d</div>
+                                                    <div style="font-size:11px;color:var(--gp-muted-color);">@obra.DataTermino.ToString("dd/MM")</div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    }
+                                }
+                            </div>
+
+                            @* Em alerta *@
+                            <div class="col-lg-4">
+                                <h6 class="fw-semibold mb-3 text-warning"><i class="fas fa-exclamation-triangle me-1"></i> Em Alerta</h6>
+                                @if (!obrasAlerta.Any())
+                                {
+                                    <p class="small" style="color:var(--gp-muted-color);">Nenhuma</p>
+                                }
+                                else
+                                {
+                                    @foreach (var obra in obrasAlerta)
+                                    {
+                                        <a asp-controller="Obra" asp-action="Details" asp-route-id="@obra.Id" class="text-decoration-none">
+                                            <div class="d-flex align-items-center gap-2 p-2 mb-2 rounded border-start border-3 border-warning" style="background:var(--gp-card-bg, #fff);">
+                                                <div class="flex-grow-1">
+                                                    <div class="fw-semibold small" style="color:var(--gp-body-color);">@obra.Nome</div>
+                                                    <div class="small" style="color:var(--gp-muted-color);">@obra.Construtora</div>
+                                                </div>
+                                                <div class="text-end">
+                                                    <div class="small fw-semibold text-warning">@obra.DiasRestantes d</div>
+                                                    <div style="font-size:11px;color:var(--gp-muted-color);">@obra.DataTermino.ToString("dd/MM")</div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    }
+                                }
+                            </div>
+
+                            @* Atrasadas *@
+                            <div class="col-lg-4">
+                                <h6 class="fw-semibold mb-3 text-danger"><i class="fas fa-times-circle me-1"></i> Atrasadas</h6>
+                                @if (!obrasAtrasadas.Any())
+                                {
+                                    <p class="small" style="color:var(--gp-muted-color);">Nenhuma</p>
+                                }
+                                else
+                                {
+                                    @foreach (var obra in obrasAtrasadas)
+                                    {
+                                        <a asp-controller="Obra" asp-action="Details" asp-route-id="@obra.Id" class="text-decoration-none">
+                                            <div class="d-flex align-items-center gap-2 p-2 mb-2 rounded border-start border-3 border-danger" style="background:var(--gp-card-bg, #fff);">
+                                                <div class="flex-grow-1">
+                                                    <div class="fw-semibold small" style="color:var(--gp-body-color);">@obra.Nome</div>
+                                                    <div class="small" style="color:var(--gp-muted-color);">@obra.Construtora</div>
+                                                </div>
+                                                <div class="text-end">
+                                                    <div class="small fw-bold text-danger">@Math.Abs(obra.DiasRestantes) d</div>
+                                                    <div style="font-size:11px;color:var(--gp-muted-color);">de atraso</div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* ===== TABELA DE PROGRESSAO ===== *@
+    @if (Model.Obras.Any())
+    {
+        <div class="row">
+            <div class="col-12">
+                <div class="card border-0 shadow">
+                    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 fw-bold" style="color:var(--gp-heading-color);">
+                            <i class="fas fa-tasks me-2"></i>Progressao das Obras
+                        </h6>
+                        <a asp-controller="Obra" asp-action="Index" class="btn btn-primary btn-sm">
+                            <i class="fas fa-list me-1"></i> Ver Todas
+                        </a>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th style="width:5px;"></th>
+                                        <th>Obra</th>
+                                        <th>Status</th>
+                                        <th>Peso</th>
+                                        <th style="min-width:140px;">Medicao</th>
+                                        <th style="min-width:140px;">Producao</th>
+                                        <th>Prazo</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var obra in Model.Obras)
+                                    {
+                                        var corSituacao = obra.SituacaoPrazo == "Atrasada" ? "danger" : obra.SituacaoPrazo == "Alerta" ? "warning" : "success";
+                                        <tr>
+                                            <td class="p-0">
+                                                <div class="bg-@corSituacao" style="width:4px;height:100%;min-height:50px;"></div>
+                                            </td>
+                                            <td>
+                                                <strong style="color:var(--gp-body-color);">@obra.Nome</strong>
+                                                <br><small style="color:var(--gp-muted-color);">@obra.Construtora</small>
+                                            </td>
+                                            <td>
+                                                <span class="badge text-bg-@(obra.StatusObra == "EmProducao" ? "primary" : obra.StatusObra == "EmMedicao" ? "info" : obra.StatusObra == "Verificada" ? "secondary" : "dark")">
+                                                    @obra.StatusObra
+                                                </span>
+                                            </td>
+                                            <td style="color:var(--gp-body-color);">@obra.PesoFinal.ToString("F0") kg</td>
+                                            <td>
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <div class="progress flex-grow-1" style="height:14px;">
+                                                        <div class="progress-bar @(obra.PercentualMedicao >= 100 ? "bg-success" : "bg-info")"
+                                                             style="width:@obra.PercentualMedicao%"></div>
+                                                    </div>
+                                                    <small class="fw-semibold" style="color:var(--gp-body-color);min-width:38px;">@obra.PercentualMedicao.ToString("F0")%</small>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <div class="progress flex-grow-1" style="height:14px;">
+                                                        <div class="progress-bar @(obra.PercentualProducao >= 100 ? "bg-success" : "bg-primary")"
+                                                             style="width:@obra.PercentualProducao%"></div>
+                                                    </div>
+                                                    <small class="fw-semibold" style="color:var(--gp-body-color);min-width:38px;">@obra.PercentualProducao.ToString("F0")%</small>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                @if (obra.SituacaoPrazo == "Atrasada")
+                                                {
+                                                    <span class="text-danger fw-bold small">@Math.Abs(obra.DiasRestantes)d atraso</span>
+                                                }
+                                                else if (obra.SituacaoPrazo == "Alerta")
+                                                {
+                                                    <span class="text-warning fw-semibold small">@obra.DiasRestantes d</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="small" style="color:var(--gp-body-color);">@obra.DiasRestantes d</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <a asp-controller="Obra" asp-action="Details" asp-route-id="@obra.Id" class="btn btn-sm btn-outline-primary">
+                                                    <i class="fas fa-arrow-right"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>

@@ -1,0 +1,363 @@
+@model GerenciamentoProducao.Models.FamiliaCaixilho
+
+@{
+    ViewData["Title"] = "Família - " + Model.DescricaoFamilia;
+    var caixilhos = ViewBag.Caixilhos as List<GerenciamentoProducao.Models.Caixilho> ?? new List<GerenciamentoProducao.Models.Caixilho>();
+    var obraNome = ViewBag.ObraNome as string;
+    var temCaixilhos = caixilhos.Any();
+    var todosMedidos = temCaixilhos && caixilhos.All(c => c.StatusProducao == "Medido");
+    var pendentes = caixilhos.Count(c => c.StatusProducao != "Medido");
+    var medidos = caixilhos.Count(c => c.StatusProducao == "Medido");
+    var jaLiberada = Model.StatusFamilia == "EmProducao" || Model.StatusFamilia == "Produzida";
+}
+
+<div class="container-fluid">
+
+    @* Breadcrumb / Cabeçalho *@
+    <div class="row mb-3">
+        <div class="col-12 d-flex justify-content-between align-items-center">
+            <div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-1">
+                        <li class="breadcrumb-item">
+                            <a asp-controller="Obra" asp-action="Index" style="color:var(--gp-muted-color);">Obras</a>
+                        </li>
+                        @if (!string.IsNullOrEmpty(obraNome))
+                        {
+                            <li class="breadcrumb-item">
+                                <a asp-controller="Obra" asp-action="Details" asp-route-id="@Model.IdObra" style="color:var(--gp-muted-color);">@obraNome</a>
+                            </li>
+                        }
+                        <li class="breadcrumb-item active" aria-current="page" style="color:var(--gp-body-color);">@Model.DescricaoFamilia</li>
+                    </ol>
+                </nav>
+                <h1 class="h3 mb-0" style="color:var(--gp-heading-color);">
+                    <i class="fas fa-layer-group me-2"></i>@Model.DescricaoFamilia
+                </h1>
+            </div>
+            <div class="d-flex gap-2">
+                @if (User.IsInRole("Administrador") || User.IsInRole("Gerente"))
+                {
+                    <a asp-action="Create" asp-controller="Caixilho" asp-route-familiaId="@Model.IdFamiliaCaixilho" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus"></i> Novo Caixilho
+                    </a>
+                    <a asp-action="Edit" asp-route-id="@Model.IdFamiliaCaixilho" class="btn btn-warning btn-sm">
+                        <i class="fas fa-edit"></i> Editar Família
+                    </a>
+                }
+                <a asp-controller="Obra" asp-action="Details" asp-route-id="@Model.IdObra" class="btn btn-secondary btn-sm">
+                    <i class="fas fa-arrow-left"></i> Voltar para Obra
+                </a>
+            </div>
+        </div>
+    </div>
+
+    @* Cards de resumo da família *@
+    <div class="row mb-4 g-3">
+        <div class="col-md-3 col-sm-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div class="rounded-circle bg-info d-flex align-items-center justify-content-center flex-shrink-0" style="width:44px;height:44px;">
+                        <i class="fas fa-window-restore text-white"></i>
+                    </div>
+                    <div>
+                        <div class="small" style="color:var(--gp-muted-color);">Caixilhos</div>
+                        <div class="fw-bold fs-5" style="color:var(--gp-body-color);">@caixilhos.Count</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div class="rounded-circle bg-success d-flex align-items-center justify-content-center flex-shrink-0" style="width:44px;height:44px;">
+                        <i class="fas fa-weight text-white"></i>
+                    </div>
+                    <div>
+                        <div class="small" style="color:var(--gp-muted-color);">Peso Total</div>
+                        <div class="fw-bold fs-5" style="color:var(--gp-body-color);">@Model.PesoTotal kg</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div class="rounded-circle @(todosMedidos ? "bg-success" : "bg-warning") d-flex align-items-center justify-content-center flex-shrink-0" style="width:44px;height:44px;">
+                        <i class="fas fa-ruler text-white"></i>
+                    </div>
+                    <div>
+                        <div class="small" style="color:var(--gp-muted-color);">Medição</div>
+                        <div class="fw-bold fs-5" style="color:var(--gp-body-color);">@medidos / @caixilhos.Count</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div class="rounded-circle text-bg-@(Model.StatusFamilia == "Produzida" ? "success" : Model.StatusFamilia == "EmProducao" ? "primary" : Model.StatusFamilia == "Medida" ? "info" : "secondary") d-flex align-items-center justify-content-center flex-shrink-0" style="width:44px;height:44px;">
+                        <i class="fas fa-flag text-white"></i>
+                    </div>
+                    <div>
+                        <div class="small" style="color:var(--gp-muted-color);">Status</div>
+                        <div class="fw-bold" style="color:var(--gp-body-color);">@Model.StatusFamilia</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+            <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>@TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @* Banner de liberação para produção *@
+    @if (jaLiberada)
+    {
+        <div class="alert alert-success d-flex align-items-center gap-3 mb-4" role="alert">
+            <i class="fas fa-check-circle fa-2x"></i>
+            <div>
+                <strong>Família liberada para produção!</strong>
+                <div class="small">Esta família já foi liberada e está em fase de produção.</div>
+            </div>
+        </div>
+    }
+    else if (todosMedidos)
+    {
+        <div class="alert alert-info d-flex justify-content-between align-items-center mb-4" role="alert">
+            <div class="d-flex align-items-center gap-3">
+                <i class="fas fa-clipboard-check fa-2x"></i>
+                <div>
+                    <strong>Todos os caixilhos estão medidos!</strong>
+                    <div class="small">Esta família pode ser liberada para produção.</div>
+                </div>
+            </div>
+            @if (User.IsInRole("Administrador") || User.IsInRole("Gerente"))
+            {
+                <form asp-action="LiberarProducao" asp-controller="FamiliaCaixilho" method="post">
+                    <input type="hidden" name="id" value="@Model.IdFamiliaCaixilho" />
+                    <button type="submit" class="btn btn-success btn-lg" onclick="return confirm('Deseja liberar esta família para produção?')">
+                        <i class="fas fa-industry me-1"></i> Liberar para Produção
+                    </button>
+                </form>
+            }
+        </div>
+    }
+    else if (temCaixilhos)
+    {
+        <div class="alert alert-warning d-flex align-items-center gap-3 mb-4" role="alert">
+            <i class="fas fa-exclamation-triangle fa-2x"></i>
+            <div>
+                <strong>Medição em andamento</strong>
+                <div class="small">@pendentes caixilho(s) pendente(s) de medição. Todos devem estar medidos para liberar a produção.</div>
+            </div>
+        </div>
+    }
+
+    @* Tabela de caixilhos *@
+    <div class="card border-0 shadow">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h6 class="m-0 fw-bold" style="color:var(--gp-heading-color);">
+                <i class="fas fa-window-restore me-2"></i>Caixilhos desta Família
+            </h6>
+            @if (User.IsInRole("Administrador") || User.IsInRole("Gerente"))
+            {
+                <a asp-action="Create" asp-controller="Caixilho" asp-route-familiaId="@Model.IdFamiliaCaixilho" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus"></i> Novo Caixilho
+                </a>
+            }
+        </div>
+        <div class="card-body p-0">
+            @if (!caixilhos.Any())
+            {
+                <div class="text-center py-5">
+                    <i class="fas fa-window-restore fa-3x mb-3" style="color:var(--gp-muted-color);opacity:.4;"></i>
+                    <p style="color:var(--gp-muted-color);">Nenhum caixilho cadastrado nesta família.</p>
+                    @if (User.IsInRole("Administrador") || User.IsInRole("Gerente"))
+                    {
+                        <a asp-action="Create" asp-controller="Caixilho" asp-route-familiaId="@Model.IdFamiliaCaixilho" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Criar primeiro caixilho
+                        </a>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Tipo</th>
+                                <th class="text-center">Larg. × Alt. (cm)</th>
+                                <th class="text-center">Qtd.</th>
+                                <th class="text-center">Peso Unit. (kg)</th>
+                                <th class="text-center">Peso Total (kg)</th>
+                                <th class="text-center">Medição</th>
+                                <th class="text-center">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var c in caixilhos)
+                            {
+                                <tr>
+                                    <td><strong>@c.NomeCaixilho</strong></td>
+                                    <td><small style="color:var(--gp-muted-color);">@c.DescricaoCaixilho</small></td>
+                                    <td class="text-center">@c.Largura × @c.Altura</td>
+                                    <td class="text-center">@c.Quantidade</td>
+                                    <td class="text-center">@c.PesoUnitario.ToString("F1")</td>
+                                    <td class="text-center">@((c.PesoUnitario * c.Quantidade).ToString("F1"))</td>
+                                    <td class="text-center">
+                                        @{
+                                            var isMedido = c.StatusProducao == "Medido";
+                                            var canToggle = !jaLiberada && (User.IsInRole("Administrador") || User.IsInRole("Gerente"));
+                                        }
+                                        @if (canToggle)
+                                        {
+                                            <form asp-controller="Caixilho"
+                                                  asp-action="@(isMedido ? "DesmarcarMedido" : "MarcarMedido")"
+                                                  method="post" class="d-inline">
+                                                <input type="hidden" name="id" value="@c.IdCaixilho" />
+                                                <input type="hidden" name="familiaId" value="@Model.IdFamiliaCaixilho" />
+                                                <label class="medicao-toggle" title="@(isMedido ? "Clique para voltar a Pendente" : "Clique para marcar como Medido")">
+                                                    <input type="checkbox" onchange="this.form.submit()"
+                                                           @(isMedido ? "checked" : "") />
+                                                    <span class="medicao-slider">
+                                                        <span class="medicao-label-off">Pendente</span>
+                                                        <span class="medicao-label-on">Medido</span>
+                                                    </span>
+                                                </label>
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            @if (isMedido)
+                                            {
+                                                <span class="badge text-bg-success"><i class="fas fa-check me-1"></i>Medido</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge text-bg-warning"><i class="fas fa-clock me-1"></i>Pendente</span>
+                                            }
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="btn-group btn-group-sm">
+                                            <a asp-controller="Caixilho" asp-action="Details" asp-route-id="@c.IdCaixilho" class="btn btn-info">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            @if (User.IsInRole("Administrador") || User.IsInRole("Gerente"))
+                                            {
+                                                <a asp-controller="Caixilho" asp-action="Edit" asp-route-id="@c.IdCaixilho" class="btn btn-warning">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <a asp-controller="Caixilho" asp-action="Delete" asp-route-id="@c.IdCaixilho" class="btn btn-danger">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr class="table-light fw-bold">
+                                <td colspan="3">Total</td>
+                                <td class="text-center">@caixilhos.Sum(c => c.Quantidade)</td>
+                                <td></td>
+                                <td class="text-center">@caixilhos.Sum(c => c.PesoUnitario * c.Quantidade).ToString("F1")</td>
+                                <td colspan="3"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+
+</div>
+
+<style>
+    .medicao-toggle {
+        position: relative;
+        display: inline-block;
+        width: 120px;
+        height: 34px;
+        cursor: pointer;
+        margin: 0;
+    }
+    .medicao-toggle input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+        position: absolute;
+    }
+    .medicao-slider {
+        position: absolute;
+        inset: 0;
+        background: #e0a800;
+        border-radius: 34px;
+        transition: background .3s;
+        overflow: hidden;
+    }
+    .medicao-slider::before {
+        content: "";
+        position: absolute;
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background: white;
+        border-radius: 50%;
+        transition: transform .3s;
+        z-index: 2;
+        box-shadow: 0 1px 3px rgba(0,0,0,.3);
+    }
+    .medicao-toggle input:checked + .medicao-slider {
+        background: #198754;
+    }
+    .medicao-toggle input:checked + .medicao-slider::before {
+        transform: translateX(86px);
+    }
+    .medicao-label-off,
+    .medicao-label-on {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 11px;
+        font-weight: 700;
+        color: white;
+        pointer-events: none;
+        transition: opacity .3s;
+        white-space: nowrap;
+    }
+    .medicao-label-off {
+        right: 12px;
+        opacity: 1;
+    }
+    .medicao-label-on {
+        left: 12px;
+        opacity: 0;
+    }
+    .medicao-toggle input:checked + .medicao-slider .medicao-label-off {
+        opacity: 0;
+    }
+    .medicao-toggle input:checked + .medicao-slider .medicao-label-on {
+        opacity: 1;
+    }
+    .medicao-toggle:hover .medicao-slider {
+        filter: brightness(1.1);
+    }
+</style>

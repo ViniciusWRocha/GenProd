@@ -1,0 +1,188 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"] - GerenciamentoProducao</title>
+	<script type="importmap"></script>
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/GerenciamentoProducao.styles.css" asp-append-version="true" />
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	
+	<link href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=side_navigation" />
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap" rel="stylesheet">
+
+</head>
+<body class="theme-dark">
+	<!-- Navegação -->
+	@if (User.IsInRole("Administrador") || User.IsInRole("Gerente") || User.IsInRole("Outros"))
+	{
+	<nav id="sidebar" class="sidebar">
+		<button id="toggle-sidebar">
+			<span class="material-symbols-outlined">
+				side_navigation
+			</span>
+		</button>
+
+
+		<ul class="nav flex-column gap-2 mt-4" id="navLeft">
+			@* <li class="d-flex align-items-center gap-2"> *@
+			@* 	<img src="@Url.Content("~/" + Model.ImagemObraPath)"  class="img-fluid" style="width: 20px; height: 20px;"> *@
+			@* 	<span>@User.Identity.Name</span> *@
+			@* </li> *@
+			<li><a class="nav-link" asp-controller="Home" asp-action="Index">🏠 Início</a></li>
+				@if (User.IsInRole("Administrador") || User.IsInRole("Gerente")){
+
+				@if (User.IsInRole("Administrador") ){
+
+			<li><a class="nav-link" asp-controller="Usuario" asp-action="Index">👥 Usuários</a></li>
+				<li><a class="nav-link" asp-controller="Usuario" asp-action="Inativos">⛔ Inativos</a></li>
+				}
+			<li><a class="nav-link" asp-controller="Obra" asp-action="Index">🏗️ Obras</a></li>
+			<li><a class="nav-link" asp-controller="TipoCaixilho" asp-action="Index">🔠 Tipos de Caixilhos</a></li>
+			<li><a class="nav-link" asp-controller="FamiliaCaixilho" asp-action="Index">📦 Família de Caixilho</a></li>
+			<li><a class="nav-link" asp-controller="Caixilho" asp-action="Index">🪟 Caixilho</a></li>
+			<li><a class="nav-link" asp-controller="Caixilho" asp-action="Liberacoes">🔓 Liberações</a></li>
+				}
+			@if (User.Identity?.IsAuthenticated == true)
+			{
+					<div class="px-3 mt-3 d-none d-lg-block">
+						<button type="button" class="btn btn-outline-light btn-sm w-100 text-start theme-toggle">
+							<i class="fas fa-sun me-2"></i>
+							<span>Tema Claro</span>
+						</button>
+					</div>
+				<li class="mt-4">
+					<a class="nav-link text-danger" asp-controller="Usuario" asp-action="Logout">🚪 Sair</a>
+				</li>
+			}
+		</ul>
+	</nav>
+	
+		<nav class="navbar navbar-expand-lg navbar-dark bg-black fixed-top z-10" id="navTop">
+			<div class="container">
+				<a class="navbar-brand" href="#home" >⚙️ SIGE</a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div id="menu" class="collapse navbar-collapse">
+					<ul class="navbar-nav ms-auto">
+						<li><a class="nav-link" asp-controller="Home" asp-action="Index">🏠 Início</a></li>
+						<li><a class="nav-link" asp-controller="Usuario" asp-action="Index">👥 Usuários</a></li>
+						<li><a class="nav-link" asp-controller="Usuario" asp-action="Inativos">⛔ Inativos</a></li>
+                <li><a class="nav-link" asp-controller="Caixilho" asp-action="Index">🪟 Caixilho</a></li>
+                <li><a class="nav-link" asp-controller="Caixilho" asp-action="Liberacoes">🔓 Liberações</a></li>
+                <li><a class="nav-link" asp-controller="TipoCaixilho" asp-action="Index">🔠 Tipos de Caixilhos</a></li>
+                <li><a class="nav-link" asp-controller="FamiliaCaixilho" asp-action="Index">📦 Família de Caixilho</a></li>
+                <li><a class="nav-link" asp-controller="Obra" asp-action="Index">🏗️ Obras</a></li>
+
+						@if (User.Identity?.IsAuthenticated == true)
+						{
+							<li class="d-lg-none">
+								<button type="button" class="btn btn-outline-light btn-sm w-100 text-start theme-toggle">
+									<i class="fas fa-sun me-2"></i>
+									<span>Claro</span>
+								</button>
+							</li>
+							<li class="mt-4">
+								<a class="nav-link text-danger" asp-controller="Usuario" asp-action="Logout">🚪 Sair</a>
+							</li>
+						}
+					</ul>
+				</div>
+			</div>
+		</nav>
+	}
+	<div id="tudo">
+		<main role="main" class="main">
+			<div class="container-fluid">
+				@RenderBody()
+			</div>
+		</main>
+	</div>
+
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+	@await RenderSectionAsync("Styles", required: false)
+	@await RenderSectionAsync("Scripts", required: false)
+	<script>
+		(function () {
+			const toggleButtons = document.querySelectorAll('.theme-toggle');
+			if (!toggleButtons.length) {
+				return;
+			}
+
+			const root = document.documentElement;
+			const storedTheme = localStorage.getItem('theme-preference');
+			const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+			const initialTheme = storedTheme ?? (prefersDark ? 'dark' : 'light');
+
+			applyTheme(initialTheme);
+			updateToggles(initialTheme === 'dark');
+
+			toggleButtons.forEach(btn => {
+				btn.addEventListener('click', () => {
+					const isDark = document.body.classList.contains('theme-dark');
+					const nextTheme = isDark ? 'light' : 'dark';
+					applyTheme(nextTheme);
+					localStorage.setItem('theme-preference', nextTheme);
+					updateToggles(nextTheme === 'dark');
+				});
+			});
+
+			window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+				if (!localStorage.getItem('theme-preference')) {
+					const newTheme = event.matches ? 'dark' : 'light';
+					applyTheme(newTheme);
+					updateToggles(newTheme === 'dark');
+				}
+			});
+
+			function applyTheme(theme) {
+				const themeClass = `theme-${theme}`;
+				document.body.classList.remove('theme-dark', 'theme-light');
+				document.body.classList.add(themeClass);
+				root.classList.remove('theme-dark', 'theme-light');
+				root.classList.add(themeClass);
+				root.setAttribute('data-bs-theme', theme === 'dark' ? 'dark' : 'light');
+			}
+
+			function updateToggles(isDark) {
+				toggleButtons.forEach(btn => {
+					if (isDark) {
+						btn.classList.add('btn-outline-light');
+						btn.classList.remove('btn-light');
+						btn.innerHTML = '<i class="fas fa-sun me-2"></i><span>Claro</span>';
+					} else {
+						btn.classList.remove('btn-outline-light');
+						btn.classList.add('btn-light');
+						btn.innerHTML = '<i class="fas fa-moon me-2"></i><span>Escuro</span>';
+					}
+				});
+			}
+		})();
+	</script>
+@* 	<script> *@
+		
+@* const path = window.location.pathname; *@
+@* 		if (path.includes("/Delete/")) { *@
+@* 			document.getElementById("navTop").style.display = "none"; *@
+@* 			document.getElementById("sidebar").style.display = "none"; *@
+@* 			document.getElementById("tudo").style.margin = "0"; //evita espaço sobrando *@
+@* 		} *@
+@* 		if(!path.includes("/Home/Index")){ *@
+@* 			document.getElementsByClassName("main")[0].style.marginTop = "0px"; *@
+
+		
+@* 	</script> *@
+</body>
+</html>

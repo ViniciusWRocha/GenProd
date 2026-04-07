@@ -1,0 +1,97 @@
+﻿@model GerenciamentoProducaoo.ViewModel.UsuarioViewModel
+
+@{
+    ViewData["Title"] = "Excluir Usuário";
+    var senhaMascarada = string.IsNullOrWhiteSpace(Model.Senha)
+        ? "Não informada"
+        : new string('*', Math.Min(Model.Senha.Length, 12));
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="h3 mb-0 text-white">Excluir Usuário</h1>
+            <p class="text-white-50">Revise com atenção as informações do usuário antes de confirmar a exclusão.</p>
+        </div>
+    </div>
+
+    <div class="row align-items-stretch g-4">
+        <div class="col-xl-7 col-xxl-6">
+            <div class="card shadow border-0 h-100">
+                <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+                    <h6 class="m-0">Tem certeza que deseja excluir este usuário?</h6>
+                    <i class="fas fa-user-slash"></i>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning d-flex" role="alert">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <div>O usuário ficará inativo e perderá o acesso ao sistema imediatamente após a confirmação.</div>
+                    </div>
+
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4 text-muted">Nome</dt>
+                        <dd class="col-sm-8 text-muted">@Model.NomeUsuario</dd>
+
+                        <dt class="col-sm-4 text-muted">Email</dt>
+                        <dd class="col-sm-8"><a href="mailto:@Model.Email" class="text-decoration-none text-muted">@Model.Email</a></dd>
+
+                        <dt class="col-sm-4 text-muted">Telefone</dt>
+                        <dd class="col-sm-8  text-muted">@(!string.IsNullOrWhiteSpace(Model.Telefone) ? Model.Telefone : "Não informado")</dd>
+
+                        <dt class="col-sm-4 text-muted">Senha</dt>
+                        <dd class="col-sm-8"><span class="badge text-muted">@senhaMascarada</span></dd>
+
+                        <dt class="col-sm-4 text-muted">Status</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge  text-muted">
+                                @(Model.Ativo ? "Ativo" : "Inativo")
+                            </span>
+                        </dd>
+
+                        <dt class="col-sm-4 text-muted">Tipo (ID)</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-primary">@Model.IdTipoUsuario</span>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="card-footer">
+                    <form asp-action="Delete" class="d-flex justify-content-between align-items-center">
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left"></i> Cancelar
+                        </a>
+                        <div>
+                            <input type="hidden" asp-for="IdUsuario" />
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-user-times"></i> Excluir usuário
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-5 col-xxl-4">
+            <div class="card shadow border-0 h-100">
+                <div class="card-header bg-secondary text-white">
+                    <h6 class="m-0">Lembretes importantes</h6>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-3 d-flex">
+                            <span class="badge bg-danger me-3"><i class="fas fa-exclamation-triangle"></i></span>
+                            <span>Confirme se não há processos dependentes deste usuário, como aprovações ou atribuições de obra.</span>
+                        </li>
+                        <li class="mb-3 d-flex">
+                            <span class="badge bg-primary me-3"><i class="fas fa-envelope"></i></span>
+                            <span>Considere notificar a equipe responsável para evitar tentativas de login após a exclusão.</span>
+                        </li>
+                        <li class="d-flex">
+                            <span class="badge bg-dark me-3"><i class="fas fa-redo"></i></span>
+                            <span>Usuários excluídos podem ser reativados na tela de inativos quando necessário.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

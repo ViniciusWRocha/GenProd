@@ -1,0 +1,196 @@
+﻿@model GerenciamentoProducao.Models.Obra
+
+@{
+    ViewData["Title"] = "Excluir Obra";
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="h3 mb-0" style="color: var(--gp-heading-color);">Excluir Obra</h1>
+            <p style="color: var(--gp-muted-color);">Confira as informações antes de confirmar a exclusão.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow border-0">
+                <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Tem certeza que deseja excluir esta obra?
+                    </h6>
+                    <i class="fas fa-trash-alt fa-lg"></i>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning d-flex align-items-start" role="alert">
+                        <i class="fas fa-info-circle me-2 mt-1"></i>
+                        <div>
+                            <strong>Atenção!</strong> Esta ação não poderá ser desfeita.
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.ImagemObraPath))
+                    {
+                        <div class="text-center mb-4">
+                            <img src="@Url.Content("~/" + Model.ImagemObraPath)" alt="Imagem da obra" class="img-fluid rounded shadow-sm" style="max-height: 240px; object-fit: cover; width: 100%;" />
+                        </div>
+                    }
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="p-3 rounded border" style="background-color: var(--gp-card-accent); border-color: var(--gp-card-border) !important;">
+                                <h6 class="text-uppercase small mb-3 fw-bold" style="color: var(--gp-heading-color);">
+                                    <i class="fas fa-building me-2"></i>Identificação
+                                </h6>
+                                <dl class="row mb-0">
+                                    <dt class="col-sm-5" style="color: var(--gp-muted-color);">Nome:</dt>
+                                    <dd class="col-sm-7 mb-2" style="color: var(--gp-body-color);"><strong>@Model.Nome</strong></dd>
+
+                                    <dt class="col-sm-5" style="color: var(--gp-muted-color);">Construtora:</dt>
+                                    <dd class="col-sm-7 mb-2" style="color: var(--gp-body-color);">@Model.Construtora</dd>
+
+                                    <dt class="col-sm-5" style="color: var(--gp-muted-color);">CNPJ:</dt>
+                                    <dd class="col-sm-7 mb-2" style="color: var(--gp-body-color);">@Model.Cnpj</dd>
+
+                                    <dt class="col-sm-5" style="color: var(--gp-muted-color);">Responsável:</dt>
+                                    <dd class="col-sm-7 mb-0" style="color: var(--gp-body-color);">@(Model.Usuario?.NomeUsuario ?? "Não informado")</dd>
+                                </dl>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="p-3 rounded border" style="background-color: var(--gp-card-accent); border-color: var(--gp-card-border) !important;">
+                                <h6 class="text-uppercase small mb-3 fw-bold" style="color: var(--gp-heading-color);">
+                                    <i class="fas fa-map-marker-alt me-2"></i>Localização
+                                </h6>
+                                <dl class="row mb-0">
+                                    <dt class="col-sm-5" style="color: var(--gp-muted-color);">Logradouro:</dt>
+                                    <dd class="col-sm-7 mb-2" style="color: var(--gp-body-color);">@Model.Logradouro, Nº @Model.Nro</dd>
+
+                                    <dt class="col-sm-5" style="color: var(--gp-muted-color);">Bairro:</dt>
+                                    <dd class="col-sm-7 mb-2" style="color: var(--gp-body-color);">@Model.Bairro</dd>
+
+                                    <dt class="col-sm-5" style="color: var(--gp-muted-color);">CEP / UF:</dt>
+                                    <dd class="col-sm-7 mb-0" style="color: var(--gp-body-color);">@Model.Cep - @Model.Uf</dd>
+                                </dl>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="p-3 rounded border" style="background-color: var(--gp-card-accent); border-color: var(--gp-card-border) !important;">
+                                <h6 class="text-uppercase small mb-3 fw-bold" style="color: var(--gp-heading-color);">
+                                    <i class="fas fa-info-circle me-2"></i>Status
+                                </h6>
+                                <dl class="row mb-0">
+                                    <dt class="col-sm-5" style="color: var(--gp-muted-color);">Status:</dt>
+                                    <dd class="col-sm-7 mb-2">
+                                        <span class="badge text-bg-@(Model.StatusObra == "Concluida" ? "success" : Model.StatusObra == "EmProducao" ? "primary" : Model.StatusObra == "EmMedicao" ? "info" : "secondary")">
+                                            @Model.StatusObra
+                                        </span>
+                                    </dd>
+
+                                </dl>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="p-3 rounded border" style="background-color: var(--gp-card-accent); border-color: var(--gp-card-border) !important;">
+                                <h6 class="text-uppercase small mb-3 fw-bold" style="color: var(--gp-heading-color);">
+                                    <i class="fas fa-weight me-2"></i>Peso e Progresso
+                                </h6>
+                                <dl class="row mb-0">
+                                    <dt class="col-sm-5" style="color: var(--gp-muted-color);">Peso Total:</dt>
+                                    <dd class="col-sm-7 mb-2">
+                                        <span class="badge text-bg-info">@Model.PesoFinal.ToString("F0") kg</span>
+                                    </dd>
+
+                                    <dt class="col-sm-5" style="color: var(--gp-muted-color);">Peso Produzido:</dt>
+                                    <dd class="col-sm-7 mb-2">
+                                        <span class="badge text-bg-success">@Model.PesoProduzido.ToString("F0") kg</span>
+                                    </dd>
+
+                                    <dt class="col-sm-5" style="color: var(--gp-muted-color);">Conclusão:</dt>
+                                    <dd class="col-sm-7 mb-0">
+                                        <div class="progress" style="height: 20px;">
+                                            <div class="progress-bar @(Model.PercentualConclusao >= 80 ? "bg-success" : Model.PercentualConclusao >= 50 ? "bg-warning" : "bg-danger")" 
+                                                 role="progressbar" 
+                                                 style="width: @Model.PercentualConclusao%" 
+                                                 aria-valuenow="@Model.PercentualConclusao" 
+                                                 aria-valuemin="0" 
+                                                 aria-valuemax="100">
+                                                @Model.PercentualConclusao.ToString("F1")%
+                                            </div>
+                                        </div>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(Model.Observacoes))
+                        {
+                            <div class="col-12">
+                                <div class="p-3 rounded border" style="background-color: var(--gp-card-accent); border-color: var(--gp-card-border) !important;">
+                                    <h6 class="text-uppercase small mb-2 fw-bold" style="color: var(--gp-heading-color);">
+                                        <i class="fas fa-sticky-note me-2"></i>Observações
+                                    </h6>
+                                    <p class="mb-0" style="color: var(--gp-body-color);">@Model.Observacoes</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left"></i> Cancelar
+                    </a>
+                    <form asp-action="Delete" method="post" class="d-inline">
+                        <input type="hidden" asp-for="IdObra" />
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Confirmar Exclusão
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card shadow border-0 mb-3">
+                <div class="card-header bg-danger text-white">
+                    <h6 class="m-0 font-weight-bold">
+                        <i class="fas fa-exclamation-circle me-2"></i>Resumo Rápido
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-3 d-flex align-items-start">
+                            <span class="badge text-bg-danger me-2 mt-1">
+                                <i class="fas fa-exclamation-circle"></i>
+                            </span>
+                            <span class="small" style="color: var(--gp-body-color);">Certifique-se de que todos os dados já foram migrados ou arquivados.</span>
+                        </li>
+                        <li class="d-flex align-items-start">
+                            <span class="badge text-bg-dark me-2 mt-1">
+                                <i class="fas fa-images"></i>
+                            </span>
+                            <span class="small" style="color: var(--gp-body-color);">A imagem da obra será excluída do servidor.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card shadow border-0">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold">
+                        <i class="fas fa-info-circle me-2"></i>Informações Importantes
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info mb-0" role="alert">
+                        <i class="fas fa-lightbulb me-2"></i>
+                        <strong>Dica:</strong> Se você não tem certeza sobre a exclusão, considere apenas desativar a obra ao invés de excluí-la permanentemente.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

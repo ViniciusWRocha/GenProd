@@ -1,0 +1,70 @@
+@model GerenciamentoProducao.Models.Usuario
+
+@{
+    ViewData["Title"] = "Detalhes do Usuário";
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="h3 mb-0 text-white">Detalhes do Usuário</h1>
+            <p class="text-white">Informações completas do usuário</p>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-primary">Informações do Usuário</h6>
+                    <div class="d-flex gap-2">
+                        @if (Model.Ativo)
+                        {
+                            <a asp-action="Edit" asp-route-id="@Model.IdUsuario" class="btn btn-warning btn-sm">
+                                <i class="fas fa-edit"></i> Editar
+                            </a>
+                        }
+                        <a asp-action="Index" class="btn btn-secondary btn-sm">
+                            <i class="fas fa-arrow-left"></i> Voltar
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4  text-muted">Nome:</dt>
+                                <dd class="col-sm-8 ">
+                                    <strong class=" text-muted">@Model.NomeUsuario</strong>
+                                </dd>
+
+                                <dt class="col-sm-4  text-muted">Email:</dt>
+                                <dd class="col-sm-8  text-muted">@Model.Email</dd>
+
+                                <dt class="col-sm-4  text-muted">Telefone:</dt>
+                                <dd class="col-sm-8  text-muted">@Model.Telefone</dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4  text-muted">Status:</dt>
+                                <dd class="col-sm-8  text-muted">
+                                    <span class="badge badge-@(Model.Ativo ? "success" : "danger")">
+                                        @(Model.Ativo ? "Ativo" : "Inativo")
+                                    </span>
+                                </dd>
+
+                                <dt class="col-sm-4  text-muted">Tipo de Usuário:</dt>
+                                <dd class="col-sm-8  text-muted">
+                                    <span class="badge badge-info">
+                                        @Model.TipoUsuario.NomeTipoUsuario
+                                    </span>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

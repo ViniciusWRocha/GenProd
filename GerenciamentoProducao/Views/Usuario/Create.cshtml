@@ -1,0 +1,99 @@
+﻿@model GerenciamentoProducaoo.ViewModel.UsuarioViewModel
+
+@{
+    ViewData["Title"] = "Criar Usuário";
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="h3 mb-0 text-white">Novo Usuário</h1>
+            <p class="text-white-50">Cadastre um usuário com as permissões adequadas.</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-xl-7 col-xxl-6">
+            <div class="card shadow border-0 h-100">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Dados de acesso</h6>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="NomeUsuario" class="form-label">Nome completo</label>
+                            <input asp-for="NomeUsuario" class="form-control" placeholder="Digite o nome" />
+                            <span asp-validation-for="NomeUsuario" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label">E-mail corporativo</label>
+                            <input asp-for="Email" type="email" class="form-control" placeholder="nome@empresa.com" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label asp-for="Senha" class="form-label">Senha (máx. 6 caracteres)</label>
+                                <input asp-for="Senha" type="password" class="form-control" maxlength="6" placeholder="Defina a senha" />
+                                <span asp-validation-for="Senha" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Telefone" class="form-label">Telefone</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                    <input asp-for="Telefone" type="tel" class="form-control" placeholder="(00) 00000-0000" maxlength="15" inputmode="tel" />
+                                </div>
+                                <span asp-validation-for="Telefone" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="IdTipoUsuario" class="form-label">Tipo de usuário</label>
+                            <select asp-for="IdTipoUsuario" asp-items="Model.TiposUsuario" class="form-select">
+                                <option value="">Selecione</option>
+                            </select>
+                            <span asp-validation-for="IdTipoUsuario" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-user-plus"></i> Criar usuário
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        (function () {
+            const telInput = document.getElementById('@Html.IdFor(m => m.Telefone)');
+            if (!telInput) {
+                return;
+            }
+
+            telInput.addEventListener('input', function () {
+                let v = this.value.replace(/\D/g, '').slice(0, 11);
+                if (v.length <= 10) {
+                    this.value = v.replace(/(\d{2})(\d{4})(\d{0,4})/, function (_, d1, d2, d3) {
+                        return `(${d1}) ${d2}${d3 ? '-' + d3 : ''}`;
+                    });
+                } else {
+                    this.value = v.replace(/(\d{2})(\d{5})(\d{0,4})/, function (_, d1, d2, d3) {
+                        return `(${d1}) ${d2}${d3 ? '-' + d3 : ''}`;
+                    });
+                }
+            });
+        })();
+    </script>
+}

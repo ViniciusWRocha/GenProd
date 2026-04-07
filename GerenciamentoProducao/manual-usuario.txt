@@ -1,0 +1,96 @@
+MANUAL DO SISTEMA DE GERENCIAMENTO DE PRODUÇÃO (SIGE)
+
+1. Visão Geral
+- O SIGE centraliza o acompanhamento de obras, caixilhos, produção e metas mensais.
+- Permite controlar responsabilidades por usuário, acompanhar indicadores em dashboards e gerar relatórios.
+- Integra-se ao Google Calendar para registrar marcos das obras automaticamente.
+
+2. Acesso e Perfis
+- Requisito: navegador moderno (Chrome, Edge ou similar).
+- URL: utilize o endereço fornecido pela TI (intranet ou ambiente publicado).
+- Login: informe e-mail e senha cadastrados; usuários inativos não conseguem acessar.
+- Perfis disponíveis:
+  • Administrador – acesso completo a cadastros, configurações e usuários.
+  • Gerente – acesso à gestão operacional (obras, caixilhos, produção, metas, relatórios).
+  • Outros – foco na execução; visualiza dashboards, obras, produção e calendário.
+- Para encerrar a sessão utilize `🚪 Sair` no menu lateral ou superior.
+
+3. Navegação
+- Após logar, o sistema exibe o menu lateral fixo (pode ser recolhido pelo botão `side_navigation`).
+- Principais módulos: `Dashboard`, `Início`, `Usuários`, `Caixilho`, `Liberações`, `Tipos de Caixilho`, `Família de Caixilho`, `Obras`, `Produções`, `Metas Mensais`, `Relatórios` e `Calendário`.
+- Mensagens de sucesso/aviso aparecem no topo após ações críticas.
+
+4. Dashboard
+- Consolidado inicial para todos os perfis autenticados.
+- Indicadores: total de obras, produções, caixilhos, usuários ativos, produção no mês, pendências e alertas automáticos.
+- Gráficos: evolução mensal, distribuição por bandeira das obras, ranking de usuários e status das metas.
+- Se necessário, utilize o botão de atualização (quando disponível) para recalcular o progresso de obras.
+
+5. Módulo Início – Importação de Obras
+- Permite subir múltiplos arquivos XML de obras via formulário `Importar Múltiplos XML`.
+- Passos: clique em `Escolher arquivos`, selecione um ou mais XML e confirme em `Importar`.
+- O sistema mostra o resultado individual de cada arquivo (sucesso ou falha) em uma lista.
+
+6. Gestão de Usuários (Administradores/Gerentes)
+- Listagem (`👥 Usuários`) apresenta filtros por tipo de usuário e busca por nome.
+- Cadastro: `Criar Usuário` → preencha nome, e-mail, senha, telefone e tipo.
+- Edição: ajuste dados sensíveis (inclusive senha) quando necessário.
+- Inativação: opção `Excluir` transforma o usuário em inativo, sem remover histórico.
+- Reativação: menu `⛔ Inativos` → ação `Ativar`.
+
+7. Catálogo de Caixilhos
+- `🪟 Caixilho`: lista todas as peças com informações de dimensões, quantidade, peso e vínculo com obra/família/tipo.
+- Cadastro/Edição (Administradores/Gerentes): selecione a obra, família e tipo adequados.
+- Liberação individual: no card/lista, ação `Liberar` marca o caixilho como pronto e registra data/status.
+- Tela `🔓 Liberações`: apresenta apenas pendentes; permite liberar uma família inteira em lote.
+- Cada liberação atualiza automaticamente o peso produzido da obra associada.
+
+8. Tipos e Famílias de Caixilho
+- `🔠 Tipos de Caixilhos`: mantenha a tabela de perfis (ex.: Porta, Janela, Transforma série).
+- `📦 Família de Caixilho`: agrupa itens por linha/projeto, facilitando liberações em massa.
+- Rotinas básicas: criar, editar e excluir (restritas a Administradores/Gerentes).
+
+9. Gestão de Obras
+- `🏗️ Obras` mostra apenas obras em andamento; filtro por responsável e busca textual.
+- `Finalizados` (menu interno) acessível para Administradores/Gerentes lista obras concluídas.
+- Cadastro (Administradores/Gerentes): informe dados cadastrais (construtora, endereço, CNPJ, datas, pesos, status, prioridade, bandeira, observações, responsável).
+- Ao salvar, o sistema cria um evento no Google Calendar com resumo completo e link.
+- Edição atualiza dados e sincroniza o evento existente; se não houver evento, cria um novo.
+- Exclusão remove a obra e tenta excluir o evento correspondente; em caso de falha, apenas um aviso é exibido.
+- Peso produzido e percentual de conclusão são calculados automaticamente conforme caixilhos liberados.
+
+10. Produções
+- `🛠️ Produções` lista registros diários/vinculados a famílias de caixilho e usuários.
+- Cadastro/Edição (Administradores/Gerentes): defina nome, data, status `Produzido`, descrição, vínculo com usuário e família.
+- O campo `EhLiberado` serve para indicar se a produção está autorizada.
+
+11. Metas Mensais
+- `🎯 Metas Mensais` concentra objetivos (peso em kg) por mês/ano.
+- Cadastro: informe mês, ano, meta de peso, responsável e observações.
+- A tela mostra progresso (`PesoProduzido`, `% Atingido`, status da meta) e permite edição/exclusão.
+- O dashboard utiliza essas informações para alertas de meta em risco.
+
+12. Relatórios de Produção
+- `📊 Relatórios` mantém registros consolidados (peso total, total de caixilhos, eficiência, tempo médio).
+- Utilize `Criar` para adicionar um novo relatório mensal ou periódico.
+- Campos obrigatórios: data, mês/ano de referência, métricas e responsável.
+- É possível revisar detalhes, editar e excluir registros quando necessário.
+
+13. Calendário Integrado
+- `📅 Calendário` exibe eventos carregados do Google Calendar vinculado ao sistema.
+- Eventos são criados/atualizados automaticamente a partir das obras.
+- Clique em um evento para visualizar descrição e acessar o link original do Google.
+- Caso o calendário não carregue, verifique a conexão e o status das credenciais (`Credentials/credentials-service.json`).
+
+14. Boas Práticas Operacionais
+- Revise sempre dados antes de salvar para evitar inconsistências entre módulos.
+- Utilize filtros e buscas para localizar rapidamente obras/produções específicas.
+- Registre liberações de caixilhos em tempo real para manter o dashboard preciso.
+- Monitore alertas do dashboard diariamente para agir em pendências críticas.
+- Efetue logoff ao encerrar o expediente, principalmente em estações compartilhadas.
+
+15. Suporte e Contato
+- Problemas de acesso ou cadastro: equipe de TI responsável pelo SIGE.
+- Erros de dados (obras, caixilhos, produção): comunicação direta com o gerente de produção.
+- Integração com Google Calendar: valide chave `Google:key` em `appsettings` e credencial do serviço.
+

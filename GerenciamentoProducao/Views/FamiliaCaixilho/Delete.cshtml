@@ -1,0 +1,83 @@
+﻿@model GerenciamentoProducao.Models.FamiliaCaixilho
+
+@{
+    ViewData["Title"] = "Excluir Família de Caixilho";
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="h3 mb-0 text-white">Excluir Família de Caixilho</h1>
+            <p class="text-white-50">Confirme os dados abaixo e finalize a exclusão com segurança.</p>
+        </div>
+    </div>
+
+    <div class="row align-items-stretch g-4">
+        <div class="col-lg-7 col-xl-6">
+            <div class="card shadow border-0 h-100">
+                <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+                    <h6 class="m-0">Tem certeza que deseja excluir esta família?</h6>
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning d-flex" role="alert">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <div>A exclusão removerá vínculos com caixilhos que utilizem esta família. Verifique antes de prosseguir.</div>
+                    </div>
+
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4 text-muted">Identificador</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-secondary">@Model.IdFamiliaCaixilho</span>
+                        </dd>
+
+                        <dt class="col-sm-4 text-muted">Descrição</dt>
+                        <dd class="col-sm-8 fw-semibold text-muted">@Model.DescricaoFamilia</dd>
+
+                        <dt class="col-sm-4 text-muted">Peso total</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-primary">@Model.PesoTotal.ToString("N2") kg</span>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="card-footer">
+                    <form asp-action="Delete" class="d-flex justify-content-between align-items-center">
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left"></i> Cancelar
+                        </a>
+                        <div>
+                            <input type="hidden" asp-for="IdFamiliaCaixilho" />
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash"></i> Excluir família
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5 col-xl-4">
+            <div class="card shadow border-0 h-100">
+                <div class="card-header bg-secondary text-white">
+                    <h6 class="m-0">Checklist rápido</h6>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-3 d-flex">
+                            <span class="badge bg-danger me-3"><i class="fas fa-warehouse"></i></span>
+                            <span>Confirme se a família não está sendo utilizada em processos de produção.</span>
+                        </li>
+                        <li class="mb-3 d-flex">
+                            <span class="badge bg-info me-3"><i class="fas fa-columns"></i></span>
+                            <span>Registre os dados necessários antes de remover, caso precise consultá-los depois.</span>
+                        </li>
+                        <li class="d-flex">
+                            <span class="badge bg-dark me-3"><i class="fas fa-history"></i></span>
+                            <span>Para recuperar uma família excluída será necessário recriá-la manualmente.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

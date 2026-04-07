@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="container-center">
+	<div class="left">
+		<div class="login-box">
+			<h1>Login</h1>
+
+
+
+			<form asp-controller="Usuario" asp-action="Login" asp-route-ReturnUrl="/Usuario" method="post">
+
+
+
+
+				<div class="user-box">
+					<input type="email" name="email" required placeholder=" " />
+					<label for="email" class="form-label">Email</label>
+				</div>
+				<div class="user-box">
+					<input type="password" name="senha" maxlength="6" required placeholder=" " />
+					<label for="senha" class="form-label">Senha</label>
+				</div>
+
+				<button type="submit" class="enter">Entrar</button>
+
+
+
+			</form>
+
+		</div>
+
+	</div>
+	<div class="right">
+		<img src="~/img/fundo.webp" alt="Imagem de uma bela vista de dentro de um predio" />
+	</div>
+</div>

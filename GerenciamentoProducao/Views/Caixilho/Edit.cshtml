@@ -1,0 +1,255 @@
+﻿@model GerenciamentoProducaoo.ViewModel.CaixilhoViewModel
+
+@{
+    ViewData["Title"] = "Editar Caixilho";
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="h3 mb-0 text-white">Editar Caixilho</h1>
+            <p class="text-white">Modifique as informações do caixilho</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Dados do Caixilho</h6>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit" asp-route-id="@Model.IdCaixilho" method="post">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <input type="hidden" asp-for="IdCaixilho" />
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="NomeCaixilho" class="control-label">Nome do Caixilho</label>
+                                    <input asp-for="NomeCaixilho" class="form-control" />
+                                    <span asp-validation-for="NomeCaixilho" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Quantidade" class="control-label">Quantidade</label>
+                                    <input asp-for="Quantidade" class="form-control" type="number" min="1" />
+                                    <span asp-validation-for="Quantidade" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Largura" class="control-label">Largura (cm)</label>
+                                    <input asp-for="Largura" class="form-control" type="number" step="0.1" />
+                                    <span asp-validation-for="Largura" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Altura" class="control-label">Altura (cm)</label>
+                                    <input asp-for="Altura" class="form-control" type="number" step="0.1" />
+                                    <span asp-validation-for="Altura" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="PesoUnitario" class="control-label">Peso Unitário (kg)</label>
+                                    <input asp-for="PesoUnitario" class="form-control" type="number" step="0.1" />
+                                    <span asp-validation-for="PesoUnitario" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="ObraId" class="control-label">Obra</label>
+                                    <select asp-for="ObraId" class="form-control" asp-items="Model.Obra"></select>
+                                    <span asp-validation-for="ObraId" class="text-danger"></span>
+                                </div>
+                            </div>
+                            @* <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="StatusProducao" class="control-label">Status de Produção</label>
+                                    <select asp-for="StatusProducao" class="form-control">
+                                        <option value="Pendente">Pendente</option>
+                                        <option value="Em Produção">Em Produção</option>
+                                        <option value="Concluído">Concluído</option>
+                                        <option value="Liberado">Liberado</option>
+                                    </select>
+                                    <span asp-validation-for="StatusProducao" class="text-danger"></span>
+                                </div>
+                            </div> *@
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="IdFamiliaCaixilho" class="control-label">Família de Caixilho</label>
+                                    <select asp-for="IdFamiliaCaixilho" class="form-control" asp-items="Model.FamiliaCaixilho"></select>
+                                    <span asp-validation-for="IdFamiliaCaixilho" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="StatusProducao" class="control-label">Status de Medição</label>
+                                    <select asp-for="StatusProducao" class="form-control">
+                                        <option value="Pendente">Pendente</option>
+                                        <option value="Medido">Medido</option>
+                                    </select>
+                                    <span asp-validation-for="StatusProducao" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="DescricaoCaixilho" class="form-label">Tipo de Caixilho</label>
+                            <input asp-for="DescricaoCaixilho" class="form-control" placeholder="Ex: Correr, Maxim-Ar, Pivotante..." />
+                            <span asp-validation-for="DescricaoCaixilho" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Observacoes" class="control-label">Observações</label>
+                            <textarea asp-for="Observacoes" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Observacoes" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmEditModal">
+                                <i class="fas fa-save"></i> Salvar Alterações
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Voltar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card shadow">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Informações</h6>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">
+                        <strong>ID:</strong> @Model.IdCaixilho
+                    </p>
+                    <p class="text-muted">
+                        <strong>Peso Total:</strong> <span id="pesoTotalCalculado">@((Model.PesoUnitario * Model.Quantidade).ToString("F2"))</span> kg
+                    </p>
+                    <p class="text-muted">
+                        <strong>Status Medição:</strong>
+                        <span class="badge text-bg-@(Model.StatusProducao == "Medido" ? "success" : "warning")">@Model.StatusProducao</span>
+                    </p>
+                    <p class="text-muted small">
+                        <i class="fas fa-info-circle"></i> A liberação para produção é feita pela família quando todos os caixilhos estiverem medidos.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Confirmação de Edição -->
+<div class="modal fade" id="confirmEditModal" tabindex="-1" aria-labelledby="confirmEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmEditModalLabel">
+                    <i class="fas fa-exclamation-triangle text-warning"></i> Confirmar Alterações
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Você está prestes a salvar as alterações neste caixilho.</p>
+                <div class="alert alert-info">
+                    <strong>Resumo das Alterações:</strong>
+                    <ul class="mb-0 mt-2">
+                        <li><strong>Caixilho:</strong> <span id="editModalNomeCaixilho"></span></li>
+                        <li><strong>Obra:</strong> <span id="editModalNomeObra"></span></li>
+                        <li><strong>Quantidade:</strong> <span id="editModalQuantidade"></span></li>
+                        <li><strong>Peso Total:</strong> <span id="editModalPesoTotal"></span> kg</li>
+                        <li><strong>Status:</strong> <span id="editModalStatus"></span></li>
+                    </ul>
+                </div>
+                <p class="text-muted">As alterações serão aplicadas imediatamente após a confirmação.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+                <button type="button" class="btn btn-primary" id="confirmEditSubmit">
+                    <i class="fas fa-check"></i> Confirmar e Salvar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form');
+            const confirmModal = document.getElementById('confirmEditModal');
+            const confirmSubmitBtn = document.getElementById('confirmEditSubmit');
+            
+            // Atualizar peso total em tempo real
+            function updatePesoTotal() {
+                const quantidade = parseFloat(document.querySelector('input[name="Quantidade"]').value) || 0;
+                const pesoUnitario = parseFloat(document.querySelector('input[name="PesoUnitario"]').value) || 0;
+                const pesoTotal = (quantidade * pesoUnitario).toFixed(2);
+                document.getElementById('pesoTotalCalculado').textContent = pesoTotal;
+            }
+            
+            // Event listeners para atualizar peso total
+            document.querySelector('input[name="Quantidade"]').addEventListener('input', updatePesoTotal);
+            document.querySelector('input[name="PesoUnitario"]').addEventListener('input', updatePesoTotal);
+            
+            // Preencher dados do modal
+            function updateEditModalData() {
+                const nomeCaixilho = document.querySelector('input[name="NomeCaixilho"]').value;
+                const obraSelect = document.querySelector('select[name="ObraId"]');
+                const obraText = obraSelect.options[obraSelect.selectedIndex].text;
+                const quantidade = document.querySelector('input[name="Quantidade"]').value;
+                const pesoUnitario = document.querySelector('input[name="PesoUnitario"]').value;
+                const pesoTotal = (parseFloat(pesoUnitario) * parseInt(quantidade)).toFixed(2);
+                const status = document.querySelector('select[name="StatusProducao"]').value;
+                
+                document.getElementById('editModalNomeCaixilho').textContent = nomeCaixilho || 'Não informado';
+                document.getElementById('editModalNomeObra').textContent = obraText || 'Não selecionada';
+                document.getElementById('editModalQuantidade').textContent = quantidade || '0';
+                document.getElementById('editModalPesoTotal').textContent = pesoTotal || '0.00';
+                document.getElementById('editModalStatus').textContent = status || 'Pendente';
+            }
+            
+            // Abrir modal e atualizar dados
+            document.querySelector('button[data-bs-target="#confirmEditModal"]').addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Validar formulário antes de abrir modal
+                if (form.checkValidity()) {
+                    updateEditModalData();
+                    const modal = new bootstrap.Modal(confirmModal);
+                    modal.show();
+                } else {
+                    form.reportValidity();
+                }
+            });
+            
+            // Confirmar e submeter
+            confirmSubmitBtn.addEventListener('click', function() {
+                form.submit();
+            });
+        });
+    </script>
+}

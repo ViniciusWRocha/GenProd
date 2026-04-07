@@ -1,0 +1,202 @@
+﻿@model GerenciamentoProducao.Models.Caixilho
+
+@{
+    ViewData["Title"] = "Excluir Caixilho";
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="h3 mb-0 text-white">
+                <i class="fas fa-exclamation-triangle"></i> Excluir Caixilho
+            </h1>
+            <p class="text-white">Confirme a exclusão do caixilho selecionado</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow border-danger">
+                <div class="card-header py-3 bg-danger text-white">
+                    <h6 class="m-0 font-weight-bold">
+                        <i class="fas fa-trash"></i> Confirmação de Exclusão
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-danger">
+                        <h5 class="alert-heading">
+                            <i class="fas fa-exclamation-triangle"></i> Atenção!
+                        </h5>
+                        <p class="mb-0">
+                            Você está prestes a excluir permanentemente este caixilho. Esta ação não pode ser desfeita.
+                        </p>
+                    </div>
+
+                    <h5 class="text-primary mb-3">Dados do Caixilho a ser Excluído:</h5>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="info-item mb-3">
+                                <strong class="text-muted">Nome do Caixilho:</strong>
+                                <p class="mb-0">@Html.DisplayFor(model => model.NomeCaixilho)</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-item mb-3">
+                                <strong class="text-muted">Quantidade:</strong>
+                                <p class="mb-0">@Html.DisplayFor(model => model.Quantidade) unidades</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="info-item mb-3">
+                                <strong class="text-muted">Dimensões:</strong>
+                                <p class="mb-0">@Html.DisplayFor(model => model.Largura) x @Html.DisplayFor(model => model.Altura) cm</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-item mb-3">
+                                <strong class="text-muted">Peso Unitário:</strong>
+                                <p class="mb-0">@Html.DisplayFor(model => model.PesoUnitario) kg</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="info-item mb-3">
+                                <strong class="text-muted">Peso Total:</strong>
+                                <p class="mb-0 text-primary font-weight-bold">@((Model.PesoUnitario * Model.Quantidade).ToString("F2")) kg</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-item mb-3">
+                                <strong class="text-muted">Status:</strong>
+                                <p class="mb-0">
+                                    <span class="badge text-bg-@(Model.StatusProducao == "Liberado" ? "success" : Model.StatusProducao == "Pendente" ? "warning" : "secondary")">
+                                        @Html.DisplayFor(model => model.StatusProducao)
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="info-item mb-3">
+                                <strong class="text-muted">Obra:</strong>
+                                <p class="mb-0">@Html.DisplayFor(model => model.Obra.Nome)</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-item mb-3">
+                                <strong class="text-muted">Família:</strong>
+                                <p class="mb-0">@Html.DisplayFor(model => model.FamiliaCaixilho.DescricaoFamilia)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-item mb-3">
+                        <strong class="text-muted">Tipo de Caixilho:</strong>
+                        <p class="mb-0">@Html.DisplayFor(model => model.DescricaoCaixilho)</p>
+                    </div>
+
+                    @if (Model.Liberado)
+                    {
+                        <div class="alert alert-warning">
+                            <i class="fas fa-info-circle"></i>
+                            <strong>Este caixilho está liberado para produção.</strong> 
+                            A exclusão pode afetar os cálculos de peso da obra.
+                        </div>
+                    }
+
+                    <form asp-action="Delete" id="deleteForm">
+                        <input type="hidden" asp-for="IdCaixilho" />
+                        <div class="form-group">
+                            <button type="button" class="btn btn-danger btn-lg" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
+                                <i class="fas fa-trash"></i> Confirmar Exclusão
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary btn-lg">
+                                <i class="fas fa-arrow-left"></i> Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card shadow">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Impacto da Exclusão</h6>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <h6 class="alert-heading">Consequências:</h6>
+                        <ul class="mb-0">
+                            <li>O caixilho será removido permanentemente</li>
+                            <li>O peso total da obra será recalculado</li>
+                            <li>O percentual de conclusão da obra será atualizado</li>
+                            <li>Esta ação não pode ser desfeita</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="text-center">
+                        <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+                        <p class="text-muted">Tem certeza que deseja continuar?</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Confirmação Final -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">
+                    <i class="fas fa-exclamation-triangle"></i> Confirmação Final
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-3">
+                    <i class="fas fa-trash fa-4x text-danger"></i>
+                </div>
+                <h5 class="text-center text-danger mb-3">Excluir Caixilho?</h5>
+                <p class="text-center">
+                    Você está prestes a excluir permanentemente o caixilho 
+                    <strong>"@Model.NomeCaixilho"</strong>.
+                </p>
+                <div class="alert alert-danger">
+                    <strong>Esta ação não pode ser desfeita!</strong>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+                    <i class="fas fa-trash"></i> Sim, Excluir
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const deleteForm = document.getElementById('deleteForm');
+            const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+            
+            confirmDeleteBtn.addEventListener('click', function() {
+                deleteForm.submit();
+            });
+        });
+    </script>
+}

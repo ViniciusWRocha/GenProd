@@ -8,7 +8,7 @@ namespace GerenciamentoProducao.ApiDtos
         public string PesoTotalFormatado => $"{PesoTotal:F2} kg";
         public int IdObra { get; set; }
         public string? NomeObra { get; set; }
-        public string StatusFamilia { get; set; } = string.Empty;
+        public int StatusFamilia { get; set; }
         public int QuantidadeCaixilhos { get; set; }
     }
 }

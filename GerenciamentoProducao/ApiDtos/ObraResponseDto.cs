@@ -22,14 +22,8 @@ namespace GerenciamentoProducao.ApiDtos
         public string? ImagemObraPath { get; set; }
         public int IdUsuario { get; set; }
         public string? NomeUsuario { get; set; }
-        public string StatusObra { get; set; } = string.Empty;
+        public int StatusObra { get; set; }
         public float PercentualMedicao { get; set; }
         public float PercentualProducao { get; set; }
-        public int? IdResponsavelVerificacao { get; set; }
-        public string? NomeResponsavelVerificacao { get; set; }
-        public int? IdResponsavelMedicao { get; set; }
-        public string? NomeResponsavelMedicao { get; set; }
-        public int? IdResponsavelProducao { get; set; }
-        public string? NomeResponsavelProducao { get; set; }
     }
 }

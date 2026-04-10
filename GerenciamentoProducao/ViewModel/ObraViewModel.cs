@@ -29,14 +29,5 @@ namespace GerenciamentoProducaoo.ViewModel
 
         public int IdUsuario { get; set; }
         public IEnumerable<SelectListItem>? Usuario { get; set; }
-
-        // Responsaveis
-        public int? IdResponsavelVerificacao { get; set; }
-        public int? IdResponsavelMedicao { get; set; }
-        public int? IdResponsavelProducao { get; set; }
-
-        public IEnumerable<SelectListItem>? ResponsaveisVerificacao { get; set; }
-        public IEnumerable<SelectListItem>? ResponsaveisMedicao { get; set; }
-        public IEnumerable<SelectListItem>? ResponsaveisProducao { get; set; }
     }
 }

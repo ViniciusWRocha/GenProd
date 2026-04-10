@@ -15,7 +15,6 @@ namespace GerenciamentoProducao.Interfaces
         Task Delete(int id);
         Task InativarAsync(int id);
         Task ReativarAsync(int id);
-        Task<Usuario>? ValidarLoginAsync(string email, string senha);
-       
+        Task<(Usuario? Usuario, string? Token)> ValidarLoginAsync(string email, string senha);
     }
 }

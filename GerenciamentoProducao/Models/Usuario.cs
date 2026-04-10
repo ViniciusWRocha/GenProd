@@ -19,9 +19,8 @@ namespace GerenciamentoProducao.Models
         [StringLength(50)]
         public string Senha { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Campo Obrigatório")]
-        [StringLength(14)]
-        public string Telefone { get; set; } = string.Empty;
+        [StringLength(15)]
+        public string? Telefone { get; set; }
 
         public bool Ativo { get; set; } = true;
 

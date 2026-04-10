@@ -17,12 +17,11 @@ public class UsuarioViewModel
     public string Email { get; set; }
 
     [Required(ErrorMessage = "Informe a senha")]
-    [StringLength(6, MinimumLength = 4, ErrorMessage = "A senha deve conter até 6 caracteres")]
+    [StringLength(50, MinimumLength = 6, ErrorMessage = "A senha deve ter entre 6 e 50 caracteres")]
     public string Senha { get; set; }
 
-    [Required(ErrorMessage = "Informe o telefone")]
-    [StringLength(14, ErrorMessage = "O telefone deve ter até 14 caracteres")]
-    public string Telefone { get; set; }
+    [StringLength(15, ErrorMessage = "O telefone deve ter até 15 caracteres")]
+    public string? Telefone { get; set; }
     public int IdTipoUsuario { get; set; }
     public bool Ativo { get; set; } = true;
 

@@ -14,12 +14,8 @@ namespace GerenciamentoProducao.ApiDtos
         public DateTime DataTermino { get; set; }
         public float PesoFinal { get; set; }
         public string? Observacoes { get; set; }
-        public string StatusObra { get; set; } = "Cadastrada";
         public bool Finalizado { get; set; }
         public string? ImagemObraPath { get; set; }
         public int IdUsuario { get; set; }
-        public int? IdResponsavelVerificacao { get; set; }
-        public int? IdResponsavelMedicao { get; set; }
-        public int? IdResponsavelProducao { get; set; }
     }
 }

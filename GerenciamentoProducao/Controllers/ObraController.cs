@@ -57,33 +57,12 @@ namespace GerenciamentoProducaoo.Controllers
                 Finalizado = model?.Finalizado ?? false,
                 IdUsuario = model?.IdUsuario ?? 0,
                 ImagemObraPath = model?.ImagemObraPath,
-                IdResponsavelVerificacao = model?.IdResponsavelVerificacao,
-                IdResponsavelMedicao = model?.IdResponsavelMedicao,
-                IdResponsavelProducao = model?.IdResponsavelProducao,
 
                 Usuario = usuarios.Select(t => new SelectListItem
                 {
                     Value = t.IdUsuario.ToString(),
                     Text = t.NomeUsuario,
                     Selected = model != null && t.IdUsuario == model.IdUsuario
-                }),
-                ResponsaveisVerificacao = usuarios.Select(t => new SelectListItem
-                {
-                    Value = t.IdUsuario.ToString(),
-                    Text = t.NomeUsuario,
-                    Selected = model != null && t.IdUsuario == model.IdResponsavelVerificacao
-                }),
-                ResponsaveisMedicao = usuarios.Select(t => new SelectListItem
-                {
-                    Value = t.IdUsuario.ToString(),
-                    Text = t.NomeUsuario,
-                    Selected = model != null && t.IdUsuario == model.IdResponsavelMedicao
-                }),
-                ResponsaveisProducao = usuarios.Select(t => new SelectListItem
-                {
-                    Value = t.IdUsuario.ToString(),
-                    Text = t.NomeUsuario,
-                    Selected = model != null && t.IdUsuario == model.IdResponsavelProducao
                 })
             };
         }
@@ -171,10 +150,7 @@ namespace GerenciamentoProducaoo.Controllers
                 Observacoes = viewModel.Observacoes,
                 Finalizado = viewModel.Finalizado,
                 IdUsuario = viewModel.IdUsuario,
-                ImagemObraPath = viewModel.ImagemObraPath,
-                IdResponsavelVerificacao = viewModel.IdResponsavelVerificacao,
-                IdResponsavelMedicao = viewModel.IdResponsavelMedicao,
-                IdResponsavelProducao = viewModel.IdResponsavelProducao
+                ImagemObraPath = viewModel.ImagemObraPath
             };
 
             // Imagem local (temporário até integrar com API de Anexos)
@@ -184,7 +160,16 @@ namespace GerenciamentoProducaoo.Controllers
                 obra.ImagemObraPath = imagemSalva;
             }
 
-            await _obraRepository.AddAsync(obra);
+            try
+            {
+                await _obraRepository.AddAsync(obra);
+            }
+            catch (HttpRequestException ex)
+            {
+                ModelState.AddModelError(string.Empty, $"Erro ao criar obra na API: {ex.Message}");
+                var vm = await CriarObraViewModel(viewModel);
+                return View(vm);
+            }
 
             return RedirectToAction(nameof(Index));
         }
@@ -222,25 +207,7 @@ namespace GerenciamentoProducaoo.Controllers
                 Finalizado = item.Finalizado,
                 IdUsuario = item.IdUsuario,
                 ImagemObraPath = item.ImagemObraPath,
-                IdResponsavelVerificacao = item.IdResponsavelVerificacao,
-                IdResponsavelMedicao = item.IdResponsavelMedicao,
-                IdResponsavelProducao = item.IdResponsavelProducao,
                 Usuario = usuarios.Select(t => new SelectListItem
-                {
-                    Value = t.IdUsuario.ToString(),
-                    Text = t.NomeUsuario
-                }),
-                ResponsaveisVerificacao = usuarios.Select(t => new SelectListItem
-                {
-                    Value = t.IdUsuario.ToString(),
-                    Text = t.NomeUsuario
-                }),
-                ResponsaveisMedicao = usuarios.Select(t => new SelectListItem
-                {
-                    Value = t.IdUsuario.ToString(),
-                    Text = t.NomeUsuario
-                }),
-                ResponsaveisProducao = usuarios.Select(t => new SelectListItem
                 {
                     Value = t.IdUsuario.ToString(),
                     Text = t.NomeUsuario
@@ -264,12 +231,12 @@ namespace GerenciamentoProducaoo.Controllers
 
             if (!ModelState.IsValid)
             {
-                viewModel.Usuario = (await _usuarioRepository.GetAllAsync())
-                    .Select(t => new SelectListItem
-                    {
-                        Value = t.IdUsuario.ToString(),
-                        Text = t.NomeUsuario
-                    });
+                var todosUsuariosVal = (await _usuarioRepository.GetAllAsync()).ToList();
+                viewModel.Usuario = todosUsuariosVal.Select(t => new SelectListItem
+                {
+                    Value = t.IdUsuario.ToString(),
+                    Text = t.NomeUsuario
+                });
                 return View(viewModel);
             }
 
@@ -292,9 +259,6 @@ namespace GerenciamentoProducaoo.Controllers
             obra.DataConclusao = viewModel.DataConclusao;
             obra.Observacoes = viewModel.Observacoes;
             obra.IdUsuario = viewModel.IdUsuario;
-            obra.IdResponsavelVerificacao = viewModel.IdResponsavelVerificacao;
-            obra.IdResponsavelMedicao = viewModel.IdResponsavelMedicao;
-            obra.IdResponsavelProducao = viewModel.IdResponsavelProducao;
 
             if (viewModel.ImagemUpload != null && viewModel.ImagemUpload.Length > 0)
             {
@@ -310,7 +274,21 @@ namespace GerenciamentoProducaoo.Controllers
                 obra.ImagemObraPath = viewModel.ImagemObraPath;
             }
 
-            await _obraRepository.UpdateAsync(obra);
+            try
+            {
+                await _obraRepository.UpdateAsync(obra);
+            }
+            catch (HttpRequestException ex)
+            {
+                ModelState.AddModelError(string.Empty, $"Erro ao salvar na API: {ex.Message}");
+                viewModel.Usuario = (await _usuarioRepository.GetAllAsync())
+                    .Select(t => new SelectListItem
+                    {
+                        Value = t.IdUsuario.ToString(),
+                        Text = t.NomeUsuario
+                    });
+                return View(viewModel);
+            }
 
             return RedirectToAction(nameof(Index));
         }
@@ -319,21 +297,39 @@ namespace GerenciamentoProducaoo.Controllers
         {
             if (id == null) return NotFound();
 
-            var obra = await _obraRepository.GetById(id.Value);
-            if (obra == null) return NotFound();
-
-            var familias = await _familiaCaixilhoRepository.GetByObraIdAsync(id.Value);
-            var todosOsCaixilhos = new List<Caixilho>();
-            foreach (var familia in familias)
+            try
             {
-                var caixilhosDaFamilia = await _caixilhoRepository.GetByFamiliaIdAsync(familia.IdFamiliaCaixilho);
-                todosOsCaixilhos.AddRange(caixilhosDaFamilia);
+                var obra = await _obraRepository.GetById(id.Value);
+                if (obra == null) return NotFound();
+
+                var familias = new List<FamiliaCaixilho>();
+                try
+                {
+                    familias = await _familiaCaixilhoRepository.GetByObraIdAsync(id.Value);
+                }
+                catch (HttpRequestException) { /* obra pode não ter famílias ainda */ }
+
+                var todosOsCaixilhos = new List<Caixilho>();
+                foreach (var familia in familias)
+                {
+                    try
+                    {
+                        var caixilhosDaFamilia = await _caixilhoRepository.GetByFamiliaIdAsync(familia.IdFamiliaCaixilho);
+                        todosOsCaixilhos.AddRange(caixilhosDaFamilia);
+                    }
+                    catch (HttpRequestException) { /* familia pode não ter caixilhos */ }
+                }
+
+                ViewBag.Familias = familias;
+                ViewBag.Caixilhos = todosOsCaixilhos;
+
+                return View(obra);
             }
-
-            ViewBag.Familias = familias;
-            ViewBag.Caixilhos = todosOsCaixilhos;
-
-            return View(obra);
+            catch (HttpRequestException ex)
+            {
+                TempData["Erro"] = $"Erro ao carregar detalhes: {ex.Message}";
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         [HttpPost]

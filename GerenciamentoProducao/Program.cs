@@ -1,7 +1,9 @@
 using GerenciamentoProducao.Configuration;
 using GerenciamentoProducao.Interfaces;
 using GerenciamentoProducao.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Options;
 using System.Globalization;
 using System.Net.Http.Headers;
@@ -29,6 +31,8 @@ builder.Services.AddHttpClient("ApiSige", (sp, client) =>
     };
 });
 
+builder.Services.AddHttpContextAccessor();
+
 // Serviços de API Client (substituem os antigos repositórios EF)
 builder.Services.AddScoped<IObraRepository, ObraApiService>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioApiService>();
@@ -47,8 +51,14 @@ builder.Services.AddAuthentication("GerenciadorProd")
         options.SlidingExpiration = true;
     });
 
-// Add services to the container
-builder.Services.AddControllersWithViews();
+// Add services to the container - exigir login em todas as rotas por padrão
+builder.Services.AddControllersWithViews(options =>
+{
+    var policy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+    options.Filters.Add(new AuthorizeFilter(policy));
+});
 
 // Configuração de cultura para datas
 builder.Services.Configure<RequestLocalizationOptions>(options =>

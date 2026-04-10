@@ -68,13 +68,5 @@ namespace GerenciamentoProducao.Models
 
         public int IdUsuario { get; set; }
         public virtual Usuario? Usuario { get; set; }
-
-        // Responsáveis
-        public int? IdResponsavelVerificacao { get; set; }
-        public string? NomeResponsavelVerificacao { get; set; }
-        public int? IdResponsavelMedicao { get; set; }
-        public string? NomeResponsavelMedicao { get; set; }
-        public int? IdResponsavelProducao { get; set; }
-        public string? NomeResponsavelProducao { get; set; }
     }
 }

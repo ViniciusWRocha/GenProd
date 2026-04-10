@@ -38,7 +38,7 @@ public class UsuarioController : Controller
     [AllowAnonymous]
     public async Task<IActionResult> Login(string email, string senha)
     {
-        var usuario = await _usuarioRepository.ValidarLoginAsync(email, senha);
+        var (usuario, token) = await _usuarioRepository.ValidarLoginAsync(email, senha);
 
         if (usuario == null || !usuario.Ativo)
         {
@@ -53,7 +53,8 @@ public class UsuarioController : Controller
             new Claim(ClaimTypes.Name, usuario.NomeUsuario ?? usuario.Email ?? "Usuario"),
             new Claim(ClaimTypes.Email, usuario.Email ?? string.Empty),
             new Claim(ClaimTypes.Role, role),
-            new Claim("IdUsuario", usuario.IdUsuario.ToString())
+            new Claim("IdUsuario", usuario.IdUsuario.ToString()),
+            new Claim("ApiToken", token ?? string.Empty)
         };
 
         var identity = new ClaimsIdentity(claims, "GerenciadorProd");
@@ -124,7 +125,17 @@ public class UsuarioController : Controller
             Ativo = true
         };
 
-        await _usuarioRepository.AddAsync(usuario);
+        try
+        {
+            await _usuarioRepository.AddAsync(usuario);
+        }
+        catch (HttpRequestException ex)
+        {
+            ModelState.AddModelError(string.Empty, $"Erro ao criar usuário na API: {ex.Message}");
+            var vm = await CriarUsuarioViewModel(viewModel);
+            return View(vm);
+        }
+
         return RedirectToAction(nameof(Index));
     }
 
@@ -176,11 +187,21 @@ public class UsuarioController : Controller
         usuario.Telefone = viewModel.Telefone;
         usuario.IdTipoUsuario = viewModel.IdTipoUsuario;
 
-        await _usuarioRepository.UpdateAsync(usuario);
+        try
+        {
+            await _usuarioRepository.UpdateAsync(usuario);
+        }
+        catch (HttpRequestException ex)
+        {
+            ModelState.AddModelError(string.Empty, $"Erro ao atualizar usuário na API: {ex.Message}");
+            viewModel = await CriarUsuarioViewModel(viewModel);
+            return View(viewModel);
+        }
+
         return RedirectToAction(nameof(Index));
     }
 
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador,Gerente")]
     [HttpGet]
     public async Task<IActionResult> Delete(int id)
     {
@@ -204,14 +225,14 @@ public class UsuarioController : Controller
     }
 
     [HttpPost, ActionName("Delete")]
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador,Gerente")]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
         await _usuarioRepository.InativarAsync(id);
         return RedirectToAction(nameof(Index));
     }
 
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador,Gerente")]
     public async Task<IActionResult> Inativos()
     {
         var usuarios = await _usuarioRepository.GetAllInativosAsync();
@@ -228,7 +249,7 @@ public class UsuarioController : Controller
         return View(usuario);
     }
 
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador,Gerente")]
     public async Task<IActionResult> Ativar(int id)
     {
         if (id <= 0) return NotFound();

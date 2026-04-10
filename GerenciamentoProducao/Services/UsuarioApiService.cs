@@ -6,29 +6,29 @@ namespace GerenciamentoProducao.Services
 {
     public class UsuarioApiService : ApiClientBase, IUsuarioRepository
     {
-        public UsuarioApiService(IHttpClientFactory httpClientFactory) : base(httpClientFactory) { }
+        public UsuarioApiService(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor) : base(httpClientFactory, httpContextAccessor) { }
 
         public async Task<List<Usuario>> GetAllAsync()
         {
-            var dtos = await GetListAsync<UsuarioResponseDto>("/api/UsuarioApi");
+            var dtos = await GetListAsync<UsuarioResponseDto>("/api/usuario");
             return dtos.Select(MapToModel).ToList();
         }
 
         public async Task<List<Usuario>> GetAllAtivosAsync()
         {
-            var dtos = await GetListAsync<UsuarioResponseDto>("/api/UsuarioApi?ativos=true");
+            var dtos = await GetListAsync<UsuarioResponseDto>("/api/usuario?ativos=true");
             return dtos.Select(MapToModel).ToList();
         }
 
         public async Task<List<Usuario>> GetAllInativosAsync()
         {
-            var dtos = await GetListAsync<UsuarioResponseDto>("/api/UsuarioApi/inativos");
+            var dtos = await GetListAsync<UsuarioResponseDto>("/api/usuario/inativos");
             return dtos.Select(MapToModel).ToList();
         }
 
         public async Task<Usuario> GetById(int id)
         {
-            var dto = await GetAsync<UsuarioResponseDto>($"/api/UsuarioApi/{id}");
+            var dto = await GetAsync<UsuarioResponseDto>($"/api/usuario/{id}");
             return dto != null ? MapToModel(dto) : throw new Exception("Usuário não encontrado");
         }
 
@@ -39,10 +39,10 @@ namespace GerenciamentoProducao.Services
                 NomeUsuario = usuario.NomeUsuario,
                 Email = usuario.Email,
                 Senha = usuario.Senha,
-                Telefone = usuario.Telefone,
+                Telefone = LimparTelefone(usuario.Telefone),
                 IdTipoUsuario = usuario.IdTipoUsuario
             };
-            await PostAsync<UsuarioCreateDto>("/api/UsuarioApi", dto);
+            await PostAsync<UsuarioCreateDto>("/api/usuario", dto);
         }
 
         public async Task UpdateAsync(Usuario usuario)
@@ -52,10 +52,10 @@ namespace GerenciamentoProducao.Services
                 NomeUsuario = usuario.NomeUsuario,
                 Email = usuario.Email,
                 Senha = !string.IsNullOrEmpty(usuario.Senha) ? usuario.Senha : null,
-                Telefone = usuario.Telefone,
+                Telefone = LimparTelefone(usuario.Telefone),
                 IdTipoUsuario = usuario.IdTipoUsuario
             };
-            await PutAsync($"/api/UsuarioApi/{usuario.IdUsuario}", dto);
+            await PutAsync($"/api/usuario/{usuario.IdUsuario}", dto);
         }
 
         public async Task Delete(int id)
@@ -65,23 +65,23 @@ namespace GerenciamentoProducao.Services
 
         public async Task InativarAsync(int id)
         {
-            await base.DeleteAsync($"/api/UsuarioApi/{id}");
+            await base.DeleteAsync($"/api/usuario/{id}");
         }
 
         public async Task ReativarAsync(int id)
         {
-            await PostAsync($"/api/UsuarioApi/{id}/ativar");
+            await PostAsync($"/api/usuario/{id}/ativar");
         }
 
-        public async Task<Usuario>? ValidarLoginAsync(string email, string senha)
+        public async Task<(Usuario? Usuario, string? Token)> ValidarLoginAsync(string email, string senha)
         {
             var loginDto = new LoginRequestDto { Email = email, Senha = senha };
-            var response = await PostAsync<LoginRequestDto, LoginResponseDto>("/api/UsuarioApi/login", loginDto);
+            var response = await PostAsync<LoginRequestDto, LoginResponseDto>("/api/usuario/login", loginDto);
 
             if (response == null || !response.Success)
-                return null!;
+                return (null, null);
 
-            return new Usuario
+            var usuario = new Usuario
             {
                 IdUsuario = response.IdUsuario ?? 0,
                 NomeUsuario = response.NomeUsuario ?? string.Empty,
@@ -91,9 +91,17 @@ namespace GerenciamentoProducao.Services
                 TipoUsuario = new TipoUsuario
                 {
                     IdTipoUsuario = response.TipoUsuario ?? 0,
-                    NomeTipoUsuario = response.NomeTipoUsuario ?? "Funcionario"
+                    NomeTipoUsuario = response.Cargo ?? response.NomeTipoUsuario ?? "Funcionario"
                 }
             };
+
+            return (usuario, response.Token);
+        }
+
+        private static string? LimparTelefone(string? telefone)
+        {
+            if (string.IsNullOrWhiteSpace(telefone)) return null;
+            return new string(telefone.Where(char.IsDigit).ToArray());
         }
 
         private static Usuario MapToModel(UsuarioResponseDto dto)

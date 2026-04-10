@@ -6,11 +6,11 @@ namespace GerenciamentoProducao.Services
 {
     public class TipoUsuarioApiService : ApiClientBase, ITipoUsuarioRepository
     {
-        public TipoUsuarioApiService(IHttpClientFactory httpClientFactory) : base(httpClientFactory) { }
+        public TipoUsuarioApiService(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor) : base(httpClientFactory, httpContextAccessor) { }
 
         public async Task<List<TipoUsuario>> GetAllAsync()
         {
-            var dtos = await GetListAsync<TipoUsuarioResponseDto>("/api/TipoUsuarioApi");
+            var dtos = await GetListAsync<TipoUsuarioResponseDto>("/api/tipo-usuario");
             return dtos.Select(d => new TipoUsuario
             {
                 IdTipoUsuario = d.IdTipoUsuario,
@@ -20,7 +20,7 @@ namespace GerenciamentoProducao.Services
 
         public async Task<TipoUsuario> GetById(int id)
         {
-            var dto = await GetAsync<TipoUsuarioResponseDto>($"/api/TipoUsuarioApi/{id}");
+            var dto = await GetAsync<TipoUsuarioResponseDto>($"/api/tipo-usuario/{id}");
             if (dto == null) throw new Exception("Tipo de Usuário não encontrado");
             return new TipoUsuario
             {
@@ -32,18 +32,18 @@ namespace GerenciamentoProducao.Services
         public async Task AddAsync(TipoUsuario tipoUsuario)
         {
             var dto = new TipoUsuarioCreateDto { NomeTipoUsuario = tipoUsuario.NomeTipoUsuario };
-            await PostAsync<TipoUsuarioCreateDto>("/api/TipoUsuarioApi", dto);
+            await PostAsync<TipoUsuarioCreateDto>("/api/tipo-usuario", dto);
         }
 
         public async Task UpdateAsync(TipoUsuario tipoUsuario)
         {
             var dto = new TipoUsuarioCreateDto { NomeTipoUsuario = tipoUsuario.NomeTipoUsuario };
-            await PutAsync($"/api/TipoUsuarioApi/{tipoUsuario.IdTipoUsuario}", dto);
+            await PutAsync($"/api/tipo-usuario/{tipoUsuario.IdTipoUsuario}", dto);
         }
 
         public async Task DeleteAsync(int id)
         {
-            await base.DeleteAsync($"/api/TipoUsuarioApi/{id}");
+            await base.DeleteAsync($"/api/tipo-usuario/{id}");
         }
     }
 }

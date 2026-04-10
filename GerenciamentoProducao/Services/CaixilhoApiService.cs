@@ -6,17 +6,17 @@ namespace GerenciamentoProducao.Services
 {
     public class CaixilhoApiService : ApiClientBase, ICaixilhoRepository
     {
-        public CaixilhoApiService(IHttpClientFactory httpClientFactory) : base(httpClientFactory) { }
+        public CaixilhoApiService(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor) : base(httpClientFactory, httpContextAccessor) { }
 
         public async Task<List<Caixilho>> GetAllAsync()
         {
-            var dtos = await GetListAsync<CaixilhoResponseDto>("/api/CaixilhoApi");
+            var dtos = await GetListAsync<CaixilhoResponseDto>("/api/caixilho");
             return dtos.Select(MapToModel).ToList();
         }
 
         public async Task<Caixilho> GetById(int id)
         {
-            var dto = await GetAsync<CaixilhoResponseDto>($"/api/CaixilhoApi/{id}");
+            var dto = await GetAsync<CaixilhoResponseDto>($"/api/caixilho/{id}");
             return dto != null ? MapToModel(dto) : throw new Exception("Caixilho não encontrado");
         }
 
@@ -34,7 +34,7 @@ namespace GerenciamentoProducao.Services
                 ObraId = caixilho.ObraId,
                 IdFamiliaCaixilho = caixilho.IdFamiliaCaixilho
             };
-            await PostAsync<CaixilhoCreateDto>("/api/CaixilhoApi", dto);
+            await PostAsync<CaixilhoCreateDto>("/api/caixilho", dto);
         }
 
         public async Task UpdateAsync(Caixilho caixilho)
@@ -54,23 +54,23 @@ namespace GerenciamentoProducao.Services
                 ObraId = caixilho.ObraId,
                 IdFamiliaCaixilho = caixilho.IdFamiliaCaixilho
             };
-            await PutAsync($"/api/CaixilhoApi/{caixilho.IdCaixilho}", dto);
+            await PutAsync($"/api/caixilho/{caixilho.IdCaixilho}", dto);
         }
 
         public async Task DeleteAsync(int id)
         {
-            await base.DeleteAsync($"/api/CaixilhoApi/{id}");
+            await base.DeleteAsync($"/api/caixilho/{id}");
         }
 
         public async Task LiberarAsync(int id)
         {
-            await PostAsync($"/api/CaixilhoApi/{id}/liberar");
+            await PostAsync($"/api/caixilho/{id}/liberar");
         }
 
         public async Task<List<Caixilho>> GetByFamiliaIdAsync(int familiaId)
         {
-            var dtos = await GetListAsync<CaixilhoResponseDto>($"/api/CaixilhoApi/familia/{familiaId}");
-            return dtos.Select(MapToModel).ToList();
+            var dtos = await GetListAsync<CaixilhoResponseDto>("/api/caixilho");
+            return dtos.Where(c => c.IdFamiliaCaixilho == familiaId).Select(MapToModel).ToList();
         }
 
         private static Caixilho MapToModel(CaixilhoResponseDto dto)
@@ -99,10 +99,11 @@ namespace GerenciamentoProducao.Services
         {
             return status switch
             {
-                1 => "Pendente",    // ParaMedir = 1
-                2 => "Medido",      // Medido = 2
-                3 => "Concluido",   // Concluido = 3
-                4 => "Pendente",    // Pendente = 4
+                0 => "Pendente",     // default (DB default = 0)
+                1 => "ParaMedir",    // ParaMedir = 1
+                2 => "Medido",       // Medido = 2
+                3 => "Concluido",    // Concluido = 3
+                4 => "Pendente",     // Pendente = 4
                 _ => "Pendente"
             };
         }
@@ -111,10 +112,11 @@ namespace GerenciamentoProducao.Services
         {
             return status switch
             {
+                "ParaMedir" => 1,
                 "Medido" => 2,
                 "Concluido" => 3,
-                "Pendente" => 4,
-                _ => 4  // default Pendente
+                "Pendente" => 0,
+                _ => 0
             };
         }
     }

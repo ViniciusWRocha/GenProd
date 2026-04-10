@@ -3,4 +3,5 @@
     <Project Path="GerenciamentoProducao/GerenciamentoProducaoo.csproj" />
   </Folder>
   <Project Path="API.SIGE/API.SIGE.csproj" />
+  <Project Path="MOBILE.SIGE/MOBILE.SIGE.csproj" />
 </Solution>

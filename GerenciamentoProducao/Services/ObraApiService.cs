@@ -6,29 +6,29 @@ namespace GerenciamentoProducao.Services
 {
     public class ObraApiService : ApiClientBase, IObraRepository
     {
-        public ObraApiService(IHttpClientFactory httpClientFactory) : base(httpClientFactory) { }
+        public ObraApiService(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor) : base(httpClientFactory, httpContextAccessor) { }
 
         public async Task<List<Obra>> GetAllAsync()
         {
-            var dtos = await GetListAsync<ObraResponseDto>("/api/ObraApi");
+            var dtos = await GetListAsync<ObraResponseDto>("/api/obra");
             return dtos.Select(MapToModel).ToList();
         }
 
         public async Task<List<Obra>> GetAllFinalizadosAsync()
         {
-            var dtos = await GetListAsync<ObraResponseDto>("/api/ObraApi?finalizadas=true");
+            var dtos = await GetListAsync<ObraResponseDto>("/api/obra?finalizadas=true");
             return dtos.Select(MapToModel).ToList();
         }
 
         public async Task<List<Obra>> GetAllNaoFinalizadosAsync()
         {
-            var dtos = await GetListAsync<ObraResponseDto>("/api/ObraApi?finalizadas=false");
+            var dtos = await GetListAsync<ObraResponseDto>("/api/obra?finalizadas=false");
             return dtos.Select(MapToModel).ToList();
         }
 
         public async Task<Obra> GetById(int id)
         {
-            var dto = await GetAsync<ObraResponseDto>($"/api/ObraApi/{id}");
+            var dto = await GetAsync<ObraResponseDto>($"/api/obra/{id}");
             return dto != null ? MapToModel(dto) : throw new Exception("Obra não encontrada");
         }
 
@@ -44,16 +44,13 @@ namespace GerenciamentoProducao.Services
                 Cep = obra.Cep,
                 Uf = obra.Uf,
                 Cnpj = obra.Cnpj,
-                DataInicio = obra.DataInicio,
-                DataTermino = obra.DataTermino,
-                PesoFinal = 0,
+                DataInicio = ToJsonUtcDateTime(obra.DataInicio),
+                DataTermino = ToJsonUtcDateTime(obra.DataTermino),
+                PesoFinal = obra.PesoFinal,
                 Observacoes = obra.Observacoes,
-                IdUsuario = obra.IdUsuario,
-                IdResponsavelVerificacao = obra.IdResponsavelVerificacao,
-                IdResponsavelMedicao = obra.IdResponsavelMedicao,
-                IdResponsavelProducao = obra.IdResponsavelProducao
+                IdUsuario = obra.IdUsuario
             };
-            var response = await PostAsync<ObraCreateDto, ObraResponseDto>("/api/ObraApi", dto);
+            var response = await PostAsync<ObraCreateDto, ObraResponseDto>("/api/obra", dto);
             if (response != null)
                 obra.IdObra = response.IdObra;
         }
@@ -70,35 +67,52 @@ namespace GerenciamentoProducao.Services
                 Cep = obra.Cep,
                 Uf = obra.Uf,
                 Cnpj = obra.Cnpj,
-                DataInicio = obra.DataInicio,
-                DataTermino = obra.DataTermino,
-                PesoFinal = 0,
+                DataInicio = ToJsonUtcDateTime(obra.DataInicio),
+                DataTermino = ToJsonUtcDateTime(obra.DataTermino),
+                PesoFinal = obra.PesoFinal,
                 Observacoes = obra.Observacoes,
-                StatusObra = obra.StatusObra,
                 Finalizado = obra.Finalizado,
                 ImagemObraPath = obra.ImagemObraPath,
-                IdUsuario = obra.IdUsuario,
-                IdResponsavelVerificacao = obra.IdResponsavelVerificacao,
-                IdResponsavelMedicao = obra.IdResponsavelMedicao,
-                IdResponsavelProducao = obra.IdResponsavelProducao
+                IdUsuario = obra.IdUsuario
             };
-            await PutAsync($"/api/ObraApi/{obra.IdObra}", dto);
+            await PutAsync($"/api/obra/{obra.IdObra}", dto);
         }
 
         public async Task DeleteAsync(int id)
         {
-            await base.DeleteAsync($"/api/ObraApi/{id}");
+            await base.DeleteAsync($"/api/obra/{id}");
         }
 
         public async Task RecalcularProgressoAsync(int obraId)
         {
-            await PostAsync($"/api/ObraApi/{obraId}/recalcular-progresso");
+            await PostAsync("/api/dashboard/atualizar-progresso-obras");
         }
 
         public async Task ConcluirAsync(int obraId)
         {
-            await PostAsync($"/api/ObraApi/{obraId}/concluir");
+            await PostAsync($"/api/obra/{obraId}/concluir");
         }
+
+        // Datas Unspecified (ex.: input date) serializam sem 'Z'; a API espera instante UTC explícito.
+        private static DateTime ToJsonUtcDateTime(DateTime value)
+        {
+            return value.Kind switch
+            {
+                DateTimeKind.Utc => value,
+                DateTimeKind.Local => value.ToUniversalTime(),
+                _ => DateTime.SpecifyKind(value.Date, DateTimeKind.Utc)
+            };
+        }
+
+        private static string MapStatusObra(int status) => status switch
+        {
+            1 => "Cadastrada",
+            2 => "Verificada",
+            3 => "EmMedicao",
+            4 => "EmProducao",
+            5 => "Concluida",
+            _ => "Cadastrada"
+        };
 
         private static Obra MapToModel(ObraResponseDto dto)
         {
@@ -123,15 +137,9 @@ namespace GerenciamentoProducao.Services
                 Finalizado = dto.Finalizado,
                 ImagemObraPath = dto.ImagemObraPath,
                 IdUsuario = dto.IdUsuario,
-                StatusObra = dto.StatusObra,
+                StatusObra = MapStatusObra(dto.StatusObra),
                 PercentualMedicao = dto.PercentualMedicao,
                 PercentualProducao = dto.PercentualProducao,
-                IdResponsavelVerificacao = dto.IdResponsavelVerificacao,
-                IdResponsavelMedicao = dto.IdResponsavelMedicao,
-                IdResponsavelProducao = dto.IdResponsavelProducao,
-                NomeResponsavelVerificacao = dto.NomeResponsavelVerificacao,
-                NomeResponsavelMedicao = dto.NomeResponsavelMedicao,
-                NomeResponsavelProducao = dto.NomeResponsavelProducao,
                 Usuario = dto.NomeUsuario != null ? new Usuario { NomeUsuario = dto.NomeUsuario, IdUsuario = dto.IdUsuario } : null
             };
         }

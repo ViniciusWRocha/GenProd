@@ -12,15 +12,18 @@ namespace GerenciamentoProducaoo.Controllers
         private readonly ICaixilhoRepository _caixilhoRepository;
         private readonly IFamiliaCaixilhoRepository _familiaCaixilhoRepository;
         private readonly IObraRepository _obraRepository;
+        private readonly IFamiliaMedicaoFotoStore _medicaoFotoStore;
 
         public CaixilhoController(
             ICaixilhoRepository caixilhoRepository,
             IFamiliaCaixilhoRepository familiaCaixilhoRepository,
-            IObraRepository obraRepository)
+            IObraRepository obraRepository,
+            IFamiliaMedicaoFotoStore medicaoFotoStore)
         {
             _caixilhoRepository = caixilhoRepository;
             _familiaCaixilhoRepository = familiaCaixilhoRepository;
             _obraRepository = obraRepository;
+            _medicaoFotoStore = medicaoFotoStore;
         }
 
         private async Task RecalcularProgressoObra(int obraId)
@@ -305,8 +308,9 @@ namespace GerenciamentoProducaoo.Controllers
             {
                 resultado = familias;
             }
-            else // pendentes - prontas para liberar
+            else // pendentes: prontas para liberar (todos medidos) ou com foto aguardando aprovação
             {
+                var mapa = new Dictionary<int, FamiliaCaixilho>();
                 foreach (var familia in familias)
                 {
                     if (familia.StatusFamilia == "EmProducao" || familia.StatusFamilia == "Produzida")
@@ -314,14 +318,40 @@ namespace GerenciamentoProducaoo.Controllers
 
                     var caixilhos = await _caixilhoRepository.GetByFamiliaIdAsync(familia.IdFamiliaCaixilho);
                     if (caixilhos.Any() && caixilhos.All(c => c.StatusProducao == "Medido"))
-                    {
-                        resultado.Add(familia);
-                    }
+                        mapa[familia.IdFamiliaCaixilho] = familia;
                 }
+
+                foreach (var idPend in await _medicaoFotoStore.ListFamiliasComFotoPendenteAsync())
+                {
+                    var f = familias.FirstOrDefault(x => x.IdFamiliaCaixilho == idPend);
+                    if (f != null && f.StatusFamilia != "EmProducao" && f.StatusFamilia != "Produzida")
+                        mapa[idPend] = f;
+                }
+
+                resultado = mapa.Values.OrderBy(f => f.DescricaoFamilia).ToList();
+            }
+
+            var medicaoPendenteIds = new HashSet<int>();
+            foreach (var f in resultado)
+            {
+                if (await _medicaoFotoStore.GetAsync(f.IdFamiliaCaixilho) != null)
+                    medicaoPendenteIds.Add(f.IdFamiliaCaixilho);
+            }
+
+            var podeEnviarFotoIds = new HashSet<int>();
+            foreach (var familia in familias)
+            {
+                if (familia.StatusFamilia == "EmProducao" || familia.StatusFamilia == "Produzida")
+                    continue;
+                var caixilhos = await _caixilhoRepository.GetByFamiliaIdAsync(familia.IdFamiliaCaixilho);
+                if (caixilhos.Any() && !caixilhos.All(c => c.StatusProducao == "Medido"))
+                    podeEnviarFotoIds.Add(familia.IdFamiliaCaixilho);
             }
 
             ViewBag.Filtro = filtro;
             ViewBag.Obras = (await _obraRepository.GetAllAsync()).ToDictionary(o => o.IdObra, o => o.Nome);
+            ViewBag.MedicaoPendenteIds = medicaoPendenteIds;
+            ViewBag.PodeEnviarFotoIds = podeEnviarFotoIds;
             return View(resultado);
         }
     }

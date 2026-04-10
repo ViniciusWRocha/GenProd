@@ -1,19 +1,21 @@
 {
   "version": 2,
-  "dgSpecHash": "VOTrRxi1g4c=",
+  "dgSpecHash": "W5drD7ex/EU=",
   "success": true,
-  "projectFilePath": "C:\\Users\\vinicius.wcrocha\\source\\repos\\nova ddd\\GerenciamentoProd (2) (1)\\GerenciamentoProds\\GerenciamentoProducao\\GerenciamentoProducaoo.csproj",
+  "projectFilePath": "C:\\Users\\TI\\source\\repos\\SouRyan\\GenProd\\GerenciamentoProducao\\GerenciamentoProducaoo.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\vinicius.wcrocha\\.nuget\\packages\\microsoft.extensions.http\\10.0.0\\microsoft.extensions.http.10.0.0.nupkg.sha512"
+    "C:\\Users\\TI\\.nuget\\packages\\microsoft.extensions.http\\10.0.0\\microsoft.extensions.http.10.0.0.nupkg.sha512",
+    "C:\\Users\\TI\\.nuget\\packages\\system.io.hashing\\8.0.0\\system.io.hashing.8.0.0.nupkg.sha512",
+    "C:\\Users\\TI\\.nuget\\packages\\yarp.reverseproxy\\2.3.0\\yarp.reverseproxy.2.3.0.nupkg.sha512"
   ],
   "logs": [
     {
       "code": "NU1510",
       "level": "Warning",
       "message": "PackageReference Microsoft.Extensions.Http não será podado. Considere remover este pacote das dependências, pois\u00A0ele provavelmente é desnecessário.",
-      "projectPath": "C:\\Users\\vinicius.wcrocha\\source\\repos\\nova ddd\\GerenciamentoProd (2) (1)\\GerenciamentoProds\\GerenciamentoProducao\\GerenciamentoProducaoo.csproj",
+      "projectPath": "C:\\Users\\TI\\source\\repos\\SouRyan\\GenProd\\GerenciamentoProducao\\GerenciamentoProducaoo.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Users\\vinicius.wcrocha\\source\\repos\\nova ddd\\GerenciamentoProd (2) (1)\\GerenciamentoProds\\GerenciamentoProducao\\GerenciamentoProducaoo.csproj",
+      "filePath": "C:\\Users\\TI\\source\\repos\\SouRyan\\GenProd\\GerenciamentoProducao\\GerenciamentoProducaoo.csproj",
       "libraryId": "Microsoft.Extensions.Http",
       "targetGraphs": [
         "net10.0"

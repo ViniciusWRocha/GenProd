@@ -38,6 +38,7 @@ builder.Services.AddScoped<IObraRepository, ObraApiService>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioApiService>();
 builder.Services.AddScoped<ICaixilhoRepository, CaixilhoApiService>();
 builder.Services.AddScoped<IFamiliaCaixilhoRepository, FamiliaCaixilhoApiService>();
+builder.Services.AddSingleton<IFamiliaMedicaoFotoStore, FamiliaMedicaoFotoFileStore>();
 builder.Services.AddScoped<ITipoUsuarioRepository, TipoUsuarioApiService>();
 builder.Services.AddScoped<IDashboardApiService, DashboardApiService>();
 
@@ -88,5 +89,7 @@ app.UseStaticFiles();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllers();
 
 app.Run();

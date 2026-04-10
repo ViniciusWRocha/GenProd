@@ -9,6 +9,11 @@
     var pendentes = caixilhos.Count(c => c.StatusProducao != "Medido");
     var medidos = caixilhos.Count(c => c.StatusProducao == "Medido");
     var jaLiberada = Model.StatusFamilia == "EmProducao" || Model.StatusFamilia == "Produzida";
+    var medicaoPendente = ViewBag.MedicaoFotoPendente as FamiliaMedicaoFotoState;
+    var aguardandoAprovacaoFoto = medicaoPendente != null;
+    var statusExibicao = aguardandoAprovacaoFoto ? "PendenteAprovacaoMedicao" : Model.StatusFamilia;
+    var isAdmin = User.IsInRole("Administrador");
+    var isAdminOuGerente = User.IsInRole("Administrador") || User.IsInRole("Gerente");
 }
 
 <div class="container-fluid">
@@ -96,12 +101,12 @@
         <div class="col-md-3 col-sm-6">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body d-flex align-items-center gap-3">
-                    <div class="rounded-circle text-bg-@(Model.StatusFamilia == "Produzida" ? "success" : Model.StatusFamilia == "EmProducao" ? "primary" : Model.StatusFamilia == "Medida" ? "info" : "secondary") d-flex align-items-center justify-content-center flex-shrink-0" style="width:44px;height:44px;">
+                    <div class="rounded-circle text-bg-@(aguardandoAprovacaoFoto ? "warning" : Model.StatusFamilia == "Produzida" ? "success" : Model.StatusFamilia == "EmProducao" ? "primary" : Model.StatusFamilia == "Medida" ? "info" : "secondary") d-flex align-items-center justify-content-center flex-shrink-0" style="width:44px;height:44px;">
                         <i class="fas fa-flag text-white"></i>
                     </div>
                     <div>
                         <div class="small" style="color:var(--gp-muted-color);">Status</div>
-                        <div class="fw-bold" style="color:var(--gp-body-color);">@Model.StatusFamilia</div>
+                        <div class="fw-bold" style="color:var(--gp-body-color);">@statusExibicao</div>
                     </div>
                 </div>
             </div>
@@ -123,7 +128,7 @@
         </div>
     }
 
-    @* Banner de liberação para produção *@
+    @* Fluxo: enviar foto → aprovar na web = Medido | rejeitar = enviar foto de novo. Produção = passo seguinte (liberar). *@
     @if (jaLiberada)
     {
         <div class="alert alert-success d-flex align-items-center gap-3 mb-4" role="alert">
@@ -134,34 +139,102 @@
             </div>
         </div>
     }
+    else if (aguardandoAprovacaoFoto)
+    {
+        <div class="card border-warning shadow-sm mb-4">
+            <div class="card-header bg-warning bg-opacity-25 d-flex align-items-center gap-2">
+                <i class="fas fa-hourglass-half text-warning"></i>
+                <strong>Foto da medição aguardando aprovação (só na web)</strong>
+            </div>
+            <div class="card-body">
+                <p class="small text-muted mb-2">
+                    Enviada em @medicaoPendente!.EnviadoEm.ToLocalTime().ToString("g")
+                    @if (!string.IsNullOrEmpty(medicaoPendente.EnviadoPor))
+                    { <text>por <strong>@medicaoPendente.EnviadoPor</strong></text> }
+                </p>
+                <p class="small mb-3">Se <strong>aprovar</strong>, todos os caixilhos passam a <strong>Medido</strong>. Se <strong>rejeitar</strong>, a foto é apagada e pode enviar outra (telemóvel ou web).</p>
+                <div class="mb-3 text-center">
+                    <img src="@medicaoPendente.FotoBase64" alt="Foto da medição" class="img-fluid rounded border" style="max-height: 420px;" />
+                </div>
+                @if (isAdminOuGerente)
+                {
+                    <div class="d-flex flex-wrap gap-2 align-items-center">
+                        <form asp-action="AprovarMedicaoFoto" asp-controller="FamiliaCaixilho" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@Model.IdFamiliaCaixilho" />
+                            <button type="submit" class="btn btn-success" onclick="return confirm('Aprovar e marcar todos os caixilhos como Medido?')">
+                                <i class="fas fa-check me-1"></i> Aprovar e marcar como Medido
+                            </button>
+                        </form>
+                        <form asp-action="RejeitarMedicaoFoto" asp-controller="FamiliaCaixilho" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@Model.IdFamiliaCaixilho" />
+                            <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Rejeitar esta foto? Ela será eliminada e poderão enviar outra.')">
+                                <i class="fas fa-times me-1"></i> Rejeitar foto
+                            </button>
+                        </form>
+                        @if (isAdmin && todosMedidos)
+                        {
+                            <form asp-action="LiberarProducao" asp-controller="FamiliaCaixilho" method="post" class="d-inline ms-md-2">
+                                <input type="hidden" name="id" value="@Model.IdFamiliaCaixilho" />
+                                <button type="submit" class="btn btn-outline-secondary" onclick="return confirm('Liberar para produção? A foto pendente será removida.')">
+                                    <i class="fas fa-forward me-1"></i> Ir para produção (admin, remove foto pendente)
+                                </button>
+                            </form>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="mb-0 text-muted small"><i class="fas fa-info-circle me-1"></i>A aprovação ou rejeição é feita na web por administrador ou gerente. No telemóvel só é possível enviar a foto.</p>
+                }
+            </div>
+        </div>
+    }
     else if (todosMedidos)
     {
-        <div class="alert alert-info d-flex justify-content-between align-items-center mb-4" role="alert">
-            <div class="d-flex align-items-center gap-3">
-                <i class="fas fa-clipboard-check fa-2x"></i>
-                <div>
-                    <strong>Todos os caixilhos estão medidos!</strong>
-                    <div class="small">Esta família pode ser liberada para produção.</div>
+        <div class="alert alert-info mb-4" role="alert">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3">
+                <div class="d-flex align-items-center gap-3">
+                    <i class="fas fa-clipboard-check fa-2x"></i>
+                    <div>
+                        <strong>Todos os caixilhos estão medidos</strong>
+                        <div class="small">A medição foi confirmada (foto aprovada ou ajuste manual). <strong>Administrador</strong> pode liberar a família para produção.</div>
+                    </div>
+                </div>
+                <div class="d-flex flex-wrap gap-2">
+                    @if (isAdmin)
+                    {
+                        <form asp-action="LiberarProducao" asp-controller="FamiliaCaixilho" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@Model.IdFamiliaCaixilho" />
+                            <button type="submit" class="btn btn-success" onclick="return confirm('Liberar esta família para produção?')">
+                                <i class="fas fa-industry me-1"></i> Liberar para produção
+                            </button>
+                        </form>
+                    }
                 </div>
             </div>
-            @if (User.IsInRole("Administrador") || User.IsInRole("Gerente"))
+            @if (User.IsInRole("Gerente") && !isAdmin)
             {
-                <form asp-action="LiberarProducao" asp-controller="FamiliaCaixilho" method="post">
-                    <input type="hidden" name="id" value="@Model.IdFamiliaCaixilho" />
-                    <button type="submit" class="btn btn-success btn-lg" onclick="return confirm('Deseja liberar esta família para produção?')">
-                        <i class="fas fa-industry me-1"></i> Liberar para Produção
-                    </button>
-                </form>
+                <hr class="my-2" />
+                <p class="small mb-0"><i class="fas fa-user-shield me-1"></i>Só um administrador pode liberar para produção. Se faltar foto aprovada, envie-a no telemóvel e aprove na web.</p>
             }
         </div>
     }
     else if (temCaixilhos)
     {
-        <div class="alert alert-warning d-flex align-items-center gap-3 mb-4" role="alert">
-            <i class="fas fa-exclamation-triangle fa-2x"></i>
-            <div>
-                <strong>Medição em andamento</strong>
-                <div class="small">@pendentes caixilho(s) pendente(s) de medição. Todos devem estar medidos para liberar a produção.</div>
+        <div class="alert alert-warning mb-4" role="alert">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3">
+                <div class="d-flex align-items-center gap-3">
+                    <i class="fas fa-exclamation-triangle fa-2x"></i>
+                    <div>
+                        <strong>Medição em andamento</strong>
+                        <div class="small">@pendentes caixilho(s) ainda não medido(s). Envie a <strong>foto da medição</strong>; após aprovação na web, todos passam a Medido. Se a foto for rejeitada, envie outra.</div>
+                    </div>
+                </div>
+                <div>
+                    <a asp-action="EnviarFotoMedicao" asp-controller="FamiliaCaixilho" asp-route-id="@Model.IdFamiliaCaixilho" class="btn btn-primary">
+                        <i class="fas fa-camera me-1"></i> Enviar foto da medição
+                    </a>
+                </div>
             </div>
         </div>
     }
@@ -222,7 +295,7 @@
                                     <td class="text-center">
                                         @{
                                             var isMedido = c.StatusProducao == "Medido";
-                                            var canToggle = !jaLiberada && (User.IsInRole("Administrador") || User.IsInRole("Gerente"));
+                                            var canToggle = !jaLiberada && !aguardandoAprovacaoFoto && (User.IsInRole("Administrador") || User.IsInRole("Gerente"));
                                         }
                                         @if (canToggle)
                                         {

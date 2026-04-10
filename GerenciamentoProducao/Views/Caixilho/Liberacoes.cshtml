@@ -4,6 +4,8 @@
     ViewData["Title"] = "Liberacoes para Producao";
     var obras = ViewBag.Obras as Dictionary<int, string> ?? new Dictionary<int, string>();
     var filtro = ViewBag.Filtro as string ?? "pendentes";
+    var medicaoPendenteIds = ViewBag.MedicaoPendenteIds as HashSet<int> ?? new HashSet<int>();
+    var podeEnviarFotoIds = ViewBag.PodeEnviarFotoIds as HashSet<int> ?? new HashSet<int>();
 }
 
 <div class="container-fluid">
@@ -65,7 +67,7 @@
                 {
                     <h5 style="color:var(--gp-muted-color);">Nenhuma familia pronta para liberacao</h5>
                     <p class="small" style="color:var(--gp-muted-color);">
-                        Para liberar uma familia, todos os seus caixilhos devem estar com status <strong>Medido</strong>.
+                        Aparecem aqui familias com <strong>foto a aguardar aprovação</strong> ou com todos os caixilhos <strong>Medidos</strong> (prontas para liberar producao).
                     </p>
                 }
                 else if (filtro == "liberadas")
@@ -86,6 +88,7 @@
             {
                 var obraNome = obras.ContainsKey(familia.IdObra) ? obras[familia.IdObra] : "—";
                 var jaLiberada = familia.StatusFamilia == "EmProducao" || familia.StatusFamilia == "Produzida";
+                var fotoPendente = medicaoPendenteIds.Contains(familia.IdFamiliaCaixilho);
 
                 <div class="col-lg-6 col-xl-4">
                     <div class="card border-0 shadow-sm h-100">
@@ -96,6 +99,10 @@
                             @if (jaLiberada)
                             {
                                 <span class="badge text-bg-success">Liberada</span>
+                            }
+                            else if (fotoPendente)
+                            {
+                                <span class="badge text-bg-warning">Foto pendente</span>
                             }
                             else
                             {
@@ -131,21 +138,40 @@
                             }
                             else
                             {
-                                <div class="alert alert-info py-2 mb-3 small">
-                                    <i class="fas fa-check-circle me-1"></i>
-                                    Todos os caixilhos estao medidos. Familia pronta para producao.
-                                </div>
+                                @if (fotoPendente)
+                                {
+                                    <div class="alert alert-warning py-2 mb-3 small">
+                                        <i class="fas fa-hourglass-half me-1"></i>
+                                        Foto enviada — aprovar na web marca os caixilhos como Medido; rejeitar permite enviar outra.
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="alert alert-info py-2 mb-3 small">
+                                        <i class="fas fa-check-circle me-1"></i>
+                                        Todos os caixilhos medidos. Administrador pode liberar para producao.
+                                    </div>
+                                }
                             }
 
-                            <div class="d-flex gap-2">
+                            <div class="d-flex flex-wrap gap-2">
                                 @if (!jaLiberada)
                                 {
-                                    <form asp-action="LiberarProducao" asp-controller="FamiliaCaixilho" method="post" class="d-inline">
-                                        <input type="hidden" name="id" value="@familia.IdFamiliaCaixilho" />
-                                        <button type="submit" class="btn btn-success" onclick="return confirm('Deseja liberar a familia \'@familia.DescricaoFamilia\' para producao?')">
-                                            <i class="fas fa-industry me-1"></i> Liberar para Producao
-                                        </button>
-                                    </form>
+                                    @if (User.IsInRole("Administrador") && !fotoPendente)
+                                    {
+                                        <form asp-action="LiberarProducao" asp-controller="FamiliaCaixilho" method="post" class="d-inline">
+                                            <input type="hidden" name="id" value="@familia.IdFamiliaCaixilho" />
+                                            <button type="submit" class="btn btn-success" onclick="return confirm('Deseja liberar a familia \'@familia.DescricaoFamilia\' para producao?')">
+                                                <i class="fas fa-industry me-1"></i> Liberar para producao
+                                            </button>
+                                        </form>
+                                    }
+                                    @if (podeEnviarFotoIds.Contains(familia.IdFamiliaCaixilho) && !fotoPendente)
+                                    {
+                                        <a asp-controller="FamiliaCaixilho" asp-action="EnviarFotoMedicao" asp-route-id="@familia.IdFamiliaCaixilho" class="btn btn-primary">
+                                            <i class="fas fa-camera me-1"></i> Enviar foto
+                                        </a>
+                                    }
                                 }
                                 <a asp-controller="FamiliaCaixilho" asp-action="Details" asp-route-id="@familia.IdFamiliaCaixilho" class="btn btn-outline-info">
                                     <i class="fas fa-eye me-1"></i> Ver Detalhes

@@ -62,6 +62,31 @@ public class FamiliaMedicaoFotoFileStore : IFamiliaMedicaoFotoStore
                 && name.StartsWith(prefix, StringComparison.Ordinal)
                 && int.TryParse(name.AsSpan(prefix.Length), out var id))
             {
+                // Filtrar fotos já aprovadas
+                var json = File.ReadAllText(path);
+                var state = JsonSerializer.Deserialize<FamiliaMedicaoFotoState>(json, JsonOptions);
+                if (state != null && !state.Aprovada)
+                    ids.Add(id);
+            }
+        }
+
+        return Task.FromResult<IReadOnlyList<int>>(ids);
+    }
+
+    public Task<IReadOnlyList<int>> ListFamiliasComFotoAsync(CancellationToken cancellationToken = default)
+    {
+        if (!Directory.Exists(_directory))
+            return Task.FromResult<IReadOnlyList<int>>(Array.Empty<int>());
+
+        var ids = new List<int>();
+        const string prefix = "familia-";
+        foreach (var path in Directory.EnumerateFiles(_directory, "familia-*.json"))
+        {
+            var name = Path.GetFileNameWithoutExtension(path);
+            if (name.Length > prefix.Length
+                && name.StartsWith(prefix, StringComparison.Ordinal)
+                && int.TryParse(name.AsSpan(prefix.Length), out var id))
+            {
                 ids.Add(id);
             }
         }

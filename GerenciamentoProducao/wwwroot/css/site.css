@@ -106,6 +106,11 @@ dl.row{
         }
 }
 
+.login-box {
+    width: 30rem;
+    max-width: 90vw;
+}
+
 .login-box h1 {
     margin: 0 0 30px;
     padding: 0;
@@ -118,35 +123,43 @@ dl.row{
     }
 
         .login-box .user-box input {
-            width: 30rem;
-            padding: 10px 0;
+            width: 100%;
+            padding: 14px 16px;
             font-size: 16px;
             color: white;
-            margin-bottom: 30px;
-            border: none;
-            border-bottom: 1px solid white;
-
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
             outline: none;
-            background: transparent;
+            background: rgba(255, 255, 255, 0.06);
+            transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
+        }
+
+        .login-box .user-box input:focus {
+            border-color: rgba(59, 130, 246, 0.6);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
         }
 
         .login-box .user-box label {
             position: absolute;
-            top: 0;
-            left: 0;
-            padding: 10px 0;
-            font-size: 1.2rem;
-            color: #fff;
+            top: 14px;
+            left: 16px;
+            padding: 0;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.5);
             pointer-events: none;
-            transition: .5s;
+            transition: .3s ease;
         }
 
         .login-box .user-box input:focus ~ label,
         .login-box .user-box input:not(:placeholder-shown) ~ label {
-            top: -20px;
-            left: 0;
-/*            color: white;*/
+            top: -10px;
+            left: 12px;
             font-size: 12px;
+            color: rgba(59, 130, 246, 0.9);
+            background: linear-gradient(180deg, transparent 45%, #151520 55%);
+            padding: 0 6px;
         }
 
     .login-box form a {
@@ -164,12 +177,26 @@ dl.row{
     }
     .enter {
     width: 100%;
-    background: blue;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
     outline: none;
     color: white;
     border: none;
     height: 3rem;
-    border-radius:15px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 0.5rem;
+    }
+    .enter:hover {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+        transform: translateY(-1px);
+    }
+    .enter:active {
+        transform: translateY(0);
+        box-shadow: none;
     }
 .right {
 /*    position: relative;*/
@@ -193,9 +220,35 @@ dl.row{
             
 }
 }
+/* Alerta de erro no login */
+.alert-login {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(220, 53, 69, 0.15);
+    border: 1px solid rgba(220, 53, 69, 0.4);
+    color: #ff6b7a;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    animation: shake 0.4s ease;
+}
+.alert-login i {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    40% { transform: translateX(6px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+}
+
 .main {
     background: var(--gp-body-bg);
-    margin-left: 250px;
+    margin-left: 270px;
     transition: margin-left 0.3s ease;
 /*    min-height: 100vh;*/
     padding: 20px;
@@ -258,11 +311,15 @@ dl.row{
     
     @media (max-width: 500px) {
     .login-box .user-box input {
-        width: 110%;
+        width: 100%;
     }
 
     .enter {
-        width: 110%;
+        width: 100%;
+    }
+
+    .login-box {
+        padding: 0 1rem;
     }
 }
 #sidebar {
@@ -271,10 +328,10 @@ dl.row{
     top: 0;
     left: 0;
     height: 100vh;
-    width: 200px;
+    width: 270px;
     background-color: var(--gp-sidebar-bg);
     color: var(--gp-sidebar-text);
-    padding: 1rem;
+    padding: 1rem 1.25rem;
     transition: all 0.3s ease;
     /*    z-index: 1000;*/
     overflow-y: auto;
@@ -491,4 +548,63 @@ html.theme-light {
 
 #menu li.d-lg-none .theme-toggle:hover {
     background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Botão Sair estilizado */
+.btn-logout {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.6rem 1rem;
+    border: 1px solid rgba(220, 53, 69, 0.4);
+    border-radius: 8px;
+    background: rgba(220, 53, 69, 0.08);
+    color: #ff6b7a;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+.btn-logout::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(220, 53, 69, 0.2), rgba(220, 53, 69, 0.05));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.btn-logout:hover {
+    background: rgba(220, 53, 69, 0.18);
+    border-color: rgba(220, 53, 69, 0.6);
+    color: #ff4d5e;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.2);
+    text-decoration: none;
+}
+.btn-logout:hover::before {
+    opacity: 1;
+}
+.btn-logout:hover .logout-icon {
+    transform: translateX(3px);
+}
+.btn-logout:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+.logout-icon {
+    font-size: 1rem;
+    transition: transform 0.3s ease;
+}
+.theme-light .btn-logout {
+    background: rgba(220, 53, 69, 0.05);
+    border-color: rgba(220, 53, 69, 0.3);
+    color: #dc3545;
+}
+.theme-light .btn-logout:hover {
+    background: rgba(220, 53, 69, 0.12);
+    border-color: rgba(220, 53, 69, 0.5);
+    color: #c82333;
 }

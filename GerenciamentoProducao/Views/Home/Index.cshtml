@@ -84,8 +84,9 @@
                         </div>
                         @if (Model.TotalFamilias > 0)
                         {
+                            var pctFamilias = ((float)Model.FamiliasLiberadas / Model.TotalFamilias * 100).ToString("F1", System.Globalization.CultureInfo.InvariantCulture);
                             <div class="progress mt-2" style="height:6px;">
-                                <div class="progress-bar bg-info" style="width:@((float)Model.FamiliasLiberadas / Model.TotalFamilias * 100)%"></div>
+                                <div class="progress-bar bg-info" style="width:@(pctFamilias)%"></div>
                             </div>
                         }
                     </div>
@@ -113,8 +114,9 @@
                         </div>
                         @if (pesoTotal > 0)
                         {
+                            var pctPeso = (Model.PesoLiberadoKg / pesoTotal * 100).ToString("F1", System.Globalization.CultureInfo.InvariantCulture);
                             <div class="progress mt-1" style="height:6px;">
-                                <div class="progress-bar bg-success" style="width:@(Model.PesoLiberadoKg / pesoTotal * 100)%"></div>
+                                <div class="progress-bar bg-success" style="width:@(pctPeso)%"></div>
                             </div>
                         }
                     </div>
@@ -324,7 +326,7 @@
                                                 <div class="d-flex align-items-center gap-2">
                                                     <div class="progress flex-grow-1" style="height:14px;">
                                                         <div class="progress-bar @(obra.PercentualMedicao >= 100 ? "bg-success" : "bg-info")"
-                                                             style="width:@obra.PercentualMedicao%"></div>
+                                                             style="width:@(obra.PercentualMedicao.ToString("F1", System.Globalization.CultureInfo.InvariantCulture))%"></div>
                                                     </div>
                                                     <small class="fw-semibold" style="color:var(--gp-body-color);min-width:38px;">@obra.PercentualMedicao.ToString("F0")%</small>
                                                 </div>
@@ -333,7 +335,7 @@
                                                 <div class="d-flex align-items-center gap-2">
                                                     <div class="progress flex-grow-1" style="height:14px;">
                                                         <div class="progress-bar @(obra.PercentualProducao >= 100 ? "bg-success" : "bg-primary")"
-                                                             style="width:@obra.PercentualProducao%"></div>
+                                                             style="width:@(obra.PercentualProducao.ToString("F1", System.Globalization.CultureInfo.InvariantCulture))%"></div>
                                                     </div>
                                                     <small class="fw-semibold" style="color:var(--gp-body-color);min-width:38px;">@obra.PercentualProducao.ToString("F0")%</small>
                                                 </div>

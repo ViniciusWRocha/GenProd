@@ -1,5 +1,6 @@
 using GerenciamentoProducao.Interfaces;
 using GerenciamentoProducao.Models;
+using GerenciamentoProducao.Services;
 using GerenciamentoProducaoo.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,17 +14,20 @@ namespace GerenciamentoProducaoo.Controllers
         private readonly IFamiliaCaixilhoRepository _familiaCaixilhoRepository;
         private readonly IObraRepository _obraRepository;
         private readonly IFamiliaMedicaoFotoStore _medicaoFotoStore;
+        private readonly MedicaoApiService _medicaoApiService;
 
         public CaixilhoController(
             ICaixilhoRepository caixilhoRepository,
             IFamiliaCaixilhoRepository familiaCaixilhoRepository,
             IObraRepository obraRepository,
-            IFamiliaMedicaoFotoStore medicaoFotoStore)
+            IFamiliaMedicaoFotoStore medicaoFotoStore,
+            MedicaoApiService medicaoApiService)
         {
             _caixilhoRepository = caixilhoRepository;
             _familiaCaixilhoRepository = familiaCaixilhoRepository;
             _obraRepository = obraRepository;
             _medicaoFotoStore = medicaoFotoStore;
+            _medicaoApiService = medicaoApiService;
         }
 
         private async Task RecalcularProgressoObra(int obraId)
@@ -302,7 +306,11 @@ namespace GerenciamentoProducaoo.Controllers
 
             if (filtro == "liberadas")
             {
-                resultado = familias.Where(f => f.StatusFamilia == "EmProducao" || f.StatusFamilia == "Produzida").ToList();
+                resultado = familias.Where(f => f.StatusFamilia == "EmProducao").ToList();
+            }
+            else if (filtro == "concluidas")
+            {
+                resultado = familias.Where(f => f.StatusFamilia == "Produzida").ToList();
             }
             else if (filtro == "todas")
             {
@@ -334,7 +342,8 @@ namespace GerenciamentoProducaoo.Controllers
             var medicaoPendenteIds = new HashSet<int>();
             foreach (var f in resultado)
             {
-                if (await _medicaoFotoStore.GetAsync(f.IdFamiliaCaixilho) != null)
+                var foto = await _medicaoFotoStore.GetAsync(f.IdFamiliaCaixilho);
+                if (foto != null && !foto.Aprovada)
                     medicaoPendenteIds.Add(f.IdFamiliaCaixilho);
             }
 
@@ -353,6 +362,92 @@ namespace GerenciamentoProducaoo.Controllers
             ViewBag.MedicaoPendenteIds = medicaoPendenteIds;
             ViewBag.PodeEnviarFotoIds = podeEnviarFotoIds;
             return View(resultado);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Administrador,Gerente")]
+        public async Task<IActionResult> DetalheMedicao(int familiaId)
+        {
+            var familia = await _familiaCaixilhoRepository.GetByIdAsync(familiaId);
+            if (familia == null)
+                return Json(new { success = false, message = "Família não encontrada." });
+
+            // Foto local (pendente ou aprovada)
+            string? fotoLocalBase64 = null;
+            string? fotoLocalEnviadoPor = null;
+            DateTime? fotoLocalEnviadoEm = null;
+            bool fotoAprovada = false;
+            var fotoLocal = await _medicaoFotoStore.GetAsync(familiaId);
+            if (fotoLocal != null)
+            {
+                fotoLocalBase64 = fotoLocal.FotoBase64;
+                fotoLocalEnviadoPor = fotoLocal.EnviadoPor;
+                fotoLocalEnviadoEm = fotoLocal.EnviadoEm;
+                fotoAprovada = fotoLocal.Aprovada;
+            }
+
+            // Medição da API
+            var medicao = await _medicaoApiService.GetByFamiliaAsync(familiaId);
+
+            // Fotos da API (Anexos vinculados à medição)
+            var fotosApi = new List<object>();
+            if (medicao != null)
+            {
+                var anexos = await _medicaoApiService.GetAnexosByMedicaoAsync(medicao.IdMedicao);
+                foreach (var anexo in anexos)
+                {
+                    // Somente imagens
+                    if (!anexo.TipoArquivo.StartsWith("image/", StringComparison.OrdinalIgnoreCase))
+                        continue;
+
+                    var bytes = await _medicaoApiService.DownloadAnexoAsync(anexo.IdAnexo);
+                    if (bytes != null)
+                    {
+                        var base64 = $"data:{anexo.TipoArquivo};base64,{Convert.ToBase64String(bytes)}";
+                        fotosApi.Add(new
+                        {
+                            nomeArquivo = anexo.NomeArquivo,
+                            base64 = base64,
+                            dataUpload = anexo.DataUpload.ToString("dd/MM/yyyy HH:mm"),
+                            nomeUsuario = anexo.NomeUsuario
+                        });
+                    }
+                }
+            }
+
+            // Produção da API
+            var producao = await _medicaoApiService.GetProducaoByFamiliaAsync(familiaId);
+
+            return Json(new
+            {
+                success = true,
+                familiaDescricao = familia.DescricaoFamilia,
+                // Medição API
+                temMedicao = medicao != null,
+                medicaoStatus = medicao?.StatusTexto,
+                medicaoResponsavel = medicao?.NomeResponsavel,
+                medicaoDataInicio = medicao?.DataInicio?.ToLocalTime().ToString("dd/MM/yyyy HH:mm"),
+                medicaoDataConclusao = medicao?.DataConclusao?.ToLocalTime().ToString("dd/MM/yyyy HH:mm"),
+                medicaoDescricao = medicao?.Descricao,
+                medicaoObservacoes = medicao?.Observacoes,
+                // Foto local
+                temFotoLocal = fotoLocal != null,
+                fotoLocalBase64,
+                fotoLocalEnviadoPor,
+                fotoLocalEnviadoEm = fotoLocalEnviadoEm?.ToString("dd/MM/yyyy HH:mm"),
+                fotoAprovada,
+                // Fotos da API
+                fotosApi,
+                // Produção API
+                temProducao = producao != null,
+                producaoStatus = producao?.StatusTexto,
+                producaoResponsavel = producao?.NomeResponsavel,
+                producaoDataInicio = producao?.DataInicio?.ToLocalTime().ToString("dd/MM/yyyy HH:mm"),
+                producaoDataConclusao = producao?.DataConclusao?.ToLocalTime().ToString("dd/MM/yyyy HH:mm"),
+                producaoPrevisao = producao?.DataEstimadaConclusao?.ToString("dd/MM/yyyy"),
+                producaoDescricao = producao?.Descricao,
+                producaoObservacoes = producao?.Observacoes
+            });
         }
     }
 }

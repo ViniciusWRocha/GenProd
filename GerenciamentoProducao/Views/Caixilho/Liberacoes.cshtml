@@ -6,6 +6,7 @@
     var filtro = ViewBag.Filtro as string ?? "pendentes";
     var medicaoPendenteIds = ViewBag.MedicaoPendenteIds as HashSet<int> ?? new HashSet<int>();
     var podeEnviarFotoIds = ViewBag.PodeEnviarFotoIds as HashSet<int> ?? new HashSet<int>();
+    var isAdminOuGerente = User.IsInRole("Administrador") || User.IsInRole("Gerente");
 }
 
 <div class="container-fluid">
@@ -48,7 +49,12 @@
         </li>
         <li class="nav-item">
             <a class="nav-link @(filtro == "liberadas" ? "active" : "")" asp-action="Liberacoes" asp-route-filtro="liberadas">
-                <i class="fas fa-check-circle me-1"></i> Ja Liberadas
+                <i class="fas fa-industry me-1"></i> Em Produção
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @(filtro == "concluidas" ? "active" : "")" asp-action="Liberacoes" asp-route-filtro="concluidas">
+                <i class="fas fa-flag-checkered me-1"></i> Concluídas
             </a>
         </li>
         <li class="nav-item">
@@ -72,7 +78,17 @@
                 }
                 else if (filtro == "liberadas")
                 {
-                    <h5 style="color:var(--gp-muted-color);">Nenhuma familia liberada ainda</h5>
+                    <h5 style="color:var(--gp-muted-color);">Nenhuma familia em produção no momento</h5>
+                    <p class="small" style="color:var(--gp-muted-color);">
+                        Familias liberadas que estão sendo produzidas aparecem aqui.
+                    </p>
+                }
+                else if (filtro == "concluidas")
+                {
+                    <h5 style="color:var(--gp-muted-color);">Nenhuma produção concluída ainda</h5>
+                    <p class="small" style="color:var(--gp-muted-color);">
+                        Familias com produção finalizada aparecerão aqui.
+                    </p>
                 }
                 else
                 {
@@ -83,100 +99,144 @@
     }
     else
     {
-        <div class="row g-3">
+        <div class="d-flex flex-column gap-3">
             @foreach (var familia in Model)
             {
                 var obraNome = obras.ContainsKey(familia.IdObra) ? obras[familia.IdObra] : "—";
                 var jaLiberada = familia.StatusFamilia == "EmProducao" || familia.StatusFamilia == "Produzida";
                 var fotoPendente = medicaoPendenteIds.Contains(familia.IdFamiliaCaixilho);
 
-                <div class="col-lg-6 col-xl-4">
-                    <div class="card border-0 shadow-sm h-100">
-                        <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                            <h6 class="m-0 fw-bold" style="color:var(--gp-heading-color);">
-                                <i class="fas fa-layer-group me-2 text-info"></i>@familia.DescricaoFamilia
-                            </h6>
-                            @if (jaLiberada)
-                            {
-                                <span class="badge text-bg-success">Liberada</span>
-                            }
-                            else if (fotoPendente)
-                            {
-                                <span class="badge text-bg-warning">Foto pendente</span>
-                            }
-                            else
-                            {
-                                <span class="badge text-bg-info">Pronta</span>
-                            }
-                        </div>
-                        <div class="card-body">
-                            <ul class="list-unstyled mb-3">
-                                <li class="mb-2">
-                                    <i class="fas fa-building me-2 text-primary"></i>
-                                    <strong>Obra:</strong>
-                                    <a asp-controller="Obra" asp-action="Details" asp-route-id="@familia.IdObra" style="color:var(--gp-body-color);">@obraNome</a>
-                                </li>
-                                <li class="mb-2">
-                                    <i class="fas fa-weight me-2 text-success"></i>
-                                    <strong>Peso Total:</strong> @familia.PesoTotal kg
-                                </li>
-                                <li class="mb-2">
-                                    <i class="fas fa-flag me-2 text-secondary"></i>
-                                    <strong>Status:</strong>
-                                    <span class="badge text-bg-@(familia.StatusFamilia == "Produzida" ? "success" : familia.StatusFamilia == "EmProducao" ? "primary" : familia.StatusFamilia == "Medida" ? "info" : "secondary")">
-                                        @familia.StatusFamilia
-                                    </span>
-                                </li>
-                            </ul>
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-0">
+                        <div class="row g-0 align-items-center">
 
-                            @if (jaLiberada)
-                            {
-                                <div class="alert alert-success py-2 mb-3 small">
-                                    <i class="fas fa-check-circle me-1"></i>
-                                    Familia ja liberada para producao.
+                            @* Coluna esquerda: info da família *@
+                            <div class="col-lg-5 p-3 border-end">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h6 class="m-0 fw-bold" style="color:var(--gp-heading-color);">
+                                        <i class="fas fa-layer-group me-2 text-info"></i>@familia.DescricaoFamilia
+                                    </h6>
+                                    @if (familia.StatusFamilia == "Produzida")
+                                    {
+                                        <span class="badge text-bg-success"><i class="fas fa-flag-checkered me-1"></i>Concluída</span>
+                                    }
+                                    else if (familia.StatusFamilia == "EmProducao")
+                                    {
+                                        <span class="badge text-bg-primary"><i class="fas fa-industry me-1"></i>Em Produção</span>
+                                    }
+                                    else if (fotoPendente)
+                                    {
+                                        <span class="badge text-bg-warning">Foto pendente</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge text-bg-info">Pronta</span>
+                                    }
                                 </div>
-                            }
-                            else
-                            {
-                                @if (fotoPendente)
+                                <div class="d-flex flex-wrap gap-3 small">
+                                    <span>
+                                        <i class="fas fa-building me-1 text-primary"></i>
+                                        <strong>Obra:</strong>
+                                        <a asp-controller="Obra" asp-action="Details" asp-route-id="@familia.IdObra" style="color:var(--gp-body-color);">@obraNome</a>
+                                    </span>
+                                    <span>
+                                        <i class="fas fa-weight me-1 text-success"></i>
+                                        <strong>Peso:</strong> @familia.PesoTotal kg
+                                    </span>
+                                    <span>
+                                        <i class="fas fa-flag me-1 text-secondary"></i>
+                                        <strong>Status:</strong>
+                                        <span class="badge text-bg-@(familia.StatusFamilia == "Produzida" ? "success" : familia.StatusFamilia == "EmProducao" ? "primary" : familia.StatusFamilia == "Medida" ? "info" : "secondary")">
+                                            @familia.StatusFamilia
+                                        </span>
+                                    </span>
+                                </div>
+                                @if (jaLiberada)
                                 {
-                                    <div class="alert alert-warning py-2 mb-3 small">
-                                        <i class="fas fa-hourglass-half me-1"></i>
-                                        Foto enviada — aprovar na web marca os caixilhos como Medido; rejeitar permite enviar outra.
+                                    @if (familia.StatusFamilia == "Produzida")
+                                    {
+                                        <div class="alert alert-success py-1 px-2 mb-0 mt-2 small">
+                                            <i class="fas fa-flag-checkered me-1"></i>Producao concluida — contabiliza no progresso da obra.
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-primary py-1 px-2 mb-0 mt-2 small">
+                                            <i class="fas fa-industry me-1"></i>Em producao. Quando concluir, marque como finalizada.
+                                        </div>
+                                    }
+                                }
+                                else if (fotoPendente)
+                                {
+                                    <div class="alert alert-warning py-1 px-2 mb-0 mt-2 small">
+                                        <i class="fas fa-hourglass-half me-1"></i>Foto enviada — aprovar marca como Medido; rejeitar permite enviar outra.
                                     </div>
                                 }
                                 else
                                 {
-                                    <div class="alert alert-info py-2 mb-3 small">
-                                        <i class="fas fa-check-circle me-1"></i>
-                                        Todos os caixilhos medidos. Administrador pode liberar para producao.
+                                    <div class="alert alert-info py-1 px-2 mb-0 mt-2 small">
+                                        <i class="fas fa-check-circle me-1"></i>Todos os caixilhos medidos. Pode liberar para producao.
                                     </div>
                                 }
-                            }
-
-                            <div class="d-flex flex-wrap gap-2">
-                                @if (!jaLiberada)
-                                {
-                                    @if (User.IsInRole("Administrador") && !fotoPendente)
-                                    {
-                                        <form asp-action="LiberarProducao" asp-controller="FamiliaCaixilho" method="post" class="d-inline">
-                                            <input type="hidden" name="id" value="@familia.IdFamiliaCaixilho" />
-                                            <button type="submit" class="btn btn-success" onclick="return confirm('Deseja liberar a familia \'@familia.DescricaoFamilia\' para producao?')">
-                                                <i class="fas fa-industry me-1"></i> Liberar para producao
-                                            </button>
-                                        </form>
-                                    }
-                                    @if (podeEnviarFotoIds.Contains(familia.IdFamiliaCaixilho) && !fotoPendente)
-                                    {
-                                        <a asp-controller="FamiliaCaixilho" asp-action="EnviarFotoMedicao" asp-route-id="@familia.IdFamiliaCaixilho" class="btn btn-primary">
-                                            <i class="fas fa-camera me-1"></i> Enviar foto
-                                        </a>
-                                    }
-                                }
-                                <a asp-controller="FamiliaCaixilho" asp-action="Details" asp-route-id="@familia.IdFamiliaCaixilho" class="btn btn-outline-info">
-                                    <i class="fas fa-eye me-1"></i> Ver Detalhes
-                                </a>
                             </div>
+
+                            @* Coluna direita: ações *@
+                            <div class="col-lg-7 p-3">
+                                <div class="d-flex flex-wrap gap-2 justify-content-end align-items-center">
+                                    @if (jaLiberada)
+                                    {
+                                        @if (familia.StatusFamilia == "EmProducao" && isAdminOuGerente)
+                                        {
+                                            <form asp-action="FinalizarProducaoFamilia" asp-controller="FamiliaCaixilho" method="post" class="d-inline">
+                                                <input type="hidden" name="id" value="@familia.IdFamiliaCaixilho" />
+                                                <button type="submit" class="btn btn-success" onclick="return confirm('Marcar producao desta familia como concluida?')">
+                                                    <i class="fas fa-flag-checkered me-1"></i> Finalizar producao
+                                                </button>
+                                            </form>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <button type="button" class="btn btn-outline-secondary btn-detalhe-medicao" data-familia-id="@familia.IdFamiliaCaixilho">
+                                            <i class="fas fa-search-plus me-1"></i> Ver Medição
+                                        </button>
+                                        @if (fotoPendente)
+                                        {
+                                            <form asp-action="AprovarMedicaoFoto" asp-controller="FamiliaCaixilho" method="post" class="d-inline">
+                                                <input type="hidden" name="id" value="@familia.IdFamiliaCaixilho" />
+                                                <button type="submit" class="btn btn-success" onclick="return confirm('Aprovar a foto da medicao da familia \'@familia.DescricaoFamilia\'? Os caixilhos passam a Medido.')">
+                                                    <i class="fas fa-check me-1"></i> Aprovar foto
+                                                </button>
+                                            </form>
+                                            <form asp-action="RejeitarMedicaoFoto" asp-controller="FamiliaCaixilho" method="post" class="d-inline">
+                                                <input type="hidden" name="id" value="@familia.IdFamiliaCaixilho" />
+                                                <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Rejeitar a foto da medicao? Sera necessario enviar outra foto.')">
+                                                    <i class="fas fa-times me-1"></i> Rejeitar
+                                                </button>
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <form asp-action="LiberarProducao" asp-controller="FamiliaCaixilho" method="post" class="d-inline">
+                                                <input type="hidden" name="id" value="@familia.IdFamiliaCaixilho" />
+                                                <button type="submit" class="btn btn-success" onclick="return confirm('Deseja liberar a familia \'@familia.DescricaoFamilia\' para producao?')">
+                                                    <i class="fas fa-industry me-1"></i> Liberar para producao
+                                                </button>
+                                            </form>
+                                            @if (podeEnviarFotoIds.Contains(familia.IdFamiliaCaixilho))
+                                            {
+                                                <a asp-controller="FamiliaCaixilho" asp-action="EnviarFotoMedicao" asp-route-id="@familia.IdFamiliaCaixilho" class="btn btn-primary">
+                                                    <i class="fas fa-camera me-1"></i> Enviar foto
+                                                </a>
+                                            }
+                                        }
+                                    }
+                                    <a asp-controller="FamiliaCaixilho" asp-action="Details" asp-route-id="@familia.IdFamiliaCaixilho" class="btn btn-outline-info">
+                                        <i class="fas fa-eye me-1"></i> Ver Detalhes
+                                    </a>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -185,3 +245,148 @@
     }
 
 </div>
+
+<!-- Modal Detalhe Medição -->
+<div class="modal fade" id="modalDetalheMedicao" tabindex="-1" aria-labelledby="modalDetalheMedicaoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header" style="background:var(--gp-card-header-bg,#f8f9fa);">
+                <h5 class="modal-title" id="modalDetalheMedicaoLabel">
+                    <i class="fas fa-ruler-combined me-2"></i>Detalhe da Medição
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body" id="modalDetalheMedicaoBody">
+                <div class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Carregando...</span>
+                    </div>
+                    <p class="mt-2 text-muted">Carregando detalhes da medição...</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.btn-detalhe-medicao').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var familiaId = this.getAttribute('data-familia-id');
+            var body = document.getElementById('modalDetalheMedicaoBody');
+            body.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary" role="status"></div><p class="mt-2 text-muted">Carregando detalhes da medição...</p></div>';
+
+            var modal = new bootstrap.Modal(document.getElementById('modalDetalheMedicao'));
+            modal.show();
+
+            fetch('@Url.Action("DetalheMedicao", "Caixilho")?familiaId=' + familiaId)
+                .then(function (r) { return r.json(); })
+                .then(function (data) {
+                    if (!data.success) {
+                        body.innerHTML = '<div class="alert alert-warning"><i class="fas fa-exclamation-triangle me-2"></i>' + (data.message || 'Erro ao carregar.') + '</div>';
+                        return;
+                    }
+
+                    var html = '';
+                    html += '<h6 class="fw-bold mb-3" style="color:var(--gp-heading-color);"><i class="fas fa-layer-group me-2"></i>' + data.familiaDescricao + '</h6>';
+
+                    // Seção: Medição da API
+                    if (data.temMedicao) {
+                        html += '<div class="card border-0 shadow-sm mb-3">';
+                        html += '<div class="card-header py-2"><i class="fas fa-clipboard-check me-2"></i><strong>Dados da Medição</strong></div>';
+                        html += '<div class="card-body">';
+                        html += '<div class="row g-2">';
+                        html += '<div class="col-md-6"><small class="text-muted">Status:</small><br><span class="badge text-bg-info">' + data.medicaoStatus + '</span></div>';
+                        html += '<div class="col-md-6"><small class="text-muted">Responsável:</small><br><strong>' + (data.medicaoResponsavel || '\u2014') + '</strong></div>';
+                        if (data.medicaoDataInicio) {
+                            html += '<div class="col-md-6"><small class="text-muted">Início:</small><br>' + data.medicaoDataInicio + '</div>';
+                        }
+                        if (data.medicaoDataConclusao) {
+                            html += '<div class="col-md-6"><small class="text-muted">Conclusão:</small><br>' + data.medicaoDataConclusao + '</div>';
+                        }
+                        if (data.medicaoDescricao) {
+                            html += '<div class="col-12 mt-2"><small class="text-muted">Descrição:</small><br>' + data.medicaoDescricao + '</div>';
+                        }
+                        if (data.medicaoObservacoes) {
+                            html += '<div class="col-12 mt-2"><div class="alert alert-light border mb-0"><i class="fas fa-comment-alt me-2 text-primary"></i><strong>Observações:</strong><br>' + data.medicaoObservacoes + '</div></div>';
+                        }
+                        html += '</div></div></div>';
+                    } else {
+                        html += '<div class="alert alert-light border mb-3"><i class="fas fa-info-circle me-2"></i>Nenhum registro de medição encontrado na API para esta família.</div>';
+                    }
+
+                    // Seção: Foto local (pendente ou aprovada)
+                    if (data.temFotoLocal) {
+                        var headerClass = data.fotoAprovada ? 'text-bg-success' : 'text-bg-warning';
+                        var headerText = data.fotoAprovada ? 'Foto da Medição (Aprovada)' : 'Foto Pendente de Aprovação';
+                        var headerIcon = data.fotoAprovada ? 'fa-check-circle' : 'fa-camera';
+                        html += '<div class="card border-0 shadow-sm mb-3">';
+                        html += '<div class="card-header py-2 ' + headerClass + '"><i class="fas ' + headerIcon + ' me-2"></i><strong>' + headerText + '</strong></div>';
+                        html += '<div class="card-body text-center">';
+                        html += '<p class="small text-muted mb-2">Enviada por <strong>' + (data.fotoLocalEnviadoPor || '\u2014') + '</strong> em ' + (data.fotoLocalEnviadoEm || '\u2014') + '</p>';
+                        html += '<img src="' + data.fotoLocalBase64 + '" alt="Foto da medição" class="img-fluid rounded shadow" style="max-height:500px;cursor:pointer;" onclick="window.open(this.src,\'_blank\')" />';
+                        html += '</div></div>';
+                    }
+
+                    // Seção: Fotos da API (anexos)
+                    if (data.fotosApi && data.fotosApi.length > 0) {
+                        html += '<div class="card border-0 shadow-sm mb-3">';
+                        html += '<div class="card-header py-2"><i class="fas fa-images me-2"></i><strong>Fotos da Medição</strong></div>';
+                        html += '<div class="card-body">';
+                        html += '<div class="row g-2">';
+                        data.fotosApi.forEach(function (foto) {
+                            html += '<div class="col-md-6 text-center">';
+                            html += '<img src="' + foto.base64 + '" alt="' + foto.nomeArquivo + '" class="img-fluid rounded shadow-sm mb-1" style="max-height:300px;cursor:pointer;" onclick="window.open(this.src,\'_blank\')" />';
+                            html += '<p class="small text-muted mb-0">' + foto.nomeArquivo + '</p>';
+                            html += '<p class="small text-muted">Por ' + (foto.nomeUsuario || '\u2014') + ' em ' + foto.dataUpload + '</p>';
+                            html += '</div>';
+                        });
+                        html += '</div></div></div>';
+                    }
+
+                    // Nenhuma foto em nenhum lugar
+                    if (!data.temFotoLocal && (!data.fotosApi || data.fotosApi.length === 0)) {
+                        html += '<div class="alert alert-secondary"><i class="fas fa-image me-2"></i>Nenhuma foto de medição disponível.</div>';
+                    }
+
+                    // Seção: Atividade de Produção
+                    if (data.temProducao) {
+                        var statusClass = data.producaoStatus === 'Concluída' ? 'success' : data.producaoStatus === 'Em Andamento' ? 'primary' : data.producaoStatus === 'Pausada' ? 'warning' : 'secondary';
+                        html += '<div class="card border-0 shadow-sm mb-3">';
+                        html += '<div class="card-header py-2"><i class="fas fa-industry me-2 text-primary"></i><strong>Atividade de Produção</strong></div>';
+                        html += '<div class="card-body">';
+                        html += '<div class="row g-2">';
+                        html += '<div class="col-md-6"><small class="text-muted">Status:</small><br><span class="badge text-bg-' + statusClass + '">' + data.producaoStatus + '</span></div>';
+                        html += '<div class="col-md-6"><small class="text-muted">Responsável:</small><br><strong>' + (data.producaoResponsavel || '\u2014') + '</strong></div>';
+                        if (data.producaoDataInicio) {
+                            html += '<div class="col-md-6"><small class="text-muted">Início:</small><br>' + data.producaoDataInicio + '</div>';
+                        }
+                        if (data.producaoDataConclusao) {
+                            html += '<div class="col-md-6"><small class="text-muted">Conclusão:</small><br>' + data.producaoDataConclusao + '</div>';
+                        }
+                        if (data.producaoPrevisao) {
+                            html += '<div class="col-md-6"><small class="text-muted">Previsão:</small><br>' + data.producaoPrevisao + '</div>';
+                        }
+                        if (data.producaoDescricao) {
+                            html += '<div class="col-12 mt-2"><small class="text-muted">Descrição:</small><br>' + data.producaoDescricao + '</div>';
+                        }
+                        if (data.producaoObservacoes) {
+                            html += '<div class="col-12 mt-2"><div class="p-2 rounded" style="background:rgba(25,135,84,.1);border-left:3px solid #198754;"><strong style="color:#198754;"><i class="fas fa-comment-alt me-1"></i>Observações:</strong><br>' + data.producaoObservacoes + '</div></div>';
+                        }
+                        html += '</div></div></div>';
+                    }
+
+                    body.innerHTML = html;
+                })
+                .catch(function (err) {
+                    body.innerHTML = '<div class="alert alert-danger"><i class="fas fa-exclamation-circle me-2"></i>Erro ao carregar detalhes: ' + err.message + '</div>';
+                });
+        });
+    });
+});
+</script>
+}

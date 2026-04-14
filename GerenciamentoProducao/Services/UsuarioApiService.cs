@@ -91,7 +91,7 @@ namespace GerenciamentoProducao.Services
                 TipoUsuario = new TipoUsuario
                 {
                     IdTipoUsuario = response.TipoUsuario ?? 0,
-                    NomeTipoUsuario = response.Cargo ?? response.NomeTipoUsuario ?? "Funcionario"
+                    NomeTipoUsuario = response.NomeTipoUsuario ?? response.Cargo ?? "Funcionario"
                 }
             };
 

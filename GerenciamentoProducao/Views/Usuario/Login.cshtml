@@ -9,23 +9,26 @@
 
 
 
+			@if (ViewData["ErroLogin"] != null)
+			{
+				<div class="alert-login">
+					<i class="fas fa-exclamation-circle"></i>
+					<span>@ViewData["ErroLogin"]</span>
+				</div>
+			}
+
 			<form asp-controller="Usuario" asp-action="Login" asp-route-ReturnUrl="/Usuario" method="post">
 
-
-
-
 				<div class="user-box">
-					<input type="email" name="email" required placeholder=" " />
+					<input type="email" name="email" maxlength="100" required placeholder=" " />
 					<label for="email" class="form-label">Email</label>
 				</div>
 				<div class="user-box">
-					<input type="password" name="senha" maxlength="6" required placeholder=" " />
+					<input type="password" name="senha" maxlength="50" required placeholder=" " />
 					<label for="senha" class="form-label">Senha</label>
 				</div>
 
 				<button type="submit" class="enter">Entrar</button>
-
-
 
 			</form>
 

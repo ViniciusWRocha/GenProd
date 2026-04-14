@@ -13,4 +13,7 @@ public class FamiliaMedicaoFotoState
     public DateTime EnviadoEm { get; set; }
 
     public string? EnviadoPor { get; set; }
+
+    /// <summary>Indica que a foto foi aprovada pelo gerente/admin. Mantida para consulta até liberar para produção.</summary>
+    public bool Aprovada { get; set; }
 }

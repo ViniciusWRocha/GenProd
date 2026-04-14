@@ -38,31 +38,56 @@ public class UsuarioController : Controller
     [AllowAnonymous]
     public async Task<IActionResult> Login(string email, string senha)
     {
-        var (usuario, token) = await _usuarioRepository.ValidarLoginAsync(email, senha);
-
-        if (usuario == null || !usuario.Ativo)
+        if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(senha))
         {
-            ModelState.AddModelError(string.Empty, "Usuario ou senha invalidos");
+            ViewData["ErroLogin"] = "Preencha o e-mail e a senha.";
             return View("Login");
         }
 
-        string role = NormalizeRole(usuario?.TipoUsuario?.NomeTipoUsuario);
-
-        var claims = new List<Claim>
+        try
         {
-            new Claim(ClaimTypes.Name, usuario.NomeUsuario ?? usuario.Email ?? "Usuario"),
-            new Claim(ClaimTypes.Email, usuario.Email ?? string.Empty),
-            new Claim(ClaimTypes.Role, role),
-            new Claim("IdUsuario", usuario.IdUsuario.ToString()),
-            new Claim("ApiToken", token ?? string.Empty)
-        };
+            var (usuario, token) = await _usuarioRepository.ValidarLoginAsync(email, senha);
 
-        var identity = new ClaimsIdentity(claims, "GerenciadorProd");
-        var principal = new ClaimsPrincipal(identity);
+            if (usuario == null)
+            {
+                ViewData["ErroLogin"] = "E-mail ou senha incorretos.";
+                return View("Login");
+            }
 
-        await HttpContext.SignInAsync("GerenciadorProd", principal);
+            if (!usuario.Ativo)
+            {
+                ViewData["ErroLogin"] = "Sua conta está desativada. Entre em contato com o administrador.";
+                return View("Login");
+            }
 
-        return RedirectToAction("Index", "Home");
+            string role = NormalizeRole(usuario?.TipoUsuario?.NomeTipoUsuario);
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, usuario.NomeUsuario ?? usuario.Email ?? "Usuario"),
+                new Claim(ClaimTypes.Email, usuario.Email ?? string.Empty),
+                new Claim(ClaimTypes.Role, role),
+                new Claim("IdUsuario", usuario.IdUsuario.ToString()),
+                new Claim("ApiToken", token ?? string.Empty)
+            };
+
+            var identity = new ClaimsIdentity(claims, "GerenciadorProd");
+            var principal = new ClaimsPrincipal(identity);
+
+            await HttpContext.SignInAsync("GerenciadorProd", principal);
+
+            return RedirectToAction("Index", "Home");
+        }
+        catch (HttpRequestException)
+        {
+            ViewData["ErroLogin"] = "Não foi possível conectar ao servidor. Tente novamente mais tarde.";
+            return View("Login");
+        }
+        catch (Exception)
+        {
+            ViewData["ErroLogin"] = "Ocorreu um erro inesperado. Tente novamente.";
+            return View("Login");
+        }
     }
 
     [AllowAnonymous]
@@ -285,8 +310,11 @@ public class UsuarioController : Controller
         return r switch
         {
             "administrador" or "admin" => "Administrador",
-            "gerente" or "maneger" => "Gerente",
-            _ => "Outros"
+            "gerente" or "maneger" or "manager" => "Gerente",
+            "operador" => "Operador",
+            "vizualizador" or "visualizador" => "Vizualizador",
+            "" => "Outros",
+            _ => char.ToUpperInvariant(r[0]) + r.Substring(1)
         };
     }
 }

@@ -11,173 +11,177 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = GerenciamentoProducaoo
 build_property.RootNamespace = GerenciamentoProducaoo
-build_property.ProjectDir = C:\Users\TI\source\repos\SouRyan\GenProd\GerenciamentoProducao\
+build_property.ProjectDir = C:\Users\vinicius.wcrocha\source\repos\Hospedado\GenProd\GerenciamentoProducao\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\TI\source\repos\SouRyan\GenProd\GerenciamentoProducao
+build_property.MSBuildProjectDirectory = C:\Users\vinicius.wcrocha\source\repos\Hospedado\GenProd\GerenciamentoProducao
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 10.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/Caixilho/Create.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/Caixilho/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FpeGlsaG9cQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/Caixilho/Delete.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/Caixilho/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FpeGlsaG9cRGVsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/Caixilho/Details.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/Caixilho/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FpeGlsaG9cRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/Caixilho/Edit.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/Caixilho/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FpeGlsaG9cRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/Caixilho/Index.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/Caixilho/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FpeGlsaG9cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/Caixilho/Liberacoes.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/Caixilho/Liberacoes.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FpeGlsaG9cTGliZXJhY29lcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/FamiliaCaixilho/Create.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/FamiliaCaixilho/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmFtaWxpYUNhaXhpbGhvXENyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/FamiliaCaixilho/Delete.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/FamiliaCaixilho/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmFtaWxpYUNhaXhpbGhvXERlbGV0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/FamiliaCaixilho/Details.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/FamiliaCaixilho/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmFtaWxpYUNhaXhpbGhvXERldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/FamiliaCaixilho/Edit.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/FamiliaCaixilho/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmFtaWxpYUNhaXhpbGhvXEVkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/FamiliaCaixilho/EnviarFotoMedicao.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/FamiliaCaixilho/EnviarFotoMedicao.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmFtaWxpYUNhaXhpbGhvXEVudmlhckZvdG9NZWRpY2FvLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/FamiliaCaixilho/Index.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/FamiliaCaixilho/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmFtaWxpYUNhaXhpbGhvXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/Home/Index.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/Home/Privacy.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/Obra/Create.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/Notificacao/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTm90aWZpY2FjYW9cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/Obra/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT2JyYVxDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/Obra/Delete.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/Obra/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT2JyYVxEZWxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/Obra/DeleteConfirmed.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/Obra/DeleteConfirmed.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT2JyYVxEZWxldGVDb25maXJtZWQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/Obra/Details.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/Obra/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT2JyYVxEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/Obra/Edit.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/Obra/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT2JyYVxFZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/Obra/Finalizados.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/Obra/Finalizados.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT2JyYVxGaW5hbGl6YWRvcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/Obra/Index.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/Obra/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT2JyYVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/Shared/Error.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/TipoUsuario/Create.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/TipoUsuario/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGlwb1VzdWFyaW9cQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/TipoUsuario/Delete.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/TipoUsuario/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGlwb1VzdWFyaW9cRGVsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/TipoUsuario/Edit.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/TipoUsuario/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGlwb1VzdWFyaW9cRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/TipoUsuario/Index.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/TipoUsuario/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGlwb1VzdWFyaW9cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/Usuario/AcessoNegado.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/Usuario/AcessoNegado.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xBY2Vzc29OZWdhZG8uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/Usuario/Ativar.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/Usuario/Ativar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xBdGl2YXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/Usuario/Create.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/Usuario/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/Usuario/Delete.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/Usuario/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xEZWxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/Usuario/Details.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/Usuario/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/Usuario/Edit.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/Usuario/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xFZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/Usuario/Inativos.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/Usuario/Inativos.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xJbmF0aXZvcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/Usuario/Index.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/Usuario/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/Usuario/Login.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/Usuario/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/Usuario/Login2.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/Usuario/Login2.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xMb2dpbjIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/_ViewImports.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/_ViewStart.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/TI/source/repos/SouRyan/GenProd/GerenciamentoProducao/Views/Shared/_Layout.cshtml]
+[C:/Users/vinicius.wcrocha/source/repos/Hospedado/GenProd/GerenciamentoProducao/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-iagb01wsdw

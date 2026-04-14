@@ -62,6 +62,11 @@ namespace GerenciamentoProducao.Services
             return dtos.Select(MapToModel).ToList();
         }
 
+        public async Task FinalizarProducaoAsync(int familiaId)
+        {
+            await PostAsync($"/api/familia-caixilho/{familiaId}/finalizar-producao");
+        }
+
         private static string MapStatusFamilia(int status) => status switch
         {
             1 => "Pendente",

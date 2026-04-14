@@ -1,0 +1,77 @@
+@model List<GerenciamentoProducao.Services.NotificacaoApiService.NotificacaoWebDto>
+@{
+    ViewData["Title"] = "Notificações";
+}
+
+<div class="container mt-4">
+    <h3 class="mb-4"><i class="fas fa-bell me-2"></i>Notificações</h3>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info">Nenhuma notificação encontrada.</div>
+    }
+    else
+    {
+        <div class="list-group">
+            @foreach (var n in Model.OrderByDescending(x => x.DataCriacao))
+            {
+                var corBorda = n.TipoNotificacao switch
+                {
+                    5 => "border-start-info",      // ObraCriada
+                    6 => "border-start-warning",    // FotoMedicaoEnviada
+                    7 => "border-start-success",    // FotoMedicaoAprovada
+                    8 => "border-start-primary",    // ProducaoIniciada
+                    9 => "border-start-secondary",  // FamiliaParaMedir
+                    1 => "border-start-info",       // ObraVerificada
+                    2 => "border-start-warning",    // FamiliaMedida
+                    3 => "border-start-success",    // FamiliaProduzida
+                    4 => "border-start-success",    // ObraConcluida
+                    _ => ""
+                };
+
+                var icone = n.TipoNotificacao switch
+                {
+                    5 => "fa-building",
+                    6 => "fa-camera",
+                    7 => "fa-check-circle",
+                    8 => "fa-play-circle",
+                    9 => "fa-ruler",
+                    1 => "fa-clipboard-check",
+                    2 => "fa-ruler-combined",
+                    3 => "fa-industry",
+                    4 => "fa-flag-checkered",
+                    _ => "fa-bell"
+                };
+
+                <div class="list-group-item @(n.Lida ? "bg-transparent" : "bg-opacity-10 bg-primary") border-start border-4 @corBorda mb-2 rounded">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="d-flex align-items-start gap-2">
+                            <i class="fas @icone mt-1 @(n.Lida ? "text-muted" : "text-primary")"></i>
+                            <div>
+                                <h6 class="mb-1 @(n.Lida ? "text-muted" : "fw-bold")">@n.Titulo</h6>
+                                <p class="mb-1 small">@n.Mensagem</p>
+                                <small class="text-muted">@n.DataCriacao.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</small>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            @if (!n.Lida)
+                            {
+                                <span class="badge bg-primary">NOVA</span>
+                                <form asp-action="MarcarLida" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@n.IdNotificacao" />
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="Marcar como lida">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                </form>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">LIDA</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

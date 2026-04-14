@@ -4,6 +4,7 @@ using System.Text.Json;
 using GerenciamentoProducao.ApiDtos;
 using GerenciamentoProducao.Interfaces;
 using GerenciamentoProducao.Models;
+using GerenciamentoProducao.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,13 +27,36 @@ public class FamiliaCaixilhoMedicaoApiController : ControllerBase
 
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IFamiliaMedicaoFotoStore _medicaoFotoStore;
+    private readonly NotificacaoApiService _notificacaoService;
 
     public FamiliaCaixilhoMedicaoApiController(
         IHttpClientFactory httpClientFactory,
-        IFamiliaMedicaoFotoStore medicaoFotoStore)
+        IFamiliaMedicaoFotoStore medicaoFotoStore,
+        NotificacaoApiService notificacaoService)
     {
         _httpClientFactory = httpClientFactory;
         _medicaoFotoStore = medicaoFotoStore;
+        _notificacaoService = notificacaoService;
+    }
+
+    [HttpGet("{id:int}/medicao-foto")]
+    public async Task<IActionResult> GetMedicaoFoto(int id, CancellationToken cancellationToken)
+    {
+        var auth = Request.Headers.Authorization.ToString();
+        if (string.IsNullOrEmpty(auth) || !auth.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
+            return Unauthorized();
+
+        var foto = await _medicaoFotoStore.GetAsync(id, cancellationToken);
+        if (foto == null)
+            return NotFound(new { message = "Nenhuma foto de medição encontrada." });
+
+        return Ok(new
+        {
+            fotoBase64 = foto.FotoBase64,
+            enviadoEm = foto.EnviadoEm,
+            enviadoPor = foto.EnviadoPor,
+            aprovada = foto.Aprovada
+        });
     }
 
     [HttpPost("{id:int}/medicao-foto")]
@@ -79,7 +103,8 @@ public class FamiliaCaixilhoMedicaoApiController : ControllerBase
         if (daFamilia.All(c => c.StatusProducao == 2))
             return BadRequest(new { message = "Medição já confirmada (todos os caixilhos já estão medidos)." });
 
-        if (await _medicaoFotoStore.GetAsync(id, cancellationToken) != null)
+        var fotoExistente = await _medicaoFotoStore.GetAsync(id, cancellationToken);
+        if (fotoExistente != null && !fotoExistente.Aprovada)
             return BadRequest(new { message = "Já existe uma foto aguardando aprovação na web." });
 
         await _medicaoFotoStore.SaveAsync(new FamiliaMedicaoFotoState
@@ -89,6 +114,13 @@ public class FamiliaCaixilhoMedicaoApiController : ControllerBase
             EnviadoEm = DateTime.UtcNow,
             EnviadoPor = "App mobile"
         });
+
+        // Notificar gerentes que há foto pendente de aprovação
+        // TipoNotificacao.FotoMedicaoEnviada = 6, TipoCargo.Gerente = 1
+        _ = _notificacaoService.BroadcastAsync(
+            "Foto de medição enviada",
+            $"Uma foto de medição da família #{id} foi enviada pelo app mobile e aguarda aprovação.",
+            6, null, 1);
 
         return Ok(new { message = "Foto recebida. Aguarde aprovação na web para marcar os caixilhos como medidos." });
     }

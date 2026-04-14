@@ -86,6 +86,14 @@ namespace GerenciamentoProducao.Services
             await EnsureSuccess(response);
         }
 
+        protected async Task<byte[]?> GetBytesAsync(string endpoint)
+        {
+            SetAuthHeader();
+            var response = await _httpClient.GetAsync(endpoint);
+            if (!response.IsSuccessStatusCode) return null;
+            return await response.Content.ReadAsByteArrayAsync();
+        }
+
         protected async Task DeleteAsync(string endpoint)
         {
             SetAuthHeader();

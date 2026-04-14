@@ -149,19 +149,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\TI\\.nuget\\packages\\": {}
+    "C:\\Users\\vinicius.wcrocha\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\TI\\source\\repos\\SouRyan\\GenProd\\GerenciamentoProducao\\GerenciamentoProducaoo.csproj",
+      "projectUniqueName": "C:\\Users\\vinicius.wcrocha\\source\\repos\\Hospedado\\GenProd\\GerenciamentoProducao\\GerenciamentoProducaoo.csproj",
       "projectName": "GerenciamentoProducaoo",
-      "projectPath": "C:\\Users\\TI\\source\\repos\\SouRyan\\GenProd\\GerenciamentoProducao\\GerenciamentoProducaoo.csproj",
-      "packagesPath": "C:\\Users\\TI\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\TI\\source\\repos\\SouRyan\\GenProd\\GerenciamentoProducao\\obj\\",
+      "projectPath": "C:\\Users\\vinicius.wcrocha\\source\\repos\\Hospedado\\GenProd\\GerenciamentoProducao\\GerenciamentoProducaoo.csproj",
+      "packagesPath": "C:\\Users\\vinicius.wcrocha\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\vinicius.wcrocha\\source\\repos\\Hospedado\\GenProd\\GerenciamentoProducao\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\TI\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\vinicius.wcrocha\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -169,6 +174,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -221,7 +227,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.200-preview.0.26103.119/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.AspNetCore": "(,10.0.32767]",
           "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",

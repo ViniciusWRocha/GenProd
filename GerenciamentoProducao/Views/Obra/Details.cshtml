@@ -4,7 +4,11 @@
     ViewData["Title"] = "Obra - " + Model.Nome;
     var familias = ViewBag.Familias as List<GerenciamentoProducao.Models.FamiliaCaixilho> ?? new List<GerenciamentoProducao.Models.FamiliaCaixilho>();
     var caixilhos = ViewBag.Caixilhos as List<GerenciamentoProducao.Models.Caixilho> ?? new List<GerenciamentoProducao.Models.Caixilho>();
-    var prontaParaConcluir = Model.PercentualMedicao >= 100 && Model.PercentualProducao >= 100 && Model.StatusObra != "Concluida";
+    // Alinhado à API (Concluir exige ~100%): evita 99,97% arredondado como 100% na UI sem botão, ou o inverso.
+    var prontaParaConcluir = Model.StatusObra != "Concluida"
+        && familias.Count > 0
+        && Model.PercentualMedicao >= 99.99f
+        && Model.PercentualProducao >= 99.99f;
 }
 
 <div class="container-fluid">
@@ -157,23 +161,25 @@
         </div>
     </div>
 
-    @* Banner Concluir Obra *@
+    @* Banner Concluir Obra (medição e produção em 100%) *@
     @if (prontaParaConcluir && (User.IsInRole("Administrador") || User.IsInRole("Gerente")))
     {
-        <div class="alert alert-success d-flex justify-content-between align-items-center mb-4" role="alert">
-            <div class="d-flex align-items-center gap-3">
-                <i class="fas fa-check-double fa-2x"></i>
-                <div>
-                    <strong>Obra pronta para conclusao!</strong>
-                    <div class="small">Todas as medicoes e producoes estao em 100%.</div>
+        <div class="alert alert-success border border-success border-2 shadow-sm mb-4 py-3 px-3 px-md-4" role="alert">
+            <div class="d-flex flex-column flex-md-row align-items-stretch align-items-md-center justify-content-between gap-3">
+                <div class="d-flex align-items-center gap-3">
+                    <i class="fas fa-check-double fa-2x flex-shrink-0"></i>
+                    <div>
+                        <strong class="d-block">Obra pronta para conclusão</strong>
+                        <span class="small">Medição e produção estão em 100% — clique para encerrar formalmente a obra na API.</span>
+                    </div>
                 </div>
+                <form asp-action="ConcluirObra" asp-controller="Obra" method="post" class="d-grid d-md-block flex-shrink-0">
+                    <input type="hidden" name="id" value="@Model.IdObra" />
+                    <button type="submit" class="btn btn-success btn-lg w-100 w-md-auto" onclick="return confirm('Marcar esta obra como concluída? Esta ação atualiza o estado na API.')">
+                        <i class="fas fa-flag-checkered me-1"></i> Finalizar obra
+                    </button>
+                </form>
             </div>
-            <form asp-action="ConcluirObra" asp-controller="Obra" method="post">
-                <input type="hidden" name="id" value="@Model.IdObra" />
-                <button type="submit" class="btn btn-success btn-lg" onclick="return confirm('Deseja marcar esta obra como concluida?')">
-                    <i class="fas fa-flag-checkered me-1"></i> Concluir Obra
-                </button>
-            </form>
         </div>
     }
     else if (Model.StatusObra == "Concluida")

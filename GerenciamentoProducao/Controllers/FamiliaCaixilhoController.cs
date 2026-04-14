@@ -1,5 +1,7 @@
+using System.Net.Http;
 using GerenciamentoProducao.Interfaces;
 using GerenciamentoProducao.Models;
+using GerenciamentoProducao.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,17 +15,23 @@ namespace GerenciamentoProducao.Controllers
         private readonly IObraRepository _obraRepository;
         private readonly ICaixilhoRepository _caixilhoRepository;
         private readonly IFamiliaMedicaoFotoStore _medicaoFotoStore;
+        private readonly MedicaoApiService _medicaoApiService;
+        private readonly NotificacaoApiService _notificacaoService;
 
         public FamiliaCaixilhoController(
             IFamiliaCaixilhoRepository familiaCaixilhoRepository,
             IObraRepository obraRepository,
             ICaixilhoRepository caixilhoRepository,
-            IFamiliaMedicaoFotoStore medicaoFotoStore)
+            IFamiliaMedicaoFotoStore medicaoFotoStore,
+            MedicaoApiService medicaoApiService,
+            NotificacaoApiService notificacaoService)
         {
             _familiaCaixilhoRepository = familiaCaixilhoRepository;
             _obraRepository = obraRepository;
             _caixilhoRepository = caixilhoRepository;
             _medicaoFotoStore = medicaoFotoStore;
+            _medicaoApiService = medicaoApiService;
+            _notificacaoService = notificacaoService;
         }
 
         public async Task<IActionResult> Index()
@@ -134,6 +142,10 @@ namespace GerenciamentoProducao.Controllers
             ViewBag.ObraNome = obra?.Nome;
             ViewBag.MedicaoFotoPendente = await _medicaoFotoStore.GetAsync(familia.IdFamiliaCaixilho);
 
+            // Dados de produção e medição da API
+            ViewBag.ProducaoFamilia = await _medicaoApiService.GetProducaoByFamiliaAsync(id.Value);
+            ViewBag.MedicaoFamilia = await _medicaoApiService.GetByFamiliaAsync(id.Value);
+
             return View(familia);
         }
 
@@ -162,7 +174,8 @@ namespace GerenciamentoProducao.Controllers
                 return RedirectToAction(nameof(Details), new { id });
             }
 
-            if (await _medicaoFotoStore.GetAsync(id) != null)
+            var fotoExistente = await _medicaoFotoStore.GetAsync(id);
+            if (fotoExistente != null && !fotoExistente.Aprovada)
             {
                 TempData["ErrorMessage"] = "Já existe uma foto aguardando aprovação. Aguarde ou peça a rejeição para enviar outra.";
                 return RedirectToAction(nameof(Details), new { id });
@@ -198,7 +211,8 @@ namespace GerenciamentoProducao.Controllers
                 return RedirectToAction(nameof(Details), new { id });
             }
 
-            if (await _medicaoFotoStore.GetAsync(id) != null)
+            var fotoExistentePost = await _medicaoFotoStore.GetAsync(id);
+            if (fotoExistentePost != null && !fotoExistentePost.Aprovada)
             {
                 TempData["ErrorMessage"] = "Já existe foto pendente de aprovação.";
                 return RedirectToAction(nameof(Details), new { id });
@@ -256,12 +270,14 @@ namespace GerenciamentoProducao.Controllers
 
             if (caixilhos.All(c => c.StatusProducao == "Medido"))
             {
-                await _medicaoFotoStore.DeleteAsync(id);
-                TempData["ErrorMessage"] = "Os caixilhos já estão medidos; foto pendente foi removida.";
+                pendente.Aprovada = true;
+                await _medicaoFotoStore.SaveAsync(pendente);
+                TempData["ErrorMessage"] = "Os caixilhos já estão medidos; foto marcada como aprovada.";
                 return RedirectToAction(nameof(Details), new { id });
             }
 
-            await _medicaoFotoStore.DeleteAsync(id);
+            pendente.Aprovada = true;
+            await _medicaoFotoStore.SaveAsync(pendente);
 
             foreach (var c in caixilhos)
             {
@@ -278,6 +294,20 @@ namespace GerenciamentoProducao.Controllers
 
             try { await _familiaCaixilhoRepository.AtualizarPesoTotalAsync(familia.IdFamiliaCaixilho); } catch { }
             try { await _obraRepository.RecalcularProgressoAsync(familia.IdObra); } catch { }
+
+            // Notificar medidores e produtores que a foto foi aprovada
+            // TipoNotificacao.FotoMedicaoAprovada = 7
+            // TipoCargo.ResponsavelMedicao = 3, ResponsavelProducao = 4
+            _ = Task.WhenAll(
+                _notificacaoService.BroadcastAsync(
+                    "Medição aprovada",
+                    $"A foto de medição da família \"{familia.DescricaoFamilia}\" foi aprovada. A família está pronta para produção.",
+                    7, familia.IdObra, 3),
+                _notificacaoService.BroadcastAsync(
+                    "Medição aprovada",
+                    $"A foto de medição da família \"{familia.DescricaoFamilia}\" foi aprovada. A família está pronta para produção.",
+                    7, familia.IdObra, 4)
+            );
 
             TempData["SuccessMessage"] = $"Medição aprovada. Todos os caixilhos da família '{familia.DescricaoFamilia}' foram marcados como Medido. Pode liberar para produção quando desejar.";
             return RedirectToAction(nameof(Details), new { id });
@@ -301,16 +331,9 @@ namespace GerenciamentoProducao.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Administrador,Gerente")]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> LiberarProducao(int id)
         {
-            if (!User.IsInRole("Administrador"))
-            {
-                TempData["ErrorMessage"] =
-                    "Apenas administrador pode liberar para produção sem passar pela medição com foto. Envie a foto, aguarde aprovação na web (marca como Medido) ou peça a um administrador.";
-                return RedirectToAction("Details", new { id });
-            }
-
             var familia = await _familiaCaixilhoRepository.GetByIdAsync(id);
             if (familia == null) return NotFound();
 
@@ -330,6 +353,35 @@ namespace GerenciamentoProducao.Controllers
 
             TempData["SuccessMessage"] = $"Família '{familia.DescricaoFamilia}' liberada para produção!";
             return RedirectToAction("Details", new { id });
+        }
+
+        /// <summary>Família em EmProducao → Produzida. Atualiza percentuais da obra (famílias concluídas / total).</summary>
+        [HttpPost]
+        [Authorize(Roles = "Administrador,Gerente")]
+        public async Task<IActionResult> FinalizarProducaoFamilia(int id)
+        {
+            var familia = await _familiaCaixilhoRepository.GetByIdAsync(id);
+            if (familia == null) return NotFound();
+
+            if (familia.StatusFamilia != "EmProducao")
+            {
+                TempData["ErrorMessage"] = "Só é possível finalizar quando a família está liberada e em produção (ainda não concluída).";
+                return RedirectToAction(nameof(Details), new { id });
+            }
+
+            try
+            {
+                await _familiaCaixilhoRepository.FinalizarProducaoAsync(id);
+                try { await _obraRepository.RecalcularProgressoAsync(familia.IdObra); } catch { }
+                TempData["SuccessMessage"] =
+                    $"Produção da família '{familia.DescricaoFamilia}' concluída. O progresso da obra foi atualizado.";
+            }
+            catch (HttpRequestException ex)
+            {
+                TempData["ErrorMessage"] = $"Não foi possível finalizar na API: {ex.Message}";
+            }
+
+            return RedirectToAction(nameof(Details), new { id });
         }
 
         [HttpPost]

@@ -41,6 +41,8 @@ builder.Services.AddScoped<IFamiliaCaixilhoRepository, FamiliaCaixilhoApiService
 builder.Services.AddSingleton<IFamiliaMedicaoFotoStore, FamiliaMedicaoFotoFileStore>();
 builder.Services.AddScoped<ITipoUsuarioRepository, TipoUsuarioApiService>();
 builder.Services.AddScoped<IDashboardApiService, DashboardApiService>();
+builder.Services.AddScoped<MedicaoApiService>();
+builder.Services.AddScoped<NotificacaoApiService>();
 
 // Autenticação com COOKIES
 builder.Services.AddAuthentication("GerenciadorProd")

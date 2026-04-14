@@ -34,10 +34,23 @@
 
 
 		<ul class="nav flex-column gap-2 mt-4" id="navLeft">
-			@* <li class="d-flex align-items-center gap-2"> *@
-			@* 	<img src="@Url.Content("~/" + Model.ImagemObraPath)"  class="img-fluid" style="width: 20px; height: 20px;"> *@
-			@* 	<span>@User.Identity.Name</span> *@
-			@* </li> *@
+			@if (User.Identity?.IsAuthenticated == true)
+			{
+				var nomeUsuario = User.Identity.Name ?? "Usuario";
+				var cargoUsuario = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value ?? "Sem cargo";
+				<li class="px-2 mb-3">
+					<a class="nav-link d-flex align-items-center gap-2 p-2 rounded"
+					   asp-controller="Usuario" asp-action="Index"
+					   style="background:rgba(255,255,255,0.06);text-decoration:none;"
+					   title="@nomeUsuario (@cargoUsuario)">
+						<i class="fas fa-user-circle fa-2x text-info"></i>
+						<span class="flex-grow-1 overflow-hidden">
+							<span class="d-block fw-semibold text-truncate" style="font-size:0.9rem;">@nomeUsuario</span>
+							<span class="d-block small text-truncate" style="opacity:.7;">@cargoUsuario</span>
+						</span>
+					</a>
+				</li>
+			}
 			<li><a class="nav-link" asp-controller="Home" asp-action="Index">🏠 Início</a></li>
 				@if (User.IsInRole("Administrador") || User.IsInRole("Gerente")){
 
@@ -49,6 +62,12 @@
 			<li><a class="nav-link" asp-controller="Caixilho" asp-action="Index">🪟 Caixilho</a></li>
 			<li><a class="nav-link" asp-controller="Caixilho" asp-action="Liberacoes">🔓 Liberações</a></li>
 				}
+			<li>
+				<a class="nav-link position-relative" asp-controller="Notificacao" asp-action="Index">
+					🔔 Notificações
+					<span id="notif-badge-sidebar" class="badge bg-danger rounded-pill ms-1" style="display:none;font-size:0.7rem;"></span>
+				</a>
+			</li>
 			@if (User.Identity?.IsAuthenticated == true)
 			{
 					<div class="px-3 mt-3 d-none d-lg-block">
@@ -57,8 +76,11 @@
 							<span>Tema Claro</span>
 						</button>
 					</div>
-				<li class="mt-4">
-					<a class="nav-link text-danger" asp-controller="Usuario" asp-action="Logout">🚪 Sair</a>
+				<li class="mt-4 px-1">
+					<a class="btn-logout" asp-controller="Usuario" asp-action="Logout">
+						<i class="fas fa-sign-out-alt logout-icon"></i>
+						<span>Sair</span>
+					</a>
 				</li>
 			}
 		</ul>
@@ -80,6 +102,11 @@
                 <li><a class="nav-link" asp-controller="TipoCaixilho" asp-action="Index">🔠 Tipos de Caixilhos</a></li>
                 <li><a class="nav-link" asp-controller="FamiliaCaixilho" asp-action="Index">📦 Família de Caixilho</a></li>
                 <li><a class="nav-link" asp-controller="Obra" asp-action="Index">🏗️ Obras</a></li>
+						<li>
+							<a class="nav-link position-relative" asp-controller="Notificacao" asp-action="Index">
+								🔔 <span id="notif-badge-top" class="badge bg-danger rounded-pill" style="display:none;font-size:0.7rem;"></span>
+							</a>
+						</li>
 
 						@if (User.Identity?.IsAuthenticated == true)
 						{
@@ -89,8 +116,11 @@
 									<span>Claro</span>
 								</button>
 							</li>
-							<li class="mt-4">
-								<a class="nav-link text-danger" asp-controller="Usuario" asp-action="Logout">🚪 Sair</a>
+							<li class="mt-4 px-1">
+								<a class="btn-logout" asp-controller="Usuario" asp-action="Logout">
+									<i class="fas fa-sign-out-alt logout-icon"></i>
+									<span>Sair</span>
+								</a>
 							</li>
 						}
 					</ul>
@@ -168,18 +198,32 @@
 			}
 		})();
 	</script>
-@* 	<script> *@
-		
-@* const path = window.location.pathname; *@
-@* 		if (path.includes("/Delete/")) { *@
-@* 			document.getElementById("navTop").style.display = "none"; *@
-@* 			document.getElementById("sidebar").style.display = "none"; *@
-@* 			document.getElementById("tudo").style.margin = "0"; //evita espaço sobrando *@
-@* 		} *@
-@* 		if(!path.includes("/Home/Index")){ *@
-@* 			document.getElementsByClassName("main")[0].style.marginTop = "0px"; *@
-
-		
-@* 	</script> *@
+	<script>
+		(function() {
+			function atualizarBadge() {
+				fetch('/api/notificacoes/count')
+					.then(r => r.json())
+					.then(data => {
+						var count = data.count || 0;
+						var badges = [
+							document.getElementById('notif-badge-sidebar'),
+							document.getElementById('notif-badge-top')
+						];
+						badges.forEach(function(b) {
+							if (!b) return;
+							if (count > 0) {
+								b.textContent = count > 99 ? '99+' : count;
+								b.style.display = 'inline';
+							} else {
+								b.style.display = 'none';
+							}
+						});
+					})
+					.catch(function() {});
+			}
+			atualizarBadge();
+			setInterval(atualizarBadge, 30000);
+		})();
+	</script>
 </body>
 </html>

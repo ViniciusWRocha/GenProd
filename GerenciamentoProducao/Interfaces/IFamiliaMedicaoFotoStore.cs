@@ -11,4 +11,6 @@ public interface IFamiliaMedicaoFotoStore
     Task DeleteAsync(int idFamiliaCaixilho, CancellationToken cancellationToken = default);
 
     Task<IReadOnlyList<int>> ListFamiliasComFotoPendenteAsync(CancellationToken cancellationToken = default);
+
+    Task<IReadOnlyList<int>> ListFamiliasComFotoAsync(CancellationToken cancellationToken = default);
 }

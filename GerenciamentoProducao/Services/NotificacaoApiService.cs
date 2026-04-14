@@ -39,6 +39,29 @@ public class NotificacaoApiService : ApiClientBase
         catch (HttpRequestException) { }
     }
 
+    public async Task MarcarTodasLidasAsync(int idUsuario)
+    {
+        try
+        {
+            var lista = await GetByUsuarioAsync(idUsuario);
+            var naoLidas = lista.Where(n => !n.Lida).ToList();
+            if (naoLidas.Count == 0) return;
+
+            await Task.WhenAll(naoLidas.Select(n => MarcarLidaAsync(n.IdNotificacao)));
+        }
+        catch (HttpRequestException) { }
+    }
+
+    public async Task ApagarAsync(int idNotificacao)
+    {
+        await DeleteAsync($"api/notificacao/{idNotificacao}");
+    }
+
+    public async Task ApagarLidasAsync(int idUsuario)
+    {
+        await DeleteAsync($"api/notificacao/usuario/{idUsuario}/lidas");
+    }
+
     public async Task BroadcastAsync(string titulo, string mensagem, int tipoNotificacao, int? idObra, int tipoCargo)
     {
         try

@@ -44,4 +44,45 @@ public class NotificacaoController : Controller
         await _notificacaoService.MarcarLidaAsync(id);
         return RedirectToAction(nameof(Index));
     }
+
+    [HttpPost]
+    public async Task<IActionResult> MarcarTodasLidas()
+    {
+        var idUsuario = GetUsuarioId();
+        if (idUsuario == 0) return RedirectToAction("Login", "Usuario");
+
+        await _notificacaoService.MarcarTodasLidasAsync(idUsuario);
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Apagar(int id)
+    {
+        try
+        {
+            await _notificacaoService.ApagarAsync(id);
+        }
+        catch (Exception ex)
+        {
+            TempData["NotificacaoErro"] = $"Falha ao apagar: {ex.Message}";
+        }
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ApagarLidas()
+    {
+        var idUsuario = GetUsuarioId();
+        if (idUsuario == 0) return RedirectToAction("Login", "Usuario");
+
+        try
+        {
+            await _notificacaoService.ApagarLidasAsync(idUsuario);
+        }
+        catch (Exception ex)
+        {
+            TempData["NotificacaoErro"] = $"Falha ao apagar: {ex.Message}";
+        }
+        return RedirectToAction(nameof(Index));
+    }
 }

@@ -3,30 +3,39 @@ html {
 }
 * {
     margin: 0;
-    font-family: "Fira Code", monospace;
+}
+body, input, select, textarea, button {
+    font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+}
+code, kbd, pre, samp, .code, .mono {
+    font-family: "JetBrains Mono", ui-monospace, Consolas, monospace;
 }
 
 :root {
     color-scheme: dark;
-    --gp-body-bg: #222222;
-    --gp-body-color: #f8f9fa;
-    --gp-heading-color: #f8f9fa;
-    --gp-muted-color: #adb5bd;
-    --gp-card-bg: #1f1f1f;
-    --gp-card-border: rgba(255, 255, 255, 0.1);
-    --gp-card-accent: rgba(255, 255, 255, 0.05);
-    --gp-form-bg: #2b2b2b;
-    --gp-form-border: rgba(255, 255, 255, 0.2);
-    --gp-sidebar-bg: #1d1d1d;
-    --gp-sidebar-text: #f8f9fa;
-    --gp-sidebar-hover-bg: rgba(255, 255, 255, 0.1);
-    --gp-navtop-bg: #000000;
-    --gp-navtop-link: #f8f9fa;
+    --gp-body-bg: #14161a;
+    --gp-body-color: #e6e8eb;
+    --gp-heading-color: #f1f3f5;
+    --gp-muted-color: #9aa4ad;
+    --gp-card-bg: #1b1e23;
+    --gp-card-border: rgba(255, 255, 255, 0.08);
+    --gp-card-accent: rgba(255, 255, 255, 0.04);
+    --gp-form-bg: #1f232a;
+    --gp-form-border: rgba(255, 255, 255, 0.14);
+    --gp-sidebar-bg: #16181d;
+    --gp-sidebar-text: #e6e8eb;
+    --gp-sidebar-hover-bg: rgba(255, 255, 255, 0.06);
+    --gp-sidebar-active-bg: rgba(59, 130, 246, 0.12);
+    --gp-sidebar-active-color: #60a5fa;
+    --gp-navtop-bg: #16181d;
+    --gp-navtop-link: #e6e8eb;
     --gp-navtop-link-hover: #ffffff;
     --gp-border-color: rgba(255, 255, 255, 0.08);
-    --gp-toggle-bg: #1f1f1f;
-    --gp-toggle-border: rgba(255, 255, 255, 0.2);
-    --gp-toggle-color: #f8f9fa;
+    --gp-toggle-bg: #1f232a;
+    --gp-toggle-border: rgba(255, 255, 255, 0.18);
+    --gp-toggle-color: #e6e8eb;
+    --gp-accent: #3b82f6;
+    --gp-accent-hover: #2563eb;
 }
 
 @media (min-width: 768px) {
@@ -328,12 +337,11 @@ dl.row{
     top: 0;
     left: 0;
     height: 100vh;
-    width: 270px;
+    width: 260px;
     background-color: var(--gp-sidebar-bg);
     color: var(--gp-sidebar-text);
-    padding: 1rem 1.25rem;
+    padding: 1rem 1rem;
     transition: all 0.3s ease;
-    /*    z-index: 1000;*/
     overflow-y: auto;
     border-right: 1px solid var(--gp-border-color);
 }
@@ -346,16 +354,83 @@ dl.row{
         /* Links da nav */
         #sidebar .nav-link {
             color: var(--gp-sidebar-text);
-            padding: 10px;
-            border-radius: 5px;
-            transition: background 0.2s;
+            padding: 0.55rem 0.75rem;
+            border-radius: 6px;
+            transition: background 0.15s ease, color 0.15s ease;
+            font-weight: 500;
         }
 
             #sidebar .nav-link:hover {
                 background-color: var(--gp-sidebar-hover-bg);
+                color: var(--gp-sidebar-text);
             }
 
-    /* �cone para abrir/fechar */
+        #sidebar .nav-link.active,
+        #sidebar .nav-link.active:hover {
+            background-color: var(--gp-sidebar-active-bg);
+            color: var(--gp-sidebar-active-color);
+        }
+
+    /* Nav link com ícone + texto alinhados */
+    .nav-link--icon {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+    }
+    .nav-link--icon > i {
+        font-size: 0.95rem;
+        opacity: 0.85;
+        width: 1.1rem;
+        text-align: center;
+    }
+    .nav-link--icon > span {
+        flex: 1 1 auto;
+    }
+
+    /* Cartão do utilizador na sidebar */
+    .nav-user-card {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.65rem 0.75rem;
+        border-radius: 8px;
+        background: var(--gp-card-accent);
+        border: 1px solid var(--gp-border-color);
+        color: var(--gp-sidebar-text);
+        text-decoration: none;
+        transition: background 0.15s ease;
+    }
+    .nav-user-card:hover {
+        background: var(--gp-sidebar-hover-bg);
+        color: var(--gp-sidebar-text);
+        text-decoration: none;
+    }
+    .nav-user-card__avatar {
+        font-size: 1.75rem;
+        color: var(--gp-accent);
+        flex-shrink: 0;
+    }
+    .nav-user-card__info {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+    }
+    .nav-user-card__name {
+        font-size: 0.85rem;
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .nav-user-card__role {
+        font-size: 0.72rem;
+        opacity: 0.65;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Botão de abrir/fechar sidebar */
     #toggle-sidebar {
         position: absolute;
         top: 10px;
@@ -365,8 +440,8 @@ dl.row{
         border: none;
         border-radius: 4px;
         cursor: pointer;
-        width: 40px;
-        height: 40px;
+        width: 38px;
+        height: 38px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -378,31 +453,14 @@ dl.row{
             background: var(--gp-sidebar-hover-bg);
             color: var(--gp-sidebar-text);
         }
-        
+
         #toggle-sidebar:active {
             background: var(--gp-sidebar-hover-bg);
         }
 
-    /* �cone gira quando fecha */
     #sidebar.collapsed #toggle-sidebar i {
         transform: rotate(180deg);
         transition: transform 0.3s ease;
-    }
-
-    /* Ajuste no conte�do principal */
-
-
-/*    #sidebar.collapsed ~ .main {
-        margin-left: 60px;
-    }*/
-    
-    /* Garantir que o main seja ajustado quando sidebar estiver minimizada */
-/*    #sidebar.collapsed + * .main {
-        margin-left: 60px !important;
-    }*/
-
-    .material-symbols-outlined {
-        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24
     }
 
     #navTop {
@@ -410,6 +468,39 @@ dl.row{
         display: none;
         background: var(--gp-navtop-bg) !important;
         border-bottom: 1px solid var(--gp-border-color);
+    }
+
+    #navTop .navbar-brand {
+        font-weight: 600;
+        letter-spacing: 0.03em;
+        color: var(--gp-navtop-link) !important;
+    }
+
+    /* Toggler hambúrguer baseado em Font Awesome (funciona em qualquer tema) */
+    #navTop .navbar-toggler {
+        border: 1px solid var(--gp-border-color);
+        color: var(--gp-navtop-link);
+        background: transparent;
+        padding: 0.35rem 0.55rem;
+        border-radius: 6px;
+    }
+    #navTop .navbar-toggler:focus {
+        box-shadow: 0 0 0 0.15rem rgba(59, 130, 246, 0.25);
+    }
+    #navTop .navbar-toggler i {
+        font-size: 1.05rem;
+        line-height: 1;
+        color: var(--gp-navtop-link);
+    }
+
+    #navTop .nav-link {
+        color: var(--gp-navtop-link) !important;
+        border-radius: 6px;
+        padding: 0.5rem 0.75rem;
+    }
+    #navTop .nav-link:hover {
+        background: var(--gp-sidebar-hover-bg);
+        color: var(--gp-navtop-link-hover) !important;
     }
 
     @media (max-width: 1024px) {
@@ -484,48 +575,45 @@ body.theme-light {
 }
 
 html.theme-light {
-    --gp-body-bg: #f8f9fa;
-    --gp-body-color: #212529;
-    --gp-heading-color: #212529;
-    --gp-muted-color: #6c757d;
+    --gp-body-bg: #f4f6f8;
+    --gp-body-color: #1f2328;
+    --gp-heading-color: #0f1419;
+    --gp-muted-color: #5c6770;
     --gp-card-bg: #ffffff;
-    --gp-card-border: rgba(0, 0, 0, 0.08);
-    --gp-card-accent: #f1f3f5;
+    --gp-card-border: rgba(15, 23, 42, 0.1);
+    --gp-card-accent: #eef1f4;
     --gp-form-bg: #ffffff;
-    --gp-form-border: #ced4da;
+    --gp-form-border: #d0d7de;
     --gp-sidebar-bg: #ffffff;
-    --gp-sidebar-text: #212529;
-    --gp-sidebar-hover-bg: rgba(0, 0, 0, 0.05);
+    --gp-sidebar-text: #1f2328;
+    --gp-sidebar-hover-bg: rgba(15, 23, 42, 0.05);
+    --gp-sidebar-active-bg: rgba(59, 130, 246, 0.1);
+    --gp-sidebar-active-color: #1d4ed8;
     --gp-navtop-bg: #ffffff;
-    --gp-navtop-link: #212529;
-    --gp-navtop-link-hover: #0d6efd;
-    --gp-border-color: rgba(0, 0, 0, 0.08);
+    --gp-navtop-link: #1f2328;
+    --gp-navtop-link-hover: #1d4ed8;
+    --gp-border-color: rgba(15, 23, 42, 0.1);
     --gp-toggle-bg: #ffffff;
-    --gp-toggle-border: #ced4da;
-    --gp-toggle-color: #212529;
-}
-
-#navTop .navbar-brand,
-#navTop .nav-link {
-    color: var(--gp-navtop-link) !important;
-}
-
-#navTop .nav-link:hover {
-    color: var(--gp-navtop-link-hover) !important;
+    --gp-toggle-border: #d0d7de;
+    --gp-toggle-color: #1f2328;
+    --gp-accent: #1d4ed8;
+    --gp-accent-hover: #1e40af;
 }
 
 .theme-toggle {
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    transition: all 0.3s ease;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
     background-color: var(--gp-toggle-bg);
-    border-color: var(--gp-toggle-border);
+    border: 1px solid var(--gp-toggle-border);
     color: var(--gp-toggle-color);
 }
 
 .theme-toggle:hover {
-    filter: brightness(1.05);
+    background-color: var(--gp-sidebar-hover-bg);
+    color: var(--gp-toggle-color);
+    border-color: var(--gp-toggle-border);
 }
 
 /* Estilo para o botão de tema no menu hambúrguer (mobile) */
@@ -547,64 +635,55 @@ html.theme-light {
 }
 
 #menu li.d-lg-none .theme-toggle:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--gp-sidebar-hover-bg);
 }
 
-/* Botão Sair estilizado */
+/* Collapse do menu no mobile segue a cor de fundo do navbar */
+#navTop .navbar-collapse {
+    background: var(--gp-navtop-bg);
+}
+@media (max-width: 991.98px) {
+    #navTop .navbar-collapse {
+        padding: 0.5rem 0.25rem 0.75rem;
+        margin-top: 0.5rem;
+        border-top: 1px solid var(--gp-border-color);
+    }
+}
+
+/* Botão Sair */
 .btn-logout {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     width: 100%;
-    padding: 0.6rem 1rem;
-    border: 1px solid rgba(220, 53, 69, 0.4);
-    border-radius: 8px;
-    background: rgba(220, 53, 69, 0.08);
-    color: #ff6b7a;
+    padding: 0.55rem 0.85rem;
+    border: 1px solid rgba(220, 53, 69, 0.35);
+    border-radius: 6px;
+    background: transparent;
+    color: #e5646f;
     text-decoration: none;
-    font-size: 0.875rem;
+    font-size: 0.85rem;
     font-weight: 500;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-.btn-logout::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(220, 53, 69, 0.2), rgba(220, 53, 69, 0.05));
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 .btn-logout:hover {
-    background: rgba(220, 53, 69, 0.18);
-    border-color: rgba(220, 53, 69, 0.6);
-    color: #ff4d5e;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.2);
+    background: rgba(220, 53, 69, 0.12);
+    border-color: rgba(220, 53, 69, 0.55);
+    color: #ef4f5d;
     text-decoration: none;
 }
-.btn-logout:hover::before {
-    opacity: 1;
-}
-.btn-logout:hover .logout-icon {
-    transform: translateX(3px);
-}
 .btn-logout:active {
-    transform: translateY(0);
-    box-shadow: none;
+    background: rgba(220, 53, 69, 0.18);
 }
 .logout-icon {
-    font-size: 1rem;
-    transition: transform 0.3s ease;
+    font-size: 0.95rem;
 }
 .theme-light .btn-logout {
-    background: rgba(220, 53, 69, 0.05);
-    border-color: rgba(220, 53, 69, 0.3);
-    color: #dc3545;
+    border-color: rgba(220, 53, 69, 0.35);
+    color: #c1383f;
 }
 .theme-light .btn-logout:hover {
-    background: rgba(220, 53, 69, 0.12);
-    border-color: rgba(220, 53, 69, 0.5);
-    color: #c82333;
+    background: rgba(220, 53, 69, 0.08);
+    border-color: rgba(220, 53, 69, 0.55);
+    color: #a5232a;
 }

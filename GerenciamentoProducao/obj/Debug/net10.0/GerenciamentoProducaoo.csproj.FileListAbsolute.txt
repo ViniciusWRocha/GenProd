@@ -979,3 +979,4 @@ C:\Users\GamerPc\source\repos\Cliente\GenProd\GerenciamentoProducao\obj\Debug\ne
 C:\Users\GamerPc\source\repos\Cliente\GenProd\GerenciamentoProducao\obj\Debug\net10.0\GerenciamentoProducaoo.pdb
 C:\Users\GamerPc\source\repos\Cliente\GenProd\GerenciamentoProducao\obj\Debug\net10.0\GerenciamentoProducaoo.genruntimeconfig.cache
 C:\Users\GamerPc\source\repos\Cliente\GenProd\GerenciamentoProducao\obj\Debug\net10.0\ref\GerenciamentoProducaoo.dll
+C:\Users\GamerPc\source\repos\Cliente\GenProd\GerenciamentoProducao\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt

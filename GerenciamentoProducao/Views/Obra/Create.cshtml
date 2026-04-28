@@ -129,17 +129,17 @@
                         </div>
 
                         <div class="form-group">
-                            <label asp-for="Observacoes" class="control-label">Observações</label>
-                            <textarea asp-for="Observacoes" class="form-control" rows="3"></textarea>
-                            <span asp-validation-for="Observacoes" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group">
                             <label asp-for="IdCliente" class="control-label">Cliente Responsável</label>
                             <select asp-for="IdCliente" class="form-control" asp-items="Model.Clientes">
                                 <option value="">Nenhum cliente vinculado</option>
                             </select>
                             <span asp-validation-for="IdCliente" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Observacoes" class="control-label">Observações</label>
+                            <textarea asp-for="Observacoes" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Observacoes" class="text-danger"></span>
                         </div>
 
                         <div class="form-group">

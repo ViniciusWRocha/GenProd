@@ -3,6 +3,22 @@
   "WorkspaceRootPath": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{B098C6BC-F7A4-48DE-4DD3-923EFB662FEC}|GerenciamentoProducao\\GerenciamentoProducaoo.csproj|c:\\users\\gamerpc\\source\\repos\\cliente\\genprod\\gerenciamentoproducao\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{B098C6BC-F7A4-48DE-4DD3-923EFB662FEC}|GerenciamentoProducao\\GerenciamentoProducaoo.csproj|solutionrelative:gerenciamentoproducao\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B098C6BC-F7A4-48DE-4DD3-923EFB662FEC}|GerenciamentoProducao\\GerenciamentoProducaoo.csproj|c:\\users\\gamerpc\\source\\repos\\cliente\\genprod\\gerenciamentoproducao\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B098C6BC-F7A4-48DE-4DD3-923EFB662FEC}|GerenciamentoProducao\\GerenciamentoProducaoo.csproj|solutionrelative:gerenciamentoproducao\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B098C6BC-F7A4-48DE-4DD3-923EFB662FEC}|GerenciamentoProducao\\GerenciamentoProducaoo.csproj|c:\\users\\gamerpc\\source\\repos\\cliente\\genprod\\gerenciamentoproducao\\views\\obra\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B098C6BC-F7A4-48DE-4DD3-923EFB662FEC}|GerenciamentoProducao\\GerenciamentoProducaoo.csproj|solutionrelative:gerenciamentoproducao\\views\\obra\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B098C6BC-F7A4-48DE-4DD3-923EFB662FEC}|GerenciamentoProducao\\GerenciamentoProducaoo.csproj|c:\\users\\gamerpc\\source\\repos\\cliente\\genprod\\gerenciamentoproducao\\views\\obra\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B098C6BC-F7A4-48DE-4DD3-923EFB662FEC}|GerenciamentoProducao\\GerenciamentoProducaoo.csproj|solutionrelative:gerenciamentoproducao\\views\\obra\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{B098C6BC-F7A4-48DE-4DD3-923EFB662FEC}|GerenciamentoProducao\\GerenciamentoProducaoo.csproj|c:\\users\\gamerpc\\source\\repos\\cliente\\genprod\\gerenciamentoproducao\\controllers\\obracontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B098C6BC-F7A4-48DE-4DD3-923EFB662FEC}|GerenciamentoProducao\\GerenciamentoProducaoo.csproj|solutionrelative:gerenciamentoproducao\\controllers\\obracontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -27,16 +43,8 @@
       "RelativeMoniker": "D:0:0:{B098C6BC-F7A4-48DE-4DD3-923EFB662FEC}|GerenciamentoProducao\\GerenciamentoProducaoo.csproj|solutionrelative:gerenciamentoproducao\\services\\obraapiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B098C6BC-F7A4-48DE-4DD3-923EFB662FEC}|GerenciamentoProducao\\GerenciamentoProducaoo.csproj|c:\\users\\gamerpc\\source\\repos\\cliente\\genprod\\gerenciamentoproducao\\views\\obra\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{B098C6BC-F7A4-48DE-4DD3-923EFB662FEC}|GerenciamentoProducao\\GerenciamentoProducaoo.csproj|solutionrelative:gerenciamentoproducao\\views\\obra\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{B098C6BC-F7A4-48DE-4DD3-923EFB662FEC}|GerenciamentoProducao\\GerenciamentoProducaoo.csproj|c:\\users\\gamerpc\\source\\repos\\cliente\\genprod\\gerenciamentoproducao\\viewmodel\\obraviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B098C6BC-F7A4-48DE-4DD3-923EFB662FEC}|GerenciamentoProducao\\GerenciamentoProducaoo.csproj|solutionrelative:gerenciamentoproducao\\viewmodel\\obraviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B098C6BC-F7A4-48DE-4DD3-923EFB662FEC}|GerenciamentoProducao\\GerenciamentoProducaoo.csproj|c:\\users\\gamerpc\\source\\repos\\cliente\\genprod\\gerenciamentoproducao\\views\\obra\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{B098C6BC-F7A4-48DE-4DD3-923EFB662FEC}|GerenciamentoProducao\\GerenciamentoProducaoo.csproj|solutionrelative:gerenciamentoproducao\\views\\obra\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B098C6BC-F7A4-48DE-4DD3-923EFB662FEC}|GerenciamentoProducao\\GerenciamentoProducaoo.csproj|c:\\users\\gamerpc\\source\\repos\\cliente\\genprod\\gerenciamentoproducao\\views\\familiacaixilho\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -45,10 +53,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{B098C6BC-F7A4-48DE-4DD3-923EFB662FEC}|GerenciamentoProducao\\GerenciamentoProducaoo.csproj|c:\\users\\gamerpc\\source\\repos\\cliente\\genprod\\gerenciamentoproducao\\controllers\\familiacaixilhocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B098C6BC-F7A4-48DE-4DD3-923EFB662FEC}|GerenciamentoProducao\\GerenciamentoProducaoo.csproj|solutionrelative:gerenciamentoproducao\\controllers\\familiacaixilhocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B098C6BC-F7A4-48DE-4DD3-923EFB662FEC}|GerenciamentoProducao\\GerenciamentoProducaoo.csproj|c:\\users\\gamerpc\\source\\repos\\cliente\\genprod\\gerenciamentoproducao\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B098C6BC-F7A4-48DE-4DD3-923EFB662FEC}|GerenciamentoProducao\\GerenciamentoProducaoo.csproj|solutionrelative:gerenciamentoproducao\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B098C6BC-F7A4-48DE-4DD3-923EFB662FEC}|GerenciamentoProducao\\GerenciamentoProducaoo.csproj|c:\\users\\gamerpc\\source\\repos\\cliente\\genprod\\gerenciamentoproducao\\models\\solicitacaoclienteresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -66,125 +70,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 6,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "ObraResponseDto.cs",
-              "DocumentMoniker": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\ApiDtos\\ObraResponseDto.cs",
-              "RelativeDocumentMoniker": "GerenciamentoProducao\\ApiDtos\\ObraResponseDto.cs",
-              "ToolTip": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\ApiDtos\\ObraResponseDto.cs",
-              "RelativeToolTip": "GerenciamentoProducao\\ApiDtos\\ObraResponseDto.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAmwB4AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-28T02:06:35.61Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ObraUpdateDto.cs",
-              "DocumentMoniker": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\ApiDtos\\ObraUpdateDto.cs",
-              "RelativeDocumentMoniker": "GerenciamentoProducao\\ApiDtos\\ObraUpdateDto.cs",
-              "ToolTip": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\ApiDtos\\ObraUpdateDto.cs",
-              "RelativeToolTip": "GerenciamentoProducao\\ApiDtos\\ObraUpdateDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAArAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-28T02:06:25.668Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "ObraCreateDto.cs",
-              "DocumentMoniker": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\ApiDtos\\ObraCreateDto.cs",
-              "RelativeDocumentMoniker": "GerenciamentoProducao\\ApiDtos\\ObraCreateDto.cs",
-              "ToolTip": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\ApiDtos\\ObraCreateDto.cs",
-              "RelativeToolTip": "GerenciamentoProducao\\ApiDtos\\ObraCreateDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAArAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-28T02:06:11.359Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "ObraApiService.cs",
-              "DocumentMoniker": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\Services\\ObraApiService.cs",
-              "RelativeDocumentMoniker": "GerenciamentoProducao\\Services\\ObraApiService.cs",
-              "ToolTip": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\Services\\ObraApiService.cs",
-              "RelativeToolTip": "GerenciamentoProducao\\Services\\ObraApiService.cs",
-              "ViewState": "AgIAAG4AAAAAAAAAAADwv40AAAAqAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-28T02:03:36.238Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Obra.cs",
-              "DocumentMoniker": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\Models\\Obra.cs",
-              "RelativeDocumentMoniker": "GerenciamentoProducao\\Models\\Obra.cs",
-              "ToolTip": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\Models\\Obra.cs",
-              "RelativeToolTip": "GerenciamentoProducao\\Models\\Obra.cs",
-              "ViewState": "AgIAAC0AAAAAAAAAAAAUwEgAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-28T00:10:12.747Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "ObraController.cs",
-              "DocumentMoniker": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\Controllers\\ObraController.cs",
-              "RelativeDocumentMoniker": "GerenciamentoProducao\\Controllers\\ObraController.cs",
-              "ToolTip": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\Controllers\\ObraController.cs",
-              "RelativeToolTip": "GerenciamentoProducao\\Controllers\\ObraController.cs",
-              "ViewState": "AgIAAJkBAAAAAAAAAAAYwMABAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-27T23:42:59.502Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "Edit.cshtml",
-              "DocumentMoniker": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\Views\\Obra\\Edit.cshtml",
-              "RelativeDocumentMoniker": "GerenciamentoProducao\\Views\\Obra\\Edit.cshtml",
-              "ToolTip": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\Views\\Obra\\Edit.cshtml",
-              "RelativeToolTip": "GerenciamentoProducao\\Views\\Obra\\Edit.cshtml",
-              "ViewState": "AgIAAGYAAAAAAAAAAAAAAIsAAAAeAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-04-27T23:41:37.046Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Create.cshtml",
-              "DocumentMoniker": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\Views\\Obra\\Create.cshtml",
-              "RelativeDocumentMoniker": "GerenciamentoProducao\\Views\\Obra\\Create.cshtml",
-              "ToolTip": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\Views\\Obra\\Create.cshtml",
-              "RelativeToolTip": "GerenciamentoProducao\\Views\\Obra\\Create.cshtml",
-              "ViewState": "AgIAAJIAAAAAAAAAAAAswK8AAAAYAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-04-27T23:41:11.597Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "ObraViewModel.cs",
-              "DocumentMoniker": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\ViewModel\\ObraViewModel.cs",
-              "RelativeDocumentMoniker": "GerenciamentoProducao\\ViewModel\\ObraViewModel.cs",
-              "ToolTip": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\ViewModel\\ObraViewModel.cs",
-              "RelativeToolTip": "GerenciamentoProducao\\ViewModel\\ObraViewModel.cs",
-              "ViewState": "AgIAABMAAAAAAAAAAAAywCMAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-27T23:40:42.998Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
@@ -211,7 +98,128 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\appsettings.json",
+              "RelativeDocumentMoniker": "GerenciamentoProducao\\appsettings.json",
+              "ToolTip": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\appsettings.json",
+              "RelativeToolTip": "GerenciamentoProducao\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-04-28T16:10:08.228Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ObraResponseDto.cs",
+              "DocumentMoniker": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\ApiDtos\\ObraResponseDto.cs",
+              "RelativeDocumentMoniker": "GerenciamentoProducao\\ApiDtos\\ObraResponseDto.cs",
+              "ToolTip": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\ApiDtos\\ObraResponseDto.cs",
+              "RelativeToolTip": "GerenciamentoProducao\\ApiDtos\\ObraResponseDto.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAmwB4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-28T02:06:35.61Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ObraUpdateDto.cs",
+              "DocumentMoniker": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\ApiDtos\\ObraUpdateDto.cs",
+              "RelativeDocumentMoniker": "GerenciamentoProducao\\ApiDtos\\ObraUpdateDto.cs",
+              "ToolTip": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\ApiDtos\\ObraUpdateDto.cs",
+              "RelativeToolTip": "GerenciamentoProducao\\ApiDtos\\ObraUpdateDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-28T02:06:25.668Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ObraCreateDto.cs",
+              "DocumentMoniker": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\ApiDtos\\ObraCreateDto.cs",
+              "RelativeDocumentMoniker": "GerenciamentoProducao\\ApiDtos\\ObraCreateDto.cs",
+              "ToolTip": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\ApiDtos\\ObraCreateDto.cs",
+              "RelativeToolTip": "GerenciamentoProducao\\ApiDtos\\ObraCreateDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-28T02:06:11.359Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 9,
+              "Title": "ObraApiService.cs",
+              "DocumentMoniker": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\Services\\ObraApiService.cs",
+              "RelativeDocumentMoniker": "GerenciamentoProducao\\Services\\ObraApiService.cs",
+              "ToolTip": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\Services\\ObraApiService.cs",
+              "RelativeToolTip": "GerenciamentoProducao\\Services\\ObraApiService.cs",
+              "ViewState": "AgIAAG4AAAAAAAAAAADwv40AAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-28T02:03:36.238Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Obra.cs",
+              "DocumentMoniker": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\Models\\Obra.cs",
+              "RelativeDocumentMoniker": "GerenciamentoProducao\\Models\\Obra.cs",
+              "ToolTip": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\Models\\Obra.cs",
+              "RelativeToolTip": "GerenciamentoProducao\\Models\\Obra.cs",
+              "ViewState": "AgIAAC0AAAAAAAAAAAAUwEgAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-28T00:10:12.747Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ObraController.cs",
+              "DocumentMoniker": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\Controllers\\ObraController.cs",
+              "RelativeDocumentMoniker": "GerenciamentoProducao\\Controllers\\ObraController.cs",
+              "ToolTip": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\Controllers\\ObraController.cs",
+              "RelativeToolTip": "GerenciamentoProducao\\Controllers\\ObraController.cs",
+              "ViewState": "AgIAAJkBAAAAAAAAAAAYwMABAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-27T23:42:59.502Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\Views\\Obra\\Edit.cshtml",
+              "RelativeDocumentMoniker": "GerenciamentoProducao\\Views\\Obra\\Edit.cshtml",
+              "ToolTip": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\Views\\Obra\\Edit.cshtml",
+              "RelativeToolTip": "GerenciamentoProducao\\Views\\Obra\\Edit.cshtml",
+              "ViewState": "AgIAAGwAAAAAAAAAAAAAAIgAAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-27T23:41:37.046Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\Views\\Obra\\Create.cshtml",
+              "RelativeDocumentMoniker": "GerenciamentoProducao\\Views\\Obra\\Create.cshtml",
+              "ToolTip": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\Views\\Obra\\Create.cshtml",
+              "RelativeToolTip": "GerenciamentoProducao\\Views\\Obra\\Create.cshtml",
+              "ViewState": "AgIAAG4AAAAAAAAAAAAswIEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-27T23:41:11.597Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ObraViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\ViewModel\\ObraViewModel.cs",
+              "RelativeDocumentMoniker": "GerenciamentoProducao\\ViewModel\\ObraViewModel.cs",
+              "ToolTip": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\ViewModel\\ObraViewModel.cs",
+              "RelativeToolTip": "GerenciamentoProducao\\ViewModel\\ObraViewModel.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAywCMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-27T23:40:42.998Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
               "Title": "Details.cshtml",
               "DocumentMoniker": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\Views\\FamiliaCaixilho\\Details.cshtml",
               "RelativeDocumentMoniker": "GerenciamentoProducao\\Views\\FamiliaCaixilho\\Details.cshtml",
@@ -219,12 +227,11 @@
               "RelativeToolTip": "GerenciamentoProducao\\Views\\FamiliaCaixilho\\Details.cshtml",
               "ViewState": "AgIAAF0CAAAAAAAAAAAswIwCAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-04-27T04:41:57.675Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-27T04:41:57.675Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 12,
               "Title": "FamiliaCaixilhoController.cs",
               "DocumentMoniker": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\Controllers\\FamiliaCaixilhoController.cs",
               "RelativeDocumentMoniker": "GerenciamentoProducao\\Controllers\\FamiliaCaixilhoController.cs",
@@ -236,19 +243,19 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 1,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\Program.cs",
               "RelativeDocumentMoniker": "GerenciamentoProducao\\Program.cs",
               "ToolTip": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\Program.cs",
               "RelativeToolTip": "GerenciamentoProducao\\Program.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAswGIAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-27T04:39:09.485Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "SolicitacaoClienteResponseDto.cs",
               "DocumentMoniker": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\Models\\SolicitacaoClienteResponseDto.cs",
               "RelativeDocumentMoniker": "GerenciamentoProducao\\Models\\SolicitacaoClienteResponseDto.cs",
@@ -260,7 +267,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 14,
               "Title": "SolicitacaoApiService.cs",
               "DocumentMoniker": "C:\\Users\\GamerPc\\source\\repos\\Cliente\\GenProd\\GerenciamentoProducao\\Services\\SolicitacaoApiService.cs",
               "RelativeDocumentMoniker": "GerenciamentoProducao\\Services\\SolicitacaoApiService.cs",

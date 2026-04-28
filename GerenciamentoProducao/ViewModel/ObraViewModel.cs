@@ -29,5 +29,8 @@ namespace GerenciamentoProducaoo.ViewModel
 
         public int IdUsuario { get; set; }
         public IEnumerable<SelectListItem>? Usuario { get; set; }
+
+        public int? IdCliente { get; set; }
+        public IEnumerable<SelectListItem>? Clientes { get; set; }
     }
 }

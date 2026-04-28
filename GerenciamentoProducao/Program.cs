@@ -43,6 +43,7 @@ builder.Services.AddScoped<ITipoUsuarioRepository, TipoUsuarioApiService>();
 builder.Services.AddScoped<IDashboardApiService, DashboardApiService>();
 builder.Services.AddScoped<MedicaoApiService>();
 builder.Services.AddScoped<NotificacaoApiService>();
+builder.Services.AddScoped<SolicitacaoApiService>();
 
 // Autenticação com COOKIES
 builder.Services.AddAuthentication("GerenciadorProd")

@@ -68,5 +68,7 @@ namespace GerenciamentoProducao.Models
 
         public int IdUsuario { get; set; }
         public virtual Usuario? Usuario { get; set; }
+        public int? IdCliente { get; set; }
+        public virtual Usuario? Cliente { get; set; }
     }
 }

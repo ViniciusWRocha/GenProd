@@ -18,6 +18,8 @@
     var statusExibicao = aguardandoAprovacaoFoto ? "PendenteAprovacaoMedicao" : Model.StatusFamilia;
     var isAdmin = User.IsInRole("Administrador");
     var isAdminOuGerente = User.IsInRole("Administrador") || User.IsInRole("Gerente");
+    var solicitacoes = ViewBag.SolicitacoesCliente as List<GerenciamentoProducao.Models.SolicitacaoClienteResponseDto> ?? new List<GerenciamentoProducao.Models.SolicitacaoClienteResponseDto>();
+    var temSolicitacoes = solicitacoes.Any();
 }
 
 <div class="container-fluid">
@@ -388,6 +390,70 @@
             </div>
         }
     </div>
+
+    @* Solicitações do cliente *@
+    @if (temSolicitacoes)
+    {
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header py-2 d-flex justify-content-between align-items-center">
+                <div>
+                    <i class="fas fa-bell me-2 text-warning"></i>
+                    <strong>Solicitações do Cliente</strong>
+                    <span class="badge bg-warning text-dark ms-2">@solicitacoes.Count</span>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Caixilho</th>
+                                <th>Cliente</th>
+                                <th class="text-center">Prioridade</th>
+                                <th class="text-center">Necessário em</th>
+                                <th>Observação</th>
+                                <th class="text-center">Solicitado em</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var sol in solicitacoes.OrderByDescending(s => s.Prioridade))
+                            {
+                                var prioridadeClass = sol.Prioridade switch
+                                {
+                                    2 => "bg-danger",
+                                    1 => "bg-warning text-dark",
+                                    _ => "bg-secondary"
+                                };
+                                var prioridadeLabel = sol.Prioridade switch
+                                {
+                                    2 => "Urgente",
+                                    1 => "Importante",
+                                    _ => "Normal"
+                                };
+                                var atrasado = sol.DataNecessidadeEmObra.ToLocalTime().Date < DateTime.Today;
+                                <tr class="@(atrasado ? "table-danger" : "")">
+                                    <td><strong>@sol.NomeCaixilho</strong></td>
+                                    <td>@sol.NomeCliente</td>
+                                    <td class="text-center">
+                                        <span class="badge @prioridadeClass">@prioridadeLabel</span>
+                                    </td>
+                                    <td class="text-center @(atrasado ? "text-danger fw-bold" : "")">
+                                        @sol.DataNecessidadeEmObra.ToLocalTime().ToString("dd/MM/yyyy")
+                                        @if (atrasado)
+                                        {
+                                            <br><small>ATRASADO</small>
+                                        }
+                                    </td>
+                                    <td><small style="color:var(--gp-muted-color);">@(sol.ObservacaoCliente ?? "—")</small></td>
+                                    <td class="text-center"><small>@sol.DataSolicitacao.ToLocalTime().ToString("dd/MM/yyyy")</small></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
 
     @* Tabela de caixilhos *@
     <div class="card border-0 shadow">

@@ -17,5 +17,6 @@ namespace GerenciamentoProducao.ApiDtos
         public bool Finalizado { get; set; }
         public string? ImagemObraPath { get; set; }
         public int IdUsuario { get; set; }
+        public int? IdCliente { get; set; }
     }
 }

@@ -15,5 +15,6 @@ namespace GerenciamentoProducao.ApiDtos
         public float PesoFinal { get; set; }
         public string? Observacoes { get; set; }
         public int IdUsuario { get; set; }
+        public int? IdCliente { get; set; }
     }
 }

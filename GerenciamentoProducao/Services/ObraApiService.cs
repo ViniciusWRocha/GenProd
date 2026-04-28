@@ -48,7 +48,8 @@ namespace GerenciamentoProducao.Services
                 DataTermino = ToJsonUtcDateTime(obra.DataTermino),
                 PesoFinal = obra.PesoFinal,
                 Observacoes = obra.Observacoes,
-                IdUsuario = obra.IdUsuario
+                IdUsuario = obra.IdUsuario,
+                IdCliente = obra.IdCliente
             };
             var response = await PostAsync<ObraCreateDto, ObraResponseDto>("/api/obra", dto);
             if (response != null)
@@ -73,7 +74,8 @@ namespace GerenciamentoProducao.Services
                 Observacoes = obra.Observacoes,
                 Finalizado = obra.Finalizado,
                 ImagemObraPath = obra.ImagemObraPath,
-                IdUsuario = obra.IdUsuario
+                IdUsuario = obra.IdUsuario,
+                IdCliente = obra.IdCliente
             };
             await PutAsync($"/api/obra/{obra.IdObra}", dto);
         }
@@ -137,6 +139,7 @@ namespace GerenciamentoProducao.Services
                 Finalizado = dto.Finalizado,
                 ImagemObraPath = dto.ImagemObraPath,
                 IdUsuario = dto.IdUsuario,
+                IdCliente = dto.IdCliente,
                 StatusObra = MapStatusObra(dto.StatusObra),
                 PercentualMedicao = dto.PercentualMedicao,
                 PercentualProducao = dto.PercentualProducao,

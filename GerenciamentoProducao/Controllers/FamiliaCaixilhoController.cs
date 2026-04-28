@@ -17,6 +17,7 @@ namespace GerenciamentoProducao.Controllers
         private readonly IFamiliaMedicaoFotoStore _medicaoFotoStore;
         private readonly MedicaoApiService _medicaoApiService;
         private readonly NotificacaoApiService _notificacaoService;
+        private readonly SolicitacaoApiService _solicitacaoService;
 
         public FamiliaCaixilhoController(
             IFamiliaCaixilhoRepository familiaCaixilhoRepository,
@@ -24,7 +25,8 @@ namespace GerenciamentoProducao.Controllers
             ICaixilhoRepository caixilhoRepository,
             IFamiliaMedicaoFotoStore medicaoFotoStore,
             MedicaoApiService medicaoApiService,
-            NotificacaoApiService notificacaoService)
+            NotificacaoApiService notificacaoService,
+            SolicitacaoApiService solicitacaoService)
         {
             _familiaCaixilhoRepository = familiaCaixilhoRepository;
             _obraRepository = obraRepository;
@@ -32,6 +34,7 @@ namespace GerenciamentoProducao.Controllers
             _medicaoFotoStore = medicaoFotoStore;
             _medicaoApiService = medicaoApiService;
             _notificacaoService = notificacaoService;
+            _solicitacaoService = solicitacaoService; 
         }
 
         public async Task<IActionResult> Index()
@@ -128,6 +131,27 @@ namespace GerenciamentoProducao.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        //public async Task<IActionResult> Details(int? id)
+        //{
+        //    if (id == null) return NotFound();
+
+        //    var familia = await _familiaCaixilhoRepository.GetByIdAsync(id.Value);
+        //    if (familia == null) return NotFound();
+
+        //    var caixilhos = await _caixilhoRepository.GetByFamiliaIdAsync(id.Value);
+        //    ViewBag.Caixilhos = caixilhos;
+
+        //    var obra = await _obraRepository.GetById(familia.IdObra);
+        //    ViewBag.ObraNome = obra?.Nome;
+        //    ViewBag.MedicaoFotoPendente = await _medicaoFotoStore.GetAsync(familia.IdFamiliaCaixilho);
+
+        //    // Dados de produção e medição da API
+        //    ViewBag.ProducaoFamilia = await _medicaoApiService.GetProducaoByFamiliaAsync(id.Value);
+        //    ViewBag.MedicaoFamilia = await _medicaoApiService.GetByFamiliaAsync(id.Value);
+
+        //    return View(familia);
+        //}
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
@@ -145,6 +169,9 @@ namespace GerenciamentoProducao.Controllers
             // Dados de produção e medição da API
             ViewBag.ProducaoFamilia = await _medicaoApiService.GetProducaoByFamiliaAsync(id.Value);
             ViewBag.MedicaoFamilia = await _medicaoApiService.GetByFamiliaAsync(id.Value);
+
+            // Solicitações do cliente para esta família
+            ViewBag.SolicitacoesCliente = await _solicitacaoService.GetByFamiliaAsync(id.Value);
 
             return View(familia);
         }

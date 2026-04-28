@@ -15,7 +15,7 @@ namespace GerenciamentoProducaoo.Controllers
         private readonly ICaixilhoRepository _caixilhoRepository;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private static readonly string[] _extensoesPermitidas = new[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp" };
-        private const long _tamanhoMaximoImagemBytes = 5 * 1024 * 1024; // 5MB
+        private const long _tamanhoMaximoImagemBytes = 5 * 1024 * 1024;
 
         public ObraController(
             IObraRepository obraRepository,
@@ -34,6 +34,7 @@ namespace GerenciamentoProducaoo.Controllers
         private async Task<ObraViewModel> CriarObraViewModel(ObraViewModel? model = null)
         {
             var usuarios = await _usuarioRepository.GetAllAsync();
+            var clientes = usuarios.Where(u => u.TipoUsuario != null && u.TipoUsuario.NomeTipoUsuario == "Cliente").ToList();
 
             return new ObraViewModel
             {
@@ -57,12 +58,20 @@ namespace GerenciamentoProducaoo.Controllers
                 Finalizado = model?.Finalizado ?? false,
                 IdUsuario = model?.IdUsuario ?? 0,
                 ImagemObraPath = model?.ImagemObraPath,
+                IdCliente = model?.IdCliente,
 
-                Usuario = usuarios.Select(t => new SelectListItem
+                Usuario = usuarios.Where(u => u.TipoUsuario == null || u.TipoUsuario.NomeTipoUsuario != "Cliente").Select(t => new SelectListItem
                 {
                     Value = t.IdUsuario.ToString(),
                     Text = t.NomeUsuario,
                     Selected = model != null && t.IdUsuario == model.IdUsuario
+                }),
+
+                Clientes = clientes.Select(c => new SelectListItem
+                {
+                    Value = c.IdUsuario.ToString(),
+                    Text = c.NomeUsuario,
+                    Selected = model != null && c.IdUsuario == model.IdCliente
                 })
             };
         }
@@ -150,10 +159,10 @@ namespace GerenciamentoProducaoo.Controllers
                 Observacoes = viewModel.Observacoes,
                 Finalizado = viewModel.Finalizado,
                 IdUsuario = viewModel.IdUsuario,
+                IdCliente = viewModel.IdCliente,
                 ImagemObraPath = viewModel.ImagemObraPath
             };
 
-            // Imagem local (temporário até integrar com API de Anexos)
             var imagemSalva = await SalvarImagemAsync(viewModel.ImagemUpload);
             if (!string.IsNullOrEmpty(imagemSalva))
             {
@@ -184,6 +193,7 @@ namespace GerenciamentoProducaoo.Controllers
             if (item == null) return NotFound();
 
             var usuarios = await _usuarioRepository.GetAllAsync();
+            var clientes = usuarios.Where(u => u.TipoUsuario != null && u.TipoUsuario.NomeTipoUsuario == "Cliente").ToList();
 
             var vm = new ObraViewModel
             {
@@ -206,11 +216,18 @@ namespace GerenciamentoProducaoo.Controllers
                 Observacoes = item.Observacoes,
                 Finalizado = item.Finalizado,
                 IdUsuario = item.IdUsuario,
+                IdCliente = item.IdCliente,
                 ImagemObraPath = item.ImagemObraPath,
                 Usuario = usuarios.Select(t => new SelectListItem
                 {
                     Value = t.IdUsuario.ToString(),
                     Text = t.NomeUsuario
+                }),
+                Clientes = clientes.Select(c => new SelectListItem
+                {
+                    Value = c.IdUsuario.ToString(),
+                    Text = c.NomeUsuario,
+                    Selected = c.IdUsuario == item.IdCliente
                 })
             };
 
@@ -232,10 +249,16 @@ namespace GerenciamentoProducaoo.Controllers
             if (!ModelState.IsValid)
             {
                 var todosUsuariosVal = (await _usuarioRepository.GetAllAsync()).ToList();
+                var clientesVal = todosUsuariosVal.Where(u => u.TipoUsuario != null && u.TipoUsuario.NomeTipoUsuario == "Cliente").ToList();
                 viewModel.Usuario = todosUsuariosVal.Select(t => new SelectListItem
                 {
                     Value = t.IdUsuario.ToString(),
                     Text = t.NomeUsuario
+                });
+                viewModel.Clientes = clientesVal.Select(c => new SelectListItem
+                {
+                    Value = c.IdUsuario.ToString(),
+                    Text = c.NomeUsuario
                 });
                 return View(viewModel);
             }
@@ -253,12 +276,12 @@ namespace GerenciamentoProducaoo.Controllers
             obra.Cnpj = viewModel.Cnpj;
             obra.DataInicio = viewModel.DataInicio;
             obra.DataTermino = viewModel.DataTermino;
-            // PesoFinal é calculado automaticamente - não sobrescrever
             obra.StatusObra = viewModel.StatusObra;
             obra.PercentualConclusao = viewModel.PercentualConclusao;
             obra.DataConclusao = viewModel.DataConclusao;
             obra.Observacoes = viewModel.Observacoes;
             obra.IdUsuario = viewModel.IdUsuario;
+            obra.IdCliente = viewModel.IdCliente;
 
             if (viewModel.ImagemUpload != null && viewModel.ImagemUpload.Length > 0)
             {
@@ -307,7 +330,7 @@ namespace GerenciamentoProducaoo.Controllers
                 {
                     familias = await _familiaCaixilhoRepository.GetByObraIdAsync(id.Value);
                 }
-                catch (HttpRequestException) { /* obra pode não ter famílias ainda */ }
+                catch (HttpRequestException) { }
 
                 var todosOsCaixilhos = new List<Caixilho>();
                 foreach (var familia in familias)
@@ -317,7 +340,7 @@ namespace GerenciamentoProducaoo.Controllers
                         var caixilhosDaFamilia = await _caixilhoRepository.GetByFamiliaIdAsync(familia.IdFamiliaCaixilho);
                         todosOsCaixilhos.AddRange(caixilhosDaFamilia);
                     }
-                    catch (HttpRequestException) { /* familia pode não ter caixilhos */ }
+                    catch (HttpRequestException) { }
                 }
 
                 ViewBag.Familias = familias;
